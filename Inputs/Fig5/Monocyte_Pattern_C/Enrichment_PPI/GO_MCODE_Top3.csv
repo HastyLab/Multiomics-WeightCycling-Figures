@@ -1,0 +1,14 @@
+Network,Annotation
+MyList,GO:0061014|positive regulation of mRNA catabolic process|-13.6;GO:0032870|cellular response to hormone stimulus|-13.1;GO:0016071|mRNA metabolic process|-13.0
+MyList_MCODE_ALL,"R-MMU-194315|Signaling by Rho GTPases|-15.1;R-MMU-9716542|Signaling by Rho GTPases, Miro GTPases and RHOBTB3|-14.8;mmu04810|Regulation of actin cytoskeleton|-13.8"
+MyList_SUB1_MCODE_1,R-MMU-72163|mRNA Splicing - Major Pathway|-14.6;R-MMU-72172|mRNA Splicing|-14.5;R-MMU-8856828|Clathrin-mediated endocytosis|-13.9
+MyList_SUB1_MCODE_2,mmu04062|Chemokine signaling pathway|-7.7;GO:0120162|positive regulation of cold-induced thermogenesis|-6.4;R-MMU-429914|Deadenylation-dependent mRNA decay|-5.8
+MyList_SUB1_MCODE_3,R-MMU-1660499|Synthesis of PIPs at the plasma membrane|-8.0;GO:0031589|cell-substrate adhesion|-7.4;mmu00562|Inositol phosphate metabolism|-7.2
+MyList_SUB1_MCODE_4,R-MMU-983168|Antigen processing: Ubiquitination & Proteasome degradation|-11.8;R-MMU-983169|Class I MHC mediated antigen processing & presentation|-11.2;R-MMU-1280218|Adaptive Immune System|-10.7
+MyList_SUB1_MCODE_5,GO:0043408|regulation of MAPK cascade|-10.9;GO:0000165|MAPK cascade|-10.6;ko05205|Proteoglycans in cancer|-9.1
+MyList_SUB1_MCODE_6,R-MMU-9006931|Signaling by Nuclear Receptors|-11.1;WP1763|PluriNetWork: mechanisms associated with pluripotency|-8.5;GO:0009755|hormone-mediated signaling pathway|-7.9
+MyList_SUB1_MCODE_7,GO:0007264|small GTPase mediated signal transduction|-7.8;R-MMU-9013026|RHOB GTPase cycle|-5.4;R-MMU-9013106|RHOC GTPase cycle|-5.4
+MyList_SUB1_MCODE_8,R-MMU-6798695|Neutrophil degranulation|-9.7;GO:0050900|leukocyte migration|-5.0;mmu04670|Leukocyte transendothelial migration|-4.8
+MyList_SUB1_MCODE_9,GO:0008380|RNA splicing|-6.9
+MyList_SUB1_MCODE_10,GO:0017148|negative regulation of translation|-5.9;GO:0035195|gene silencing by miRNA|-5.8;GO:0035194|post-transcriptional gene silencing by RNA|-5.8
+MyList_SUB1_MCODE_11,GO:0007265|Ras protein signal transduction|-7.1;GO:0007264|small GTPase mediated signal transduction|-6.7;GO:0030036|actin cytoskeleton organization|-3.8

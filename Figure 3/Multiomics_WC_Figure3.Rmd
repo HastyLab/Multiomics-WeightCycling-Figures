@@ -1,0 +1,343 @@
+---
+title: Multiomics reveals persistence of obesity-associated adipose tissue immune
+  cell phenotypes during weight loss and subsequent weight regain
+author: "Matthew A. Cottam"
+subtitle: "Figure 3"
+output:
+  html_document:
+    toc: yes
+    df_print: paged
+  html_notebook:
+    theme: journal
+    fig_caption: yes
+    toc: yes
+---
+
+# Setup
+
+```{r prep, echo=TRUE, warning=FALSE, message=FALSE}
+library(Seurat)
+library(RColorBrewer)
+library(ggplot2)
+library(miloR)
+library(SingleCellExperiment)
+library(SeuratWrappers)
+library(ggbeeswarm)
+library(scProportionTest)
+library(scater)
+library(scales)
+library(forcats)
+library(data.table)
+library(ggtext)
+library(stringr)
+library(dplyr)
+library(ggpubr)
+
+#Data file
+data.integrated <- readRDS("../Inputs/IntegratedData.rds")
+
+#Color panels
+maccols <- brewer.pal(n=8, name="Blues")[c(-1,-3,-5,-7)]
+monocols <- c("#ff8ade","#e324ad")
+dccols <- brewer.pal(n=9, name="Greens")[-1]
+tcols <- brewer.pal(n=8, name="Reds")[-1]
+nkcols <- c("#876149","#6e3f22")
+bcols <- brewer.pal(n=4, name="Purples")[-1]
+othcols <- c("#71a157","#00c5cc","#a18e25","#b282b3")
+strcols <- brewer.pal(n=4, name="Oranges")[-1]
+wccols = c("#878787", "#518db6","#94cc73","#e96b53")
+
+cols <- c(maccols,monocols,dccols,tcols,nkcols,bcols,othcols,strcols)
+
+llcols <- c("#4292C6","#ff8ade","#238B45","#EF3B2C","#876149","#9E9AC8","#71a157","#00c5cc","#a18e25","#b282b3","#FD8D3C")
+```
+
+# Figure 3
+
+This figure is intended to validate the study by comparing Lean to Obese mice and showing that changes in abundance for most of the cell populations matches the literature.
+
+## Figure 3A
+
+```{r Fig3Asetup, echo=TRUE, warning=FALSE, message=FALSE}
+#We will use the miloR package to generate a beeswarm plot: https://rawcdn.githack.com/MarioniLab/miloR/3646391023f600bae00efd9d940b888503d7a536/docs/articles/milo_demo.html
+fig3data.integrated <- subset(data.integrated, orig.ident=="Lean" | orig.ident=="Obese")
+fig3data.integrated$orig.ident <- factor(fig3data.integrated$orig.ident, levels=c("Lean","Obese"))
+data.integrated_sce <- as.SingleCellExperiment(fig3data.integrated)
+data.integrated_milo <- Milo(data.integrated_sce)
+traj_milo <- buildGraph(data.integrated_milo, k = 30, d = 50)
+traj_milo <- makeNhoods(traj_milo, prop = 0.1, k = 30, d=50, refined = TRUE)
+traj_milo <- countCells(traj_milo, meta.data = data.frame(colData(traj_milo)), sample="individual_mice")
+traj_design <- data.frame(colData(traj_milo))[,c("individual_mice", "orig.ident")]
+traj_design$individual_mice <- as.factor(traj_design$individual_mice)
+traj_design <- distinct(traj_design)
+rownames(traj_design) <- traj_design$individual_mice
+traj_milo <- calcNhoodDistance(traj_milo, d=50)
+da_results <- testNhoods(traj_milo, design = ~ orig.ident, design.df = traj_design)
+traj_milo <- buildNhoodGraph(traj_milo)
+```
+
+```{r Fig3A, echo=TRUE, warning=FALSE, message=FALSE, fig.width=6, fig.height=5}
+plotUMAP(traj_milo, colour_by = "lowlevel2")
+plotNhoodGraphDA(traj_milo, da_results, alpha=0.1) +
+  scale_fill_gradient2(low="#070091",
+                       mid="lightgrey",
+                       high="#910000", 
+                       name="log2FC",
+                       limits=c(-5,5),
+                       oob=squish) 
+da_results <- annotateNhoods(traj_milo, da_results, coldata_col = "lowlevel2")
+```
+
+## Figure 3B
+
+```{r Fig3B, message=FALSE, warning=FALSE, fig.height=6, fig.width=6}
+plotDAbeeswarm(da_results, group.by = "lowlevel2") +
+  scale_color_gradient2(low="#070091",
+                        mid="lightgrey",
+                        high="#910000",
+                        limits=c(-5,5),
+                        oob=squish) +
+  labs(x="", y="Log2 Fold Change") +
+  theme_bw(base_size=16)
+```
+
+## Figure 3C
+I provide multiple options for plotting this (order, color, etc).
+```{r fig3Csetup, fig.width=6, fig.height=6, message=FALSE, warning=FALSE}
+Idents(data.integrated) <- data.integrated$highlevel2
+#Provided by github: https://github.com/rpolicastro/scProportionTest
+prop_test <- permutation_test(
+	sc_utils(data.integrated), cluster_identity = "highlevel2",
+	sample_1 = "Lean", sample_2 = "Obese",
+	sample_identity = "orig.ident")
+prop_test@results$permutation$clusters <- factor(prop_test@results$permutation$clusters, levels=levels(data.integrated))
+prop_test@results$permutation <- prop_test@results$permutation %>% arrange(.,clusters)
+prop_test@results$permutation$lowlevel <- c(rep("Macrophages",4),
+                                            rep("Monocytes",2),
+                                            rep("Dendritic Cells",8),
+                                            rep("T Cells",7),
+                                            rep("NK Cells",2),
+                                            rep("B Cells",3),
+                                            rep("Other Immune Cells",4),
+                                            rep("Stromal Cells",3))
+prop_test@results$permutation$llcols <- c(rep("#4292C6",4),
+                                            rep("#ff8ade",2),
+                                            rep("#238B45",8),
+                                            rep("#EF3B2C",7),
+                                            rep("#876149",2),
+                                            rep("#9E9AC8",3),
+                                            "#71a157",
+                                            "#00c5cc",
+                                            "#a18e25",
+                                            "#b282b3",
+                                            rep("#FD8D3C",3))
+```
+
+```{r permplot, warning=FALSE, message=FALSE}
+#I've altered this original function to instead produce the dataframe for plotting
+permutation_data <- function(
+	sc_utils_obj,
+	FDR_threshold = 0.05,
+	log2FD_threshold = log2(1.5),
+	order_clusters = TRUE
+) {
+  require(forcats)
+	## Retrieve results.
+	plot_data <- copy(sc_utils_obj@results$permutation)
+
+	## Mark the significant results.
+	plot_data[, significance := ifelse(
+		FDR < FDR_threshold & abs(obs_log2FD) > log2FD_threshold,
+		paste("FDR <", FDR_threshold, "& abs(Log2FD) >", round(log2FD_threshold, 2)),
+		"n.s."
+	)]
+
+	plot_data[, significance := factor(significance, levels = c(
+		paste("FDR <", FDR_threshold, "& abs(Log2FD) >", round(log2FD_threshold, 2)),
+		"n.s."
+	))]
+
+	## Order the clusters by observed log2FD if requested.
+	if (order_clusters) {
+		plot_data[, clusters := fct_reorder(factor(clusters), obs_log2FD)]
+	}
+	return(plot_data)
+}
+```
+
+```{r Fig3Cdata, warning=FALSE, message=FALSE}
+plot_data1 <- permutation_data(prop_test, order_clusters=TRUE) 
+plot_data2 <- permutation_data(prop_test, order_clusters=FALSE) 
+permcols <- c("#b282b3","#EF3B2C","#238B45","#EF3B2C","#876149","#4292C6","#a18e25","#238B45","#238B45",
+              "#4292C6","#ff8ade","#71a157","#EF3B2C","#FD8D3C","#EF3B2C","#EF3B2C","#238B45","#238B45",
+              "#ff8ade", "#EF3B2C","#9E9AC8","#9E9AC8","#238B45","#876149","#4292C6","#EF3B2C","#FD8D3C",
+              "#238B45", "#9E9AC8","#238B45","#4292C6","#FD8D3C","#00c5cc")
+```
+
+```{r Fig3Coption1, fig.width=6, fig.height=6, warning=FALSE, message=FALSE}
+ggplot(plot_data1, aes(x = clusters, y = obs_log2FD, facet=lowlevel)) +
+		geom_pointrange(aes(ymin = boot_CI_2.5, ymax = boot_CI_97.5, color = significance)) +
+		theme_bw() +
+		geom_hline(yintercept = log2(1.5), lty = 2) +
+		geom_hline(yintercept = -log2(1.5), lty = 2) +
+		geom_hline(yintercept = 0) +
+		scale_color_manual(labels = c("FDR < 0.05", "n.s."), values=c("salmon", "grey"), guide_legend("")) +
+		coord_flip() +
+    theme(legend.position="bottom",
+         axis.text.y = element_markdown(margin=margin(r=10), color=permcols,face="bold")) + 
+    labs(x="",y="Log2 Proportional Difference")
+```
+
+```{r Fig3Coption2, fig.width=6, fig.height=6, warning=FALSE, message=FALSE}
+plot_data3 <- plot_data1
+plot_data3$significance2 <- ifelse(plot_data3$obs_log2FD<0 & plot_data2$FDR < 0.05 & plot_data3$obs_log2FD < -0.58, 
+                                "negfc_sig",
+                            ifelse(plot_data3$obs_log2FD>0 & plot_data2$FDR < 0.05 & plot_data3$obs_log2FD > 0.58,
+                                "posfc_sig", "n.s."))
+
+ggplot(plot_data3, aes(x = clusters, y = obs_log2FD, facet=lowlevel)) +
+		geom_pointrange(aes(ymin = boot_CI_2.5, ymax = boot_CI_97.5, color = significance2)) +
+		theme_classic() +
+		geom_hline(yintercept = log2(1.5), lty = 2) +
+		geom_hline(yintercept = -log2(1.5), lty = 2) +
+		geom_hline(yintercept = 0) +
+		scale_color_manual(labels = c("n.s.","FDR < 0.05 & Neg FC", "FDR < 0.05 & Pos FC"), values=c("grey","#070091","#910000"), guide_legend("")) +
+		coord_flip() +
+    theme(legend.position="bottom",
+         axis.text.y = element_markdown(margin=margin(r=10),face="bold")) + 
+    labs(x="",y="Log2 Fold Change")
+```
+
+```{r Fig3Coption3, fig.width=6, fig.height=6, warning=FALSE, message=FALSE}
+ggplot(plot_data2, aes(x = clusters, y = obs_log2FD, facet=lowlevel)) +
+		geom_pointrange(aes(ymin = boot_CI_2.5, ymax = boot_CI_97.5, color = significance)) +
+		theme_classic() +
+		geom_hline(yintercept = log2(1.5), lty = 2) +
+		geom_hline(yintercept = -log2(1.5), lty = 2) +
+		geom_hline(yintercept = 0) +
+		scale_color_manual(labels = c("FDR < 0.05", "n.s."), values=c("salmon", "grey"), guide_legend("")) +
+		coord_flip() +
+    theme(legend.position="bottom",
+         axis.text.y = element_markdown(margin=margin(r=10),face="bold")) + 
+    scale_x_discrete(limits = rev)+
+    labs(x="",y="Log2 Proportional Difference")
+```
+
+```{r Fig3Coption4, fig.width=6, fig.height=6, warning=FALSE, message=FALSE}
+ggplot(plot_data1, aes(x = clusters, y = obs_log2FD, facet=lowlevel)) +
+		geom_pointrange(aes(ymin = boot_CI_2.5, ymax = boot_CI_97.5, color = significance)) +
+		theme_bw() +
+		geom_hline(yintercept = log2(1.5), lty = 2) +
+		geom_hline(yintercept = -log2(1.5), lty = 2) +
+		geom_hline(yintercept = 0) +
+		scale_color_manual(labels = c("FDR < 0.05", "n.s."), values=c("salmon", "grey"), guide_legend("")) +
+		coord_flip() +
+    theme(legend.position="bottom",
+         axis.text.y = element_markdown(margin=margin(r=10), color=permcols,face="bold")) + 
+    labs(x="",y="Log2 Proportional Difference")
+```
+
+## Figure 3D
+
+```{r Fig3Dsetup, warning=FALSE, message=FALSE}
+cellspm <- table(data.integrated$individual_mice, data.integrated$highlevel2)
+propcellspm <- prop.table(cellspm, margin=1)
+#Convert to a dataframe
+cellspm <- as.data.frame(cellspm)
+propcellspm <- as.data.frame(propcellspm)
+#Change column names
+colnames(cellspm) <- c("Mouse","Cluster","Counts")
+colnames(propcellspm) <- c("Mouse","Cluster","Frequency")
+#Add a column indicating the groups to each table
+cellspm$Group <- gsub("_Hashtag.","", cellspm$Mouse)
+propcellspm$Group <- gsub("_Hashtag.","", propcellspm$Mouse)
+#Normalize "Counts" to "Counts per hundred cells sequenced"
+cphc<-list()
+cellspm <- cellspm %>% arrange(.,Mouse)
+for (i in levels(cellspm$Mouse)){
+  x <- sum(subset(cellspm, Mouse==i)$Counts)/100
+  y <- subset(cellspm, Mouse==i)$Counts/x
+  cphc <- append(cphc, y)
+}
+cellspm$CountsPerHundred <- as.numeric(cphc)
+#Function to calculate standard error for each given variable (cell cluster)
+ data_summary <- function(data, varname, groupnames){
+  require(plyr)
+  summary_func <- function(x, col){
+    c(mean = mean(x[[col]], na.rm=TRUE),
+      se = sd(x[[col]], na.rm=TRUE) / sqrt(sum(!is.na(x[[col]]))))
+  }
+  data_sum<-ddply(data, groupnames, .fun=summary_func,
+                  varname)
+names(data_sum)[names(data_sum) == 'mean'] <- varname
+return(data_sum)
+}
+#Summarize the data
+clustercounts <- data_summary(cellspm, varname="CountsPerHundred", groupnames=c("Group","Cluster"))
+clusterprops <- data_summary(propcellspm, varname="Frequency", groupnames=c("Group","Cluster"))
+```
+
+```{r Fig3Dstats, fig.width=4, fig.height=6, warning=FALSE, message=FALSE}
+#Wrote a function to quickly compare clusters between two diet groups and plot the results:
+CompareDiets <- function(COI, #Cluster of interest
+                         Group1, #First group
+                         Group2, #Second group
+                         Col1, #Color for group1
+                         Col2, #Color for group2
+                         method = "t.test" #statistical test to use
+){
+  tmp1 <- subset(cellspm, Cluster==COI & Group==Group1 | Cluster==COI & Group==Group2)
+  tmp2 <- subset(clustercounts, Cluster==COI & Group==Group1 | Cluster==COI & Group==Group2)
+  print(ggplot(tmp1, 
+               aes(x=Cluster, 
+                   y=CountsPerHundred, 
+                   fill=Group)) + 
+        geom_bar(stat="summary",
+                 position="dodge", 
+                 color="black") + 
+        geom_errorbar(data=tmp2,
+                      aes(ymin=CountsPerHundred-se, 
+                          ymax=CountsPerHundred+se), 
+                      width=.2,
+                      position=position_dodge(.9)) + 
+        scale_fill_manual(values=c(Col1,
+                                   Col2)) + 
+        theme_classic() + 
+        theme(axis.text.x=element_markdown(face="bold", 
+                                           size=10)) +
+        labs(x="",
+             y="Counts per hundred cells sequenced") + 
+        stat_compare_means(method=method) + NoLegend())
+}
+```
+
+```{r Fig3D, warning=FALSE, message=FALSE, fig.width=2.5, fig.height=3}
+leanCOIs <- list("Tissue Resident Macrophages","Th2 CD4+ T Cells","Tregs","ILC2s")
+for (coi in leanCOIs){
+CompareDiets(COI=coi, 
+             Group1="Lean",
+             Group2="Obese",
+             Col1="#878787",
+             Col2="#518db6")
+}
+```
+
+## Figure 3E
+
+```{r Fig3E, warning=FALSE, message=FALSE, fig.width=2.5, fig.height=3}
+obCOIs <- list("LAMs","Th1 CD4+ T Cells","Effector Memory CD8+ T Cells","Mast Cells")
+for (coi in obCOIs){
+CompareDiets(COI=coi, 
+             Group1="Lean",
+             Group2="Obese",
+             Col1="#878787",
+             Col2="#518db6")
+}
+```
+
+# Session Info
+
+```{r si}
+sessionInfo()
+```
+

@@ -1,0 +1,3 @@
+_MEMBER_MyList,_LogP_MyList,GO,_PATTERN_,_RANK_,GiniIndex,Category,CategoryID,Description,PARENT_GO,LogP,Enrichment,Z-score,#TotalGeneInLibrary,#GeneInGO,#GeneInHitList,#GeneInGOAndHitList,%InGO,STDV %InGO,GeneID,Hits,Log(q-value),EvidenceCutoff
+1,-2.5,PGB:00276,M1,1,0,PaGenBase,36,Cell-specific: osteoclasts,,-2.5,3.7,3.7,20638,94,420,7,1.7,0.62,11433|15216|26904|27226|58809|73149|170744,Acp5|Hfe|Sh2d1b1|Pla2g7|Rnase4|Clec4a3|Tlr8,-0.2,0
+1,-2.5,PGB:00245,M1,1,0,PaGenBase,36,Cell-specific: macrophage unstimulated,,-2.5,3,3.5,20638,148,420,9,2.1,0.71,17000|21937|22368|68877|72042|83490|98365|108058|269799,Ltbr|Tnfrsf1a|Trpv2|Maf1|Cotl1|Pik3ap1|Slamf9|Camk2d|Clec4a1,-0.2,0

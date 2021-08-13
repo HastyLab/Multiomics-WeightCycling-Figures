@@ -1,0 +1,1013 @@
+_MEMBER_MyList,_LogP_MyList,GO,Description,_PATTERN_,_RANK_,GiniIndex
+1,-2.9,mmu_M00072,N-glycosylation by oligosaccharyltransferase,M1,1,0
+1,-3.1,GO:0050727,regulation of inflammatory response,M1,1,0
+1,-2.8,R-MMU-2682334,EPH-Ephrin signaling,M1,1,0
+1,-4.8,R-MMU-9612973,Autophagy,M1,1,0
+1,-2.5,GO:0008154,actin polymerization or depolymerization,M1,1,0
+1,-2.6,GO:1903901,negative regulation of viral life cycle,M1,1,0
+1,-5,R-MMU-168898,Toll-like Receptor Cascades,M1,1,0
+1,-5,GO:0002697,regulation of immune effector process,M1,1,0
+1,-3.4,R-MMU-77350,Beta oxidation of hexanoyl-CoA to butanoyl-CoA,M1,1,0
+1,-2.1,GO:0050878,regulation of body fluid levels,M1,1,0
+1,-2.2,GO:1903008,organelle disassembly,M1,1,0
+1,-2.3,GO:0043653,mitochondrial fragmentation involved in apoptotic process,M1,1,0
+1,-2.1,GO:0006631,fatty acid metabolic process,M1,1,0
+1,-2.8,mmu00071,Fatty acid degradation,M1,1,0
+1,-2.5,R-MMU-9609507,Protein localization,M1,1,0
+1,-3.5,ko05132,Salmonella infection,M1,1,0
+1,-3.5,R-MMU-5675482,Regulation of necroptotic cell death,M1,1,0
+1,-2.6,GO:0032735,positive regulation of interleukin-12 production,M1,1,0
+1,-3,GO:0006626,protein targeting to mitochondrion,M1,1,0
+1,-2.6,GO:0032496,response to lipopolysaccharide,M1,1,0
+1,-2.2,GO:0072659,protein localization to plasma membrane,M1,1,0
+1,-2.3,GO:0010035,response to inorganic substance,M1,1,0
+1,-2.5,GO:0043123,positive regulation of I-kappaB kinase/NF-kappaB signaling,M1,1,0
+1,-2.7,ko05140,Leishmaniasis,M1,1,0
+1,-2.3,ko04380,Osteoclast differentiation,M1,1,0
+1,-2.5,GO:0051052,regulation of DNA metabolic process,M1,1,0
+1,-25,R-MMU-69613,p53-Independent G1/S DNA damage checkpoint,M1,1,0
+1,-2.9,GO:0002237,response to molecule of bacterial origin,M1,1,0
+1,-2,R-MMU-209543,p75NTR recruits signalling complexes,M1,1,0
+1,-6.9,GO:0097237,cellular response to toxic substance,M1,1,0
+1,-9.3,R-MMU-1640170,Cell Cycle,M1,1,0
+1,-21,R-MMU-202403,TCR signaling,M1,1,0
+1,-2,GO:0050863,regulation of T cell activation,M1,1,0
+1,-3,GO:0033032,regulation of myeloid cell apoptotic process,M1,1,0
+1,-3.3,GO:0052126,movement in host environment,M1,1,0
+1,-5.3,GO:0042590,antigen processing and presentation of exogenous peptide antigen via MHC class I,M1,1,0
+1,-3.4,GO:0046916,cellular transition metal ion homeostasis,M1,1,0
+1,-3,mmu00010,Glycolysis / Gluconeogenesis,M1,1,0
+1,-5.5,CORUM:381,"Respiratory chain complex I, mitochondrial",M1,1,0
+1,-25,R-MMU-69610,p53-Independent DNA Damage Response,M1,1,0
+1,-3.8,GO:0035456,response to interferon-beta,M1,1,0
+1,-3.2,GO:0051656,establishment of organelle localization,M1,1,0
+1,-5,GO:0042168,heme metabolic process,M1,1,0
+1,-4,R-MMU-110312,Translesion synthesis by REV1,M1,1,0
+1,-3.8,GO:0006885,regulation of pH,M1,1,0
+1,-2.6,GO:0000422,autophagy of mitochondrion,M1,1,0
+1,-5.3,R-MMU-77286,mitochondrial fatty acid beta-oxidation of saturated fatty acids,M1,1,0
+1,-5.3,GO:0030162,regulation of proteolysis,M1,1,0
+1,-2.3,GO:0032612,interleukin-1 production,M1,1,0
+1,-4.5,R-MMU-74752,Signaling by Insulin receptor,M1,1,0
+1,-4.1,GO:0001906,cell killing,M1,1,0
+1,-7.2,R-MMU-163210,Formation of ATP by chemiosmotic coupling,M1,1,0
+1,-2.5,GO:0000209,protein polyubiquitination,M1,1,0
+1,-2,GO:1901657,glycosyl compound metabolic process,M1,1,0
+1,-3.2,mmu05133,Pertussis,M1,1,0
+1,-3.1,GO:0002504,antigen processing and presentation of peptide or polysaccharide antigen via MHC class II,M1,1,0
+1,-12,GO:0007005,mitochondrion organization,M1,1,0
+1,-2.1,GO:1902229,regulation of intrinsic apoptotic signaling pathway in response to DNA damage,M1,1,0
+1,-4.8,R-MMU-8876725,Protein methylation,M1,1,0
+1,-5.2,GO:0000305,response to oxygen radical,M1,1,0
+1,-3.4,GO:0071453,cellular response to oxygen levels,M1,1,0
+1,-2.4,GO:0009127,purine nucleoside monophosphate biosynthetic process,M1,1,0
+1,-4.1,GO:0030004,cellular monovalent inorganic cation homeostasis,M1,1,0
+1,-3.3,GO:2001243,negative regulation of intrinsic apoptotic signaling pathway,M1,1,0
+1,-3,GO:0070301,cellular response to hydrogen peroxide,M1,1,0
+1,-25,R-MMU-8941858,Regulation of RUNX3 expression and activity,M1,1,0
+1,-3.6,GO:2000278,regulation of DNA biosynthetic process,M1,1,0
+1,-3.8,GO:0071404,cellular response to low-density lipoprotein particle stimulus,M1,1,0
+1,-2.2,ko04137,Mitophagy - animal,M1,1,0
+1,-2.3,GO:0009060,aerobic respiration,M1,1,0
+1,-13,ko05010,Alzheimer's disease,M1,1,0
+1,-2.2,GO:0016054,organic acid catabolic process,M1,1,0
+1,-22,R-MMU-174178,APC/C:Cdh1 mediated degradation of Cdc20 and other APC/C:Cdh1 targeted proteins in late mitosis/early G1,M1,1,0
+1,-4.5,GO:0036295,cellular response to increased oxygen levels,M1,1,0
+1,-2.5,GO:0001798,positive regulation of type IIa hypersensitivity,M1,1,0
+1,-2.1,GO:0070527,platelet aggregation,M1,1,0
+1,-27,R-MMU-187577,SCF(Skp2)-mediated degradation of p27/p21,M1,1,0
+1,-3.8,R-MMU-5655862,Translesion synthesis by POLK,M1,1,0
+1,-2.5,GO:0006622,protein targeting to lysosome,M1,1,0
+1,-2.9,GO:1904814,"regulation of protein localization to chromosome, telomeric region",M1,1,0
+1,-4,GO:0009150,purine ribonucleotide metabolic process,M1,1,0
+1,-3.6,GO:0007599,hemostasis,M1,1,0
+1,-2.1,GO:0042176,regulation of protein catabolic process,M1,1,0
+1,-2.7,GO:0018119,peptidyl-cysteine S-nitrosylation,M1,1,0
+1,-2.4,R-MMU-5620971,Pyroptosis,M1,1,0
+1,-2.4,GO:0034248,regulation of cellular amide metabolic process,M1,1,0
+1,-2,GO:0001781,neutrophil apoptotic process,M1,1,0
+1,-3.1,GO:0010594,regulation of endothelial cell migration,M1,1,0
+1,-25,R-MMU-9020702,Interleukin-1 signaling,M1,1,0
+1,-3.7,GO:0000302,response to reactive oxygen species,M1,1,0
+1,-2.9,GO:0002536,respiratory burst involved in inflammatory response,M1,1,0
+1,-2.3,mmu05418,Fluid shear stress and atherosclerosis,M1,1,0
+1,-26,R-MMU-5610780,Degradation of GLI1 by the proteasome,M1,1,0
+1,-2.1,GO:1901068,guanosine-containing compound metabolic process,M1,1,0
+1,-5.1,GO:0009165,nucleotide biosynthetic process,M1,1,0
+1,-2.9,GO:0010595,positive regulation of endothelial cell migration,M1,1,0
+1,-2.4,GO:0006183,GTP biosynthetic process,M1,1,0
+1,-2.7,GO:0051272,positive regulation of cellular component movement,M1,1,0
+1,-2.5,GO:0035425,autocrine signaling,M1,1,0
+1,-2.5,GO:0035036,sperm-egg recognition,M1,1,0
+1,-14,GO:0010499,proteasomal ubiquitin-independent protein catabolic process,M1,1,0
+1,-2.7,GO:0051817,modulation of process of other organism involved in symbiotic interaction,M1,1,0
+1,-2.1,R-MMU-189445,Metabolism of porphyrins,M1,1,0
+1,-2.9,mmu01230,Biosynthesis of amino acids,M1,1,0
+1,-26,R-MMU-9707587,Regulation of HMOX1 expression and activity,M1,1,0
+1,-3.5,GO:0050817,coagulation,M1,1,0
+1,-11,R-MMU-9006925,Intracellular signaling by second messengers,M1,1,0
+1,-3.9,R-MMU-975957,Nonsense Mediated Decay (NMD) enhanced by the Exon Junction Complex (EJC),M1,1,0
+1,-11,R-MMU-1257604,PIP3 activates AKT signaling,M1,1,0
+1,-6.1,GO:0009141,nucleoside triphosphate metabolic process,M1,1,0
+1,-2.6,GO:0046902,regulation of mitochondrial membrane permeability,M1,1,0
+1,-5.7,GO:0043604,amide biosynthetic process,M1,1,0
+1,-23,mmu04142,Lysosome,M1,1,0
+1,-4.9,GO:0006412,translation,M1,1,0
+1,-3.5,GO:1903201,regulation of oxidative stress-induced cell death,M1,1,0
+1,-2.7,GO:0061919,process utilizing autophagic mechanism,M1,1,0
+1,-3.6,GO:0044282,small molecule catabolic process,M1,1,0
+1,-2.4,R-MMU-5696397,Gap-filling DNA repair synthesis and ligation in GG-NER,M1,1,0
+1,-4.5,GO:2000377,regulation of reactive oxygen species metabolic process,M1,1,0
+1,-9.7,R-MMU-5684996,MAPK1/MAPK3 signaling,M1,1,0
+1,-2.2,R-MMU-5684264,MAP3K8 (TPL2)-dependent MAPK1/3 activation,M1,1,0
+1,-2.7,mmu00740,Riboflavin metabolism,M1,1,0
+1,-3.2,GO:0002495,antigen processing and presentation of peptide antigen via MHC class II,M1,1,0
+1,-2.3,GO:0042762,regulation of sulfur metabolic process,M1,1,0
+1,-2.2,GO:2000108,positive regulation of leukocyte apoptotic process,M1,1,0
+1,-2.4,GO:0048662,negative regulation of smooth muscle cell proliferation,M1,1,0
+1,-2.9,GO:1903334,positive regulation of protein folding,M1,1,0
+1,-7,GO:0098869,cellular oxidant detoxification,M1,1,0
+1,-2.2,GO:0030100,regulation of endocytosis,M1,1,0
+1,-3.8,GO:0048002,antigen processing and presentation of peptide antigen,M1,1,0
+1,-8.6,GO:0010498,proteasomal protein catabolic process,M1,1,0
+1,-3.1,GO:1904816,"positive regulation of protein localization to chromosome, telomeric region",M1,1,0
+1,-4.5,GO:0051084,'de novo' posttranslational protein folding,M1,1,0
+1,-2.7,GO:0050865,regulation of cell activation,M1,1,0
+1,-7.3,GO:0009144,purine nucleoside triphosphate metabolic process,M1,1,0
+1,-2.6,GO:0030837,negative regulation of actin filament polymerization,M1,1,0
+1,-2,mmu04120,Ubiquitin mediated proteolysis,M1,1,0
+1,-2.7,GO:1903978,regulation of microglial cell activation,M1,1,0
+1,-2.6,GO:0071222,cellular response to lipopolysaccharide,M1,1,0
+1,-2.5,GO:0097345,mitochondrial outer membrane permeabilization,M1,1,0
+1,-2.7,CORUM:40,"COP9 signalosome complex (Gps1, Cops1, Cops2, Cops3, Cops4, Cops5, Cops6, Cops7a, Cops8)",M1,1,0
+1,-4,mmu04621,NOD-like receptor signaling pathway,M1,1,0
+1,-3.4,GO:0032271,regulation of protein polymerization,M1,1,0
+1,-2.2,GO:0050866,negative regulation of cell activation,M1,1,0
+1,-2.5,GO:0001913,T cell mediated cytotoxicity,M1,1,0
+1,-3.7,GO:0098760,response to interleukin-7,M1,1,0
+1,-6.5,GO:0043161,proteasome-mediated ubiquitin-dependent protein catabolic process,M1,1,0
+1,-2.9,mmu05134,Legionellosis,M1,1,0
+1,-28,R-MMU-8939902,Regulation of RUNX2 expression and activity,M1,1,0
+1,-24,ko03050,Proteasome,M1,1,0
+1,-2.5,GO:0044283,small molecule biosynthetic process,M1,1,0
+1,-4.2,R-MMU-9663891,Selective autophagy,M1,1,0
+1,-2.5,GO:0002894,positive regulation of type II hypersensitivity,M1,1,0
+1,-7.8,GO:0001819,positive regulation of cytokine production,M1,1,0
+1,-6,GO:0072522,purine-containing compound biosynthetic process,M1,1,0
+1,-23,R-MMU-4608870,Asymmetric localization of PCP proteins,M1,1,0
+1,-3.5,GO:0050777,negative regulation of immune response,M1,1,0
+1,-7.2,R-MMU-5653656,Vesicle-mediated transport,M1,1,0
+1,-6.5,WP2271,Macrophage markers,M1,1,0
+1,-3.5,GO:0006575,cellular modified amino acid metabolic process,M1,1,0
+1,-2.3,GO:1903205,regulation of hydrogen peroxide-induced cell death,M1,1,0
+1,-2.4,R-MMU-9664873,Pexophagy,M1,1,0
+1,-3.4,GO:1904951,positive regulation of establishment of protein localization,M1,1,0
+1,-2.7,GO:0001776,leukocyte homeostasis,M1,1,0
+1,-4.7,WP163,Cytoplasmic Ribosomal Proteins,M1,1,0
+1,-2.2,GO:0001961,positive regulation of cytokine-mediated signaling pathway,M1,1,0
+1,-2,GO:0071285,cellular response to lithium ion,M1,1,0
+1,-6.4,GO:2001242,regulation of intrinsic apoptotic signaling pathway,M1,1,0
+1,-2.6,GO:0042743,hydrogen peroxide metabolic process,M1,1,0
+1,-2.5,GO:0002445,type II hypersensitivity,M1,1,0
+1,-20,R-MMU-69052,Switching of origins to a post-replicative state,M1,1,0
+1,-25,R-MMU-1169091,Activation of NF-kappaB in B cells,M1,1,0
+1,-3.3,GO:1903131,mononuclear cell differentiation,M1,1,0
+1,-2.5,GO:0070897,transcription preinitiation complex assembly,M1,1,0
+1,-3.3,GO:0002832,negative regulation of response to biotic stimulus,M1,1,0
+1,-4.3,GO:0019058,viral life cycle,M1,1,0
+1,-2.3,GO:1905288,vascular associated smooth muscle cell apoptotic process,M1,1,0
+1,-5.7,R-MMU-72312,rRNA processing,M1,1,0
+1,-3.2,GO:0051085,chaperone cofactor-dependent protein refolding,M1,1,0
+1,-27,R-MMU-5676590,NIK-->noncanonical NF-kB signaling,M1,1,0
+1,-16,R-MMU-453274,Mitotic G2-G2/M phases,M1,1,0
+1,-3.9,GO:1902882,regulation of response to oxidative stress,M1,1,0
+1,-3.6,mmu_M00001,"Glycolysis (Embden-Meyerhof pathway), glucose => pyruvate",M1,1,0
+1,-3.4,M00003,"Gluconeogenesis, oxaloacetate => fructose-6P",M1,1,0
+1,-2.8,GO:0045824,negative regulation of innate immune response,M1,1,0
+1,-2.3,GO:1901222,regulation of NIK/NF-kappaB signaling,M1,1,0
+1,-2.7,R-MMU-446210,Synthesis of UDP-N-acetyl-glucosamine,M1,1,0
+1,-2.1,GO:0022613,ribonucleoprotein complex biogenesis,M1,1,0
+1,-2.5,GO:0030832,regulation of actin filament length,M1,1,0
+1,-2.4,R-MMU-937042,IRAK2 mediated activation of TAK1 complex,M1,1,0
+1,-2.1,ko05340,Primary immunodeficiency,M1,1,0
+1,-2.3,GO:0033539,fatty acid beta-oxidation using acyl-CoA dehydrogenase,M1,1,0
+1,-4.8,R-MMU-1632852,Macroautophagy,M1,1,0
+1,-3.6,ko00062,Fatty acid elongation,M1,1,0
+1,-2.6,GO:1902108,regulation of mitochondrial membrane permeability involved in apoptotic process,M1,1,0
+1,-20,R-MMU-3858494,Beta-catenin independent WNT signaling,M1,1,0
+1,-2.7,WP298,G13 Signaling Pathway,M1,1,0
+1,-4.1,GO:0016042,lipid catabolic process,M1,1,0
+1,-2.2,GO:0002577,regulation of antigen processing and presentation,M1,1,0
+1,-2.3,R-MMU-444473,Formyl peptide receptors bind formyl peptides and many other ligands,M1,1,0
+1,-3.3,GO:0052548,regulation of endopeptidase activity,M1,1,0
+1,-3,GO:0001836,release of cytochrome c from mitochondria,M1,1,0
+1,-2.7,GO:0070200,establishment of protein localization to telomere,M1,1,0
+1,-2.1,GO:1903050,regulation of proteolysis involved in cellular protein catabolic process,M1,1,0
+1,-6.3,GO:0051452,intracellular pH reduction,M1,1,0
+1,-8,ko04932,Non-alcoholic fatty liver disease (NAFLD),M1,1,0
+1,-11,GO:0046034,ATP metabolic process,M1,1,0
+1,-3.8,mmu05140,Leishmaniasis,M1,1,0
+1,-6.1,R-MMU-2132295,MHC class II antigen presentation,M1,1,0
+1,-2.5,mmu05168,Herpes simplex infection,M1,1,0
+1,-2.3,mmu04612,Antigen processing and presentation,M1,1,0
+1,-3.7,GO:0055094,response to lipoprotein particle,M1,1,0
+1,-3.8,GO:0042116,macrophage activation,M1,1,0
+1,-2.1,GO:0050820,positive regulation of coagulation,M1,1,0
+1,-4.5,GO:0071346,cellular response to interferon-gamma,M1,1,0
+1,-2.5,mmu04064,NF-kappa B signaling pathway,M1,1,0
+1,-2.6,GO:0055065,metal ion homeostasis,M1,1,0
+1,-2.8,GO:0036474,cell death in response to hydrogen peroxide,M1,1,0
+1,-4.4,GO:1990542,mitochondrial transmembrane transport,M1,1,0
+1,-3.8,GO:0001803,regulation of type III hypersensitivity,M1,1,0
+1,-21,R-MMU-195253,Degradation of beta-catenin by the destruction complex,M1,1,0
+1,-2.8,GO:0034314,Arp2/3 complex-mediated actin nucleation,M1,1,0
+1,-3.4,GO:1901031,regulation of response to reactive oxygen species,M1,1,0
+1,-3.1,GO:0042273,ribosomal large subunit biogenesis,M1,1,0
+1,-3.1,R-MMU-450302,activated TAK1 mediates p38 MAPK activation,M1,1,0
+1,-5.5,GO:0042440,pigment metabolic process,M1,1,0
+1,-3.1,GO:1905521,regulation of macrophage migration,M1,1,0
+1,-14,R-MMU-8878171,Transcriptional regulation by RUNX1,M1,1,0
+1,-2.9,GO:0032615,interleukin-12 production,M1,1,0
+1,-2.9,GO:0002228,natural killer cell mediated immunity,M1,1,0
+1,-2.8,GO:0006809,nitric oxide biosynthetic process,M1,1,0
+1,-3.6,R-MMU-110313,Translesion synthesis by Y family DNA polymerases bypasses lesions on DNA template,M1,1,0
+1,-2.9,GO:0034620,cellular response to unfolded protein,M1,1,0
+1,-4.3,M00002,"Glycolysis, core module involving three-carbon compounds",M1,1,0
+1,-3,GO:0002221,pattern recognition receptor signaling pathway,M1,1,0
+1,-3.7,GO:0098761,cellular response to interleukin-7,M1,1,0
+1,-26,R-MMU-450408,AUF1 (hnRNP D0) binds and destabilizes mRNA,M1,1,0
+1,-2.6,GO:0017014,protein nitrosylation,M1,1,0
+1,-8.1,GO:0044403,biological process involved in symbiotic interaction,M1,1,0
+1,-3.1,R-MMU-77346,Beta oxidation of decanoyl-CoA to octanoyl-CoA-CoA,M1,1,0
+1,-2.7,GO:0019886,antigen processing and presentation of exogenous peptide antigen via MHC class II,M1,1,0
+1,-2.5,GO:0009991,response to extracellular stimulus,M1,1,0
+1,-2.7,mmu04140,Autophagy - animal,M1,1,0
+1,-7.4,R-MMU-72689,Formation of a pool of free 40S subunits,M1,1,0
+1,-2.2,GO:0001818,negative regulation of cytokine production,M1,1,0
+1,-5.4,GO:0009260,ribonucleotide biosynthetic process,M1,1,0
+1,-3.4,GO:0006801,superoxide metabolic process,M1,1,0
+1,-13,R-MMU-201681,TCF dependent signaling in response to WNT,M1,1,0
+1,-3.4,mmu_M00003,"Gluconeogenesis, oxaloacetate => fructose-6P",M1,1,0
+1,-5.5,GO:0006511,ubiquitin-dependent protein catabolic process,M1,1,0
+1,-2.2,GO:0033240,positive regulation of cellular amine metabolic process,M1,1,0
+1,-28,R-MMU-8878166,Transcriptional regulation by RUNX2,M1,1,0
+1,-3.4,GO:0009611,response to wounding,M1,1,0
+1,-16,R-MMU-5358351,Signaling by Hedgehog,M1,1,0
+1,-24,R-MMU-69656,Cyclin A:Cdk2-associated events at S phase entry,M1,1,0
+1,-16,R-MMU-69275,G2/M Transition,M1,1,0
+1,-2.7,GO:0038061,NIK/NF-kappaB signaling,M1,1,0
+1,-4.2,GO:0043065,positive regulation of apoptotic process,M1,1,0
+1,-7.8,R-MMU-72613,Eukaryotic Translation Initiation,M1,1,0
+1,-2.6,GO:1905146,lysosomal protein catabolic process,M1,1,0
+1,-3.6,mmu00062,Fatty acid elongation,M1,1,0
+1,-2.2,GO:0045089,positive regulation of innate immune response,M1,1,0
+1,-2.7,GO:0045006,DNA deamination,M1,1,0
+1,-3.6,GO:0032635,interleukin-6 production,M1,1,0
+1,-5.2,R-MMU-77310,Beta oxidation of lauroyl-CoA to decanoyl-CoA-CoA,M1,1,0
+1,-2.7,R-MMU-1236973,Cross-presentation of particulate exogenous antigens (phagosomes),M1,1,0
+1,-6.9,mmu04932,Non-alcoholic fatty liver disease (NAFLD),M1,1,0
+1,-5.1,GO:0008637,apoptotic mitochondrial changes,M1,1,0
+1,-4,GO:0046148,pigment biosynthetic process,M1,1,0
+1,-7.8,ko04141,Protein processing in endoplasmic reticulum,M1,1,0
+1,-23,ko04142,Lysosome,M1,1,0
+1,-4.4,R-MMU-5357801,Programmed Cell Death,M1,1,0
+1,-4.3,M00087,beta-Oxidation,M1,1,0
+1,-3.4,GO:2000121,regulation of removal of superoxide radicals,M1,1,0
+1,-2,GO:0002688,regulation of leukocyte chemotaxis,M1,1,0
+1,-8.3,ko04145,Phagosome,M1,1,0
+1,-3.2,GO:0045921,positive regulation of exocytosis,M1,1,0
+1,-2.2,R-MMU-5696394,DNA Damage Recognition in GG-NER,M1,1,0
+1,-2.5,GO:0071353,cellular response to interleukin-4,M1,1,0
+1,-9.4,R-MMU-5683057,MAPK family signaling cascades,M1,1,0
+1,-5.9,GO:0071450,cellular response to oxygen radical,M1,1,0
+1,-4.6,GO:0009117,nucleotide metabolic process,M1,1,0
+1,-3.6,GO:1903827,regulation of cellular protein localization,M1,1,0
+1,-2.9,mmu04144,Endocytosis,M1,1,0
+1,-3,GO:0042267,natural killer cell mediated cytotoxicity,M1,1,0
+1,-2.4,mmu_M00049,"Adenine ribonucleotide biosynthesis, IMP => ADP,ATP",M1,1,0
+1,-2.5,GO:0042254,ribosome biogenesis,M1,1,0
+1,-3.2,GO:0071219,cellular response to molecule of bacterial origin,M1,1,0
+1,-2.3,ko05100,Bacterial invasion of epithelial cells,M1,1,0
+1,-5.6,mmu03010,Ribosome,M1,1,0
+1,-2.3,GO:0031333,negative regulation of protein-containing complex assembly,M1,1,0
+1,-24,R-MMU-350562,Regulation of ornithine decarboxylase (ODC),M1,1,0
+1,-3.7,GO:0032755,positive regulation of interleukin-6 production,M1,1,0
+1,-4.4,CORUM:52,CCT complex (chaperonin containing TCP1 complex),M1,1,0
+1,-3.6,WP246,TNF-alpha NF-kB Signaling Pathway,M1,1,0
+1,-2.3,GO:0046395,carboxylic acid catabolic process,M1,1,0
+1,-4,GO:0042776,mitochondrial ATP synthesis coupled proton transport,M1,1,0
+1,-2.9,GO:0055072,iron ion homeostasis,M1,1,0
+1,-2.9,GO:1990266,neutrophil migration,M1,1,0
+1,-2.5,GO:0048872,homeostasis of number of cells,M1,1,0
+1,-4.3,R-MMU-2029480,Fcgamma receptor (FCGR) dependent phagocytosis,M1,1,0
+1,-18,R-MMU-449147,Signaling by Interleukins,M1,1,0
+1,-3.8,R-MMU-5656121,Translesion synthesis by POLI,M1,1,0
+1,-7.1,R-MMU-199991,Membrane Trafficking,M1,1,0
+1,-2.8,GO:0070936,protein K48-linked ubiquitination,M1,1,0
+1,-32,R-MMU-9711123,Cellular response to chemical stress,M1,1,0
+1,-3,ko04144,Endocytosis,M1,1,0
+1,-24,R-MMU-4641258,Degradation of DVL,M1,1,0
+1,-2.5,R-MMU-5626467,RHO GTPases activate IQGAPs,M1,1,0
+1,-3.8,GO:0072521,purine-containing compound metabolic process,M1,1,0
+1,-7.8,GO:1990748,cellular detoxification,M1,1,0
+1,-2,R-MMU-168142,Toll Like Receptor 10 (TLR10) Cascade,M1,1,0
+1,-3.4,GO:0048524,positive regulation of viral process,M1,1,0
+1,-3.9,R-MMU-9674555,Signaling by CSF3 (G-CSF),M1,1,0
+1,-16,R-MMU-8951664,Neddylation,M1,1,0
+1,-22,R-MMU-179419,APC:Cdc20 mediated degradation of cell cycle proteins prior to satisfation of the cell cycle checkpoint,M1,1,0
+1,-2.3,R-MMU-70171,Glycolysis,M1,1,0
+1,-23,R-MMU-174154,APC/C:Cdc20 mediated degradation of Securin,M1,1,0
+1,-23,R-MMU-983705,Signaling by the B Cell Receptor (BCR),M1,1,0
+1,-20,R-MMU-174143,APC/C-mediated degradation of cell cycle proteins,M1,1,0
+1,-2.2,GO:0007339,binding of sperm to zona pellucida,M1,1,0
+1,-2.5,GO:0002685,regulation of leukocyte migration,M1,1,0
+1,-3.3,GO:0070202,regulation of establishment of protein localization to chromosome,M1,1,0
+1,-2.1,mmu04150,mTOR signaling pathway,M1,1,0
+1,-14,R-MMU-983168,Antigen processing: Ubiquitination & Proteasome degradation,M1,1,0
+1,-2.4,GO:1990182,exosomal secretion,M1,1,0
+1,-6.8,ko04966,Collecting duct acid secretion,M1,1,0
+1,-2.2,GO:0002715,regulation of natural killer cell mediated immunity,M1,1,0
+1,-2.7,GO:0006875,cellular metal ion homeostasis,M1,1,0
+1,-2.1,GO:0031163,metallo-sulfur cluster assembly,M1,1,0
+1,-2.3,ko03013,RNA transport,M1,1,0
+1,-5.7,GO:0046390,ribose phosphate biosynthetic process,M1,1,0
+1,-5.5,mmu05169,Epstein-Barr virus infection,M1,1,0
+1,-2.1,GO:1901659,glycosyl compound biosynthetic process,M1,1,0
+1,-17,mmu00190,Oxidative phosphorylation,M1,1,0
+1,-7.7,mmu04141,Protein processing in endoplasmic reticulum,M1,1,0
+1,-2.5,GO:0002443,leukocyte mediated immunity,M1,1,0
+1,-2.5,ko05168,Herpes simplex infection,M1,1,0
+1,-9.5,GO:0051603,proteolysis involved in cellular protein catabolic process,M1,1,0
+1,-3.6,GO:0051090,regulation of DNA-binding transcription factor activity,M1,1,0
+1,-3.1,R-MMU-937039,IRAK1 recruits IKK complex,M1,1,0
+1,-3.1,GO:1903900,regulation of viral life cycle,M1,1,0
+1,-2.3,R-MMU-9708530,Regulation of BACH1 activity,M1,1,0
+1,-2.1,GO:0046931,pore complex assembly,M1,1,0
+1,-24,R-MMU-68827,CDT1 association with the CDC6:ORC:origin complex,M1,1,0
+1,-15,R-MMU-68882,Mitotic Anaphase,M1,1,0
+1,-4.4,GO:0006753,nucleoside phosphate metabolic process,M1,1,0
+1,-3.2,GO:0036473,cell death in response to oxidative stress,M1,1,0
+1,-2.3,GO:0006122,"mitochondrial electron transport, ubiquinol to cytochrome c",M1,1,0
+1,-4.9,GO:0043254,regulation of protein-containing complex assembly,M1,1,0
+1,-3.4,GO:0070203,regulation of establishment of protein localization to telomere,M1,1,0
+1,-3.5,GO:0046651,lymphocyte proliferation,M1,1,0
+1,-5.4,GO:0036296,response to increased oxygen levels,M1,1,0
+1,-22,R-MMU-174184,Cdc20:Phospho-APC/C mediated degradation of Cyclin A,M1,1,0
+1,-3.6,GO:0000338,protein deneddylation,M1,1,0
+1,-3,GO:0045862,positive regulation of proteolysis,M1,1,0
+1,-2.9,R-MMU-901042,Calnexin/calreticulin cycle,M1,1,0
+1,-2.5,GO:0030150,protein import into mitochondrial matrix,M1,1,0
+1,-2.5,GO:0001796,regulation of type IIa hypersensitivity,M1,1,0
+1,-2.4,GO:0070265,necrotic cell death,M1,1,0
+1,-2.9,GO:0042985,negative regulation of amyloid precursor protein biosynthetic process,M1,1,0
+1,-2.4,GO:0009168,purine ribonucleoside monophosphate biosynthetic process,M1,1,0
+1,-2.6,GO:2001244,positive regulation of intrinsic apoptotic signaling pathway,M1,1,0
+1,-9,GO:0045333,cellular respiration,M1,1,0
+1,-3,R-MMU-6807878,COPI-mediated anterograde transport,M1,1,0
+1,-2.1,GO:0046031,ADP metabolic process,M1,1,0
+1,-2.2,GO:0006623,protein targeting to vacuole,M1,1,0
+1,-4.4,GO:0051701,biological process involved in interaction with host,M1,1,0
+1,-2,GO:0035794,positive regulation of mitochondrial membrane permeability,M1,1,0
+1,-2.6,GO:0042744,hydrogen peroxide catabolic process,M1,1,0
+1,-7.3,GO:0009142,nucleoside triphosphate biosynthetic process,M1,1,0
+1,-5.7,R-MMU-6791226,Major pathway of rRNA processing in the nucleolus and cytosol,M1,1,0
+1,-2.4,R-MMU-1169410,Antiviral mechanism by IFN-stimulated genes,M1,1,0
+1,-4.6,GO:2000106,regulation of leukocyte apoptotic process,M1,1,0
+1,-2.4,GO:0043542,endothelial cell migration,M1,1,0
+1,-4.1,GO:1903202,negative regulation of oxidative stress-induced cell death,M1,1,0
+1,-2.3,GO:0001774,microglial cell activation,M1,1,0
+1,-6,mmu05323,Rheumatoid arthritis,M1,1,0
+1,-23,R-MMU-9707564,Cytoprotection by HMOX1,M1,1,0
+1,-12,R-MMU-163200,"Respiratory electron transport, ATP synthesis by chemiosmotic coupling, and heat production by uncoupling proteins.",M1,1,0
+1,-18,R-MMU-69306,DNA Replication,M1,1,0
+1,-2.1,GO:0140112,extracellular vesicle biogenesis,M1,1,0
+1,-6.6,GO:0006754,ATP biosynthetic process,M1,1,0
+1,-5.7,GO:0009636,response to toxic substance,M1,1,0
+1,-2,GO:0050870,positive regulation of T cell activation,M1,1,0
+1,-2.1,R-MMU-422475,Axon guidance,M1,1,0
+1,-2.1,R-MMU-6811442,Intra-Golgi and retrograde Golgi-to-ER traffic,M1,1,0
+1,-2.7,mmu01212,Fatty acid metabolism,M1,1,0
+1,-5.4,GO:0000303,response to superoxide,M1,1,0
+1,-3.4,R-MMU-199977,ER to Golgi Anterograde Transport,M1,1,0
+1,-2.4,GO:0001910,regulation of leukocyte mediated cytotoxicity,M1,1,0
+1,-2.1,GO:1904358,positive regulation of telomere maintenance via telomere lengthening,M1,1,0
+1,-8,GO:0009205,purine ribonucleoside triphosphate metabolic process,M1,1,0
+1,-2.4,GO:1905153,regulation of membrane invagination,M1,1,0
+1,-3.5,R-MMU-445989,TAK1 activates NFkB by phosphorylation and activation of IKKs complex,M1,1,0
+1,-4.4,R-MMU-77305,Beta oxidation of palmitoyl-CoA to myristoyl-CoA,M1,1,0
+1,-2.3,GO:0001959,regulation of cytokine-mediated signaling pathway,M1,1,0
+1,-2.8,GO:0002366,leukocyte activation involved in immune response,M1,1,0
+1,-3.9,GO:0051607,defense response to virus,M1,1,0
+1,-4.8,WP1269,Fatty Acid Beta Oxidation,M1,1,0
+1,-7.2,R-MMU-8949613,Cristae formation,M1,1,0
+1,-2.8,GO:0002706,regulation of lymphocyte mediated immunity,M1,1,0
+1,-3.7,GO:0033013,tetrapyrrole metabolic process,M1,1,0
+1,-2.7,R-MMU-1169408,ISG15 antiviral mechanism,M1,1,0
+1,-3.2,R-MMU-5696398,Nucleotide Excision Repair,M1,1,0
+1,-2.3,GO:0040013,negative regulation of locomotion,M1,1,0
+1,-4.3,ko04216,Ferroptosis,M1,1,0
+1,-2.9,ko01230,Biosynthesis of amino acids,M1,1,0
+1,-2.7,GO:1903409,reactive oxygen species biosynthetic process,M1,1,0
+1,-2.4,GO:1901136,carbohydrate derivative catabolic process,M1,1,0
+1,-22,R-MMU-68949,Orc1 removal from chromatin,M1,1,0
+1,-2,GO:0043648,dicarboxylic acid metabolic process,M1,1,0
+1,-2.4,GO:0030335,positive regulation of cell migration,M1,1,0
+1,-8.3,R-MMU-156827,L13a-mediated translational silencing of Ceruloplasmin expression,M1,1,0
+1,-2.5,GO:0097300,programmed necrotic cell death,M1,1,0
+1,-2.1,ko03320,PPAR signaling pathway,M1,1,0
+1,-2,R-MMU-73887,Death Receptor Signalling,M1,1,0
+1,-4.5,GO:0033108,mitochondrial respiratory chain complex assembly,M1,1,0
+1,-23,R-MMU-1236975,Antigen processing-Cross presentation,M1,1,0
+1,-2,ko04120,Ubiquitin mediated proteolysis,M1,1,0
+1,-3.3,GO:0002224,toll-like receptor signaling pathway,M1,1,0
+1,-5.2,ko05169,Epstein-Barr virus infection,M1,1,0
+1,-3,GO:0045577,regulation of B cell differentiation,M1,1,0
+1,-2.1,ko05150,Staphylococcus aureus infection,M1,1,0
+1,-25,R-MMU-446652,Interleukin-1 family signaling,M1,1,0
+1,-8.5,R-MMU-917977,Transferrin endocytosis and recycling,M1,1,0
+1,-5.7,mmu05152,Tuberculosis,M1,1,0
+1,-3.4,GO:0046598,positive regulation of viral entry into host cell,M1,1,0
+1,-4.3,mmu01200,Carbon metabolism,M1,1,0
+1,-2.1,R-MMU-204005,COPII-mediated vesicle transport,M1,1,0
+1,-2.3,R-MMU-3700989,Transcriptional Regulation by TP53,M1,1,0
+1,-5.3,GO:0032103,positive regulation of response to external stimulus,M1,1,0
+1,-18,R-MMU-5610787,Hedgehog 'off' state,M1,1,0
+1,-2.8,R-MMU-15869,Metabolism of nucleotides,M1,1,0
+1,-3.1,GO:0042060,wound healing,M1,1,0
+1,-2.7,R-MMU-1852241,Organelle biogenesis and maintenance,M1,1,0
+1,-2.8,R-MMU-391251,Protein folding,M1,1,0
+1,-27,R-MMU-8932339,ROS sensing by NFE2L2,M1,1,0
+1,-5.1,WP3626,Microglia Pathogen Phagocytosis Pathway,M1,1,0
+1,-7.8,ko04721,Synaptic vesicle cycle,M1,1,0
+1,-3.2,R-MMU-450321,JNK (c-Jun kinases) phosphorylation and  activation mediated by activated human TAK1,M1,1,0
+1,-2.5,GO:1902107,positive regulation of leukocyte differentiation,M1,1,0
+1,-3.1,GO:0032655,regulation of interleukin-12 production,M1,1,0
+1,-3.8,R-MMU-5628897,TP53 Regulates Metabolic Genes,M1,1,0
+1,-2.5,R-MMU-376176,Signaling by ROBO receptors,M1,1,0
+1,-3.4,GO:0043535,regulation of blood vessel endothelial cell migration,M1,1,0
+1,-2,R-MMU-168176,Toll Like Receptor 5 (TLR5) Cascade,M1,1,0
+1,-3.6,M00001,"Glycolysis (Embden-Meyerhof pathway), glucose => pyruvate",M1,1,0
+1,-3.4,GO:0032675,regulation of interleukin-6 production,M1,1,0
+1,-11,GO:0044257,cellular protein catabolic process,M1,1,0
+1,-3.1,GO:0051091,positive regulation of DNA-binding transcription factor activity,M1,1,0
+1,-2.3,GO:0051222,positive regulation of protein transport,M1,1,0
+1,-10,R-MMU-1222556,ROS and RNS production in phagocytes,M1,1,0
+1,-4.1,GO:0030003,cellular cation homeostasis,M1,1,0
+1,-2.6,GO:0090559,regulation of membrane permeability,M1,1,0
+1,-22,R-MMU-351202,Metabolism of polyamines,M1,1,0
+1,-3.1,GO:1903902,positive regulation of viral life cycle,M1,1,0
+1,-11,R-MMU-71291,Metabolism of amino acids and derivatives,M1,1,0
+1,-31,R-MMU-6798695,Neutrophil degranulation,M1,1,0
+1,-2.3,GO:0034312,diol biosynthetic process,M1,1,0
+1,-5.3,GO:0097193,intrinsic apoptotic signaling pathway,M1,1,0
+1,-2.6,GO:0010878,cholesterol storage,M1,1,0
+1,-6.4,GO:0007035,vacuolar acidification,M1,1,0
+1,-2.1,GO:0045010,actin nucleation,M1,1,0
+1,-2.1,GO:0007249,I-kappaB kinase/NF-kappaB signaling,M1,1,0
+1,-5.5,GO:0043043,peptide biosynthetic process,M1,1,0
+1,-5.4,R-MMU-5218859,Regulated Necrosis,M1,1,0
+1,-3.8,R-MMU-9006934,Signaling by Receptor Tyrosine Kinases,M1,1,0
+1,-2.6,GO:0033014,tetrapyrrole biosynthetic process,M1,1,0
+1,-2.3,GO:0090199,regulation of release of cytochrome c from mitochondria,M1,1,0
+1,-2.1,GO:1901224,positive regulation of NIK/NF-kappaB signaling,M1,1,0
+1,-6.2,GO:0006164,purine nucleotide biosynthetic process,M1,1,0
+1,-2.5,GO:0010952,positive regulation of peptidase activity,M1,1,0
+1,-2.6,GO:0044794,positive regulation by host of viral process,M1,1,0
+1,-2.7,GO:0034440,lipid oxidation,M1,1,0
+1,-2.8,GO:0050778,positive regulation of immune response,M1,1,0
+1,-3,R-MMU-70263,Gluconeogenesis,M1,1,0
+1,-7.8,mmu04721,Synaptic vesicle cycle,M1,1,0
+1,-6.7,GO:0045851,pH reduction,M1,1,0
+1,-4.2,GO:0019693,ribose phosphate metabolic process,M1,1,0
+1,-3.6,WP307,Translation Factors,M1,1,0
+1,-2,GO:1903332,regulation of protein folding,M1,1,0
+1,-3.7,GO:0034976,response to endoplasmic reticulum stress,M1,1,0
+1,-3.8,GO:0001802,type III hypersensitivity,M1,1,0
+1,-5.6,GO:0072594,establishment of protein localization to organelle,M1,1,0
+1,-3.8,GO:0042110,T cell activation,M1,1,0
+1,-7.6,R-MMU-9639288,Amino acids regulate mTORC1,M1,1,0
+1,-6.1,GO:0098754,detoxification,M1,1,0
+1,-3.5,GO:0052547,regulation of peptidase activity,M1,1,0
+1,-2,GO:0046037,GMP metabolic process,M1,1,0
+1,-3.2,R-MMU-114608,Platelet degranulation ,M1,1,0
+1,-2.5,GO:0070198,"protein localization to chromosome, telomeric region",M1,1,0
+1,-6.7,GO:0072593,reactive oxygen species metabolic process,M1,1,0
+1,-22,R-MMU-68867,Assembly of the pre-replicative complex,M1,1,0
+1,-3.2,GO:0043903,regulation of biological process involved in symbiotic interaction,M1,1,0
+1,-2.5,GO:0007039,protein catabolic process in the vacuole,M1,1,0
+1,-2,GO:0010631,epithelial cell migration,M1,1,0
+1,-2.6,R-MMU-8964038,LDL clearance,M1,1,0
+1,-2.7,GO:0046146,tetrahydrobiopterin metabolic process,M1,1,0
+1,-16,R-MMU-8953854,Metabolism of RNA,M1,1,0
+1,-2.5,GO:1905710,positive regulation of membrane permeability,M1,1,0
+1,-9.2,R-MMU-3299685,Detoxification of Reactive Oxygen Species,M1,1,0
+1,-26,R-MMU-2871837,FCERI mediated NF-kB activation,M1,1,0
+1,-5.3,GO:0080135,regulation of cellular response to stress,M1,1,0
+1,-4.4,CORUM:132,CCT complex (chaperonin containing TCP1 complex),M1,1,0
+1,-2.7,ko01212,Fatty acid metabolism,M1,1,0
+1,-3.5,GO:0042255,ribosome assembly,M1,1,0
+1,-2,R-MMU-209560,NF-kB is activated and signals survival,M1,1,0
+1,-2.8,GO:1903206,negative regulation of hydrogen peroxide-induced cell death,M1,1,0
+1,-2.2,GO:0006081,cellular aldehyde metabolic process,M1,1,0
+1,-5,GO:0031349,positive regulation of defense response,M1,1,0
+1,-2.7,GO:0022411,cellular component disassembly,M1,1,0
+1,-2.2,R-MMU-3371497,HSP90 chaperone cycle for steroid hormone receptors (SHR),M1,1,0
+1,-2.1,GO:0022407,regulation of cell-cell adhesion,M1,1,0
+1,-2.3,GO:1902110,positive regulation of mitochondrial membrane permeability involved in apoptotic process,M1,1,0
+1,-2.4,GO:0042455,ribonucleoside biosynthetic process,M1,1,0
+1,-14,R-MMU-195721,Signaling by WNT,M1,1,0
+1,-2.1,GO:0071218,cellular response to misfolded protein,M1,1,0
+1,-2.4,GO:1903426,regulation of reactive oxygen species biosynthetic process,M1,1,0
+1,-4.8,GO:0009615,response to virus,M1,1,0
+1,-21,R-MMU-5668541,TNFR2 non-canonical NF-kB pathway,M1,1,0
+1,-4.3,GO:1900407,regulation of cellular response to oxidative stress,M1,1,0
+1,-14,R-MMU-2467813,Separation of Sister Chromatids,M1,1,0
+1,-3.3,GO:0055067,monovalent inorganic cation homeostasis,M1,1,0
+1,-6.8,mmu04966,Collecting duct acid secretion,M1,1,0
+1,-2.1,mmu04137,Mitophagy - animal,M1,1,0
+1,-2.8,ko04140,Autophagy - animal,M1,1,0
+1,-2.1,GO:0071706,tumor necrosis factor superfamily cytokine production,M1,1,0
+1,-4.6,GO:0030595,leukocyte chemotaxis,M1,1,0
+1,-8.8,GO:0022904,respiratory electron transport chain,M1,1,0
+1,-2.4,mmu05150,Staphylococcus aureus infection,M1,1,0
+1,-11,R-MMU-917937,Iron uptake and transport,M1,1,0
+1,-3.3,GO:0045899,positive regulation of RNA polymerase II transcription preinitiation complex assembly,M1,1,0
+1,-12,R-MMU-69620,Cell Cycle Checkpoints,M1,1,0
+1,-4.3,ko01200,Carbon metabolism,M1,1,0
+1,-3.9,R-MMU-6799198,Complex I biogenesis,M1,1,0
+1,-3.9,GO:0140546,defense response to symbiont,M1,1,0
+1,-2.4,R-MMU-1358803,Downregulation of ERBB2:ERBB3 signaling,M1,1,0
+1,-4,R-MMU-168638,NOD1/2 Signaling Pathway,M1,1,0
+1,-16,mmu05016,Huntington's disease,M1,1,0
+1,-2.9,GO:0006729,tetrahydrobiopterin biosynthetic process,M1,1,0
+1,-3.6,CORUM:413,"(ER)-localized multiprotein complex, Ig heavy chains associated",M1,1,0
+1,-22,R-MMU-69580,p53-Dependent G1/S DNA damage checkpoint,M1,1,0
+1,-4.1,CORUM:3072,"CCT complex (chaperonin containing TCP1 complex), testis specific",M1,1,0
+1,-19,R-MMU-5632684,Hedgehog 'on' state,M1,1,0
+1,-5.9,R-MMU-432720,Lysosome Vesicle Biogenesis,M1,1,0
+1,-2.5,GO:1903708,positive regulation of hemopoiesis,M1,1,0
+1,-2,GO:0006352,"DNA-templated transcription, initiation",M1,1,0
+1,-2,GO:0030168,platelet activation,M1,1,0
+1,-3.8,GO:0050900,leukocyte migration,M1,1,0
+1,-25,R-MMU-1236978,Cross-presentation of soluble exogenous antigens (endosomes),M1,1,0
+1,-7.8,GO:0009199,ribonucleoside triphosphate metabolic process,M1,1,0
+1,-4.9,ko05152,Tuberculosis,M1,1,0
+1,-2.6,GO:0006986,response to unfolded protein,M1,1,0
+1,-2.7,ko00740,Riboflavin metabolism,M1,1,0
+1,-4.3,GO:0006778,porphyrin-containing compound metabolic process,M1,1,0
+1,-24,R-MMU-174084,Autodegradation of Cdh1 by Cdh1:APC/C,M1,1,0
+1,-5.4,R-MMU-8856828,Clathrin-mediated endocytosis,M1,1,0
+1,-4.8,GO:0050729,positive regulation of inflammatory response,M1,1,0
+1,-3.6,GO:0050792,regulation of viral process,M1,1,0
+1,-2.6,GO:0071897,DNA biosynthetic process,M1,1,0
+1,-2.3,GO:1905459,regulation of vascular associated smooth muscle cell apoptotic process,M1,1,0
+1,-2.6,GO:0061726,mitochondrion disassembly,M1,1,0
+1,-2.4,M00049,"Adenine ribonucleotide biosynthesis, IMP => ADP,ATP",M1,1,0
+1,-2.4,GO:1902883,negative regulation of response to oxidative stress,M1,1,0
+1,-2.5,GO:0080164,regulation of nitric oxide metabolic process,M1,1,0
+1,-2.7,mmu04380,Osteoclast differentiation,M1,1,0
+1,-3.4,WP87,Nucleotide Metabolism,M1,1,0
+1,-2.4,WP3625,TYROBP Causal Network,M1,1,0
+1,-2.9,GO:0010257,NADH dehydrogenase complex assembly,M1,1,0
+1,-2.6,GO:0061462,protein localization to lysosome,M1,1,0
+1,-3.4,GO:0032943,mononuclear cell proliferation,M1,1,0
+1,-2.5,GO:0035751,regulation of lysosomal lumen pH,M1,1,0
+1,-2.7,GO:2000147,positive regulation of cell motility,M1,1,0
+1,-2.1,GO:0032640,tumor necrosis factor production,M1,1,0
+1,-2.3,GO:0006054,N-acetylneuraminate metabolic process,M1,1,0
+1,-2.6,GO:0097530,granulocyte migration,M1,1,0
+1,-2.2,ko00520,Amino sugar and nucleotide sugar metabolism,M1,1,0
+1,-2.9,GO:0090407,organophosphate biosynthetic process,M1,1,0
+1,-21,R-MMU-176409,APC/C:Cdc20 mediated degradation of mitotic proteins,M1,1,0
+1,-3.4,GO:0060627,regulation of vesicle-mediated transport,M1,1,0
+1,-3.8,R-MMU-72702,Ribosomal scanning and start codon recognition,M1,1,0
+1,-2.5,GO:1903573,negative regulation of response to endoplasmic reticulum stress,M1,1,0
+1,-17,R-MMU-453279,Mitotic G1 phase and G1/S transition,M1,1,0
+1,-4.3,GO:0002683,negative regulation of immune system process,M1,1,0
+1,-2,GO:0010635,regulation of mitochondrial fusion,M1,1,0
+1,-2.5,GO:0052372,modulation by symbiont of entry into host,M1,1,0
+1,-2.4,GO:1902253,regulation of intrinsic apoptotic signaling pathway by p53 class mediator,M1,1,0
+1,-8.6,R-MMU-72766,Translation,M1,1,0
+1,-3.4,GO:0045619,regulation of lymphocyte differentiation,M1,1,0
+1,-8,GO:0015980,energy derivation by oxidation of organic compounds,M1,1,0
+1,-2.9,GO:0051123,RNA polymerase II preinitiation complex assembly,M1,1,0
+1,-2.4,GO:0002604,regulation of dendritic cell antigen processing and presentation,M1,1,0
+1,-2.3,R-MMU-8866427,VLDLR internalisation and degradation,M1,1,0
+1,-3.7,ko04666,Fc gamma R-mediated phagocytosis,M1,1,0
+1,-3.5,WP157,Glycolysis and Gluconeogenesis,M1,1,0
+1,-4.7,GO:0072655,establishment of protein localization to mitochondrion,M1,1,0
+1,-3.1,GO:0002437,inflammatory response to antigenic stimulus,M1,1,0
+1,-19,R-MMU-69002,DNA Replication Pre-Initiation,M1,1,0
+1,-4.5,GO:0070585,protein localization to mitochondrion,M1,1,0
+1,-3.9,GO:0050766,positive regulation of phagocytosis,M1,1,0
+1,-17,mmu05012,Parkinson's disease,M1,1,0
+1,-2.5,GO:1901615,organic hydroxy compound metabolic process,M1,1,0
+1,-2.6,GO:0008064,regulation of actin polymerization or depolymerization,M1,1,0
+1,-22,R-MMU-4086400,PCP/CE pathway,M1,1,0
+1,-2.2,R-MMU-71406,Pyruvate metabolism and Citric Acid (TCA) cycle,M1,1,0
+1,-5.8,GO:0009152,purine ribonucleotide biosynthetic process,M1,1,0
+1,-22,R-MMU-69563,p53-Dependent G1 DNA Damage Response,M1,1,0
+1,-3.6,CORUM:495,"Cytochrome bc1-complex, mitochondrial",M1,1,0
+1,-2.2,GO:0010883,regulation of lipid storage,M1,1,0
+1,-3.3,GO:2001234,negative regulation of apoptotic signaling pathway,M1,1,0
+1,-3.4,GO:0045837,negative regulation of membrane potential,M1,1,0
+1,-3.4,GO:0001562,response to protozoan,M1,1,0
+1,-2.1,R-MMU-9675108,Nervous system development,M1,1,0
+1,-2.4,GO:0046514,ceramide catabolic process,M1,1,0
+1,-4,R-MMU-5663213,RHO GTPases Activate WASPs and WAVEs,M1,1,0
+1,-3.3,GO:0007042,lysosomal lumen acidification,M1,1,0
+1,-2.5,GO:0030968,endoplasmic reticulum unfolded protein response,M1,1,0
+1,-2.6,GO:0006779,porphyrin-containing compound biosynthetic process,M1,1,0
+1,-2.8,GO:0046596,regulation of viral entry into host cell,M1,1,0
+1,-24,R-MMU-8948751,Regulation of PTEN stability and activity,M1,1,0
+1,-3.6,GO:0031334,positive regulation of protein-containing complex assembly,M1,1,0
+1,-3.5,R-MMU-72695,"Formation of the ternary complex, and subsequently, the 43S complex",M1,1,0
+1,-3.1,M00085,"Fatty acid biosynthesis, elongation, mitochondria",M1,1,0
+1,-3.4,GO:0060326,cell chemotaxis,M1,1,0
+1,-4,GO:0071887,leukocyte apoptotic process,M1,1,0
+1,-11,GO:0006091,generation of precursor metabolites and energy,M1,1,0
+1,-6.8,GO:0048102,autophagic cell death,M1,1,0
+1,-6.3,GO:0097190,apoptotic signaling pathway,M1,1,0
+1,-2.4,GO:0044409,entry into host,M1,1,0
+1,-3.4,GO:0075294,positive regulation by symbiont of entry into host,M1,1,0
+1,-3,GO:0002833,positive regulation of response to biotic stimulus,M1,1,0
+1,-2.6,GO:0043534,blood vessel endothelial cell migration,M1,1,0
+1,-3.6,GO:2000573,positive regulation of DNA biosynthetic process,M1,1,0
+1,-2.7,GO:0060100,"positive regulation of phagocytosis, engulfment",M1,1,0
+1,-3.7,R-MMU-77289,Mitochondrial Fatty Acid Beta-Oxidation,M1,1,0
+1,-3.7,R-MMU-5696399,Global Genome Nucleotide Excision Repair (GG-NER),M1,1,0
+1,-3,GO:0045898,regulation of RNA polymerase II transcription preinitiation complex assembly,M1,1,0
+1,-2.4,GO:0061136,regulation of proteasomal protein catabolic process,M1,1,0
+1,-2.4,R-MMU-5694530,Cargo concentration in the ER,M1,1,0
+1,-2.2,GO:0006521,regulation of cellular amino acid metabolic process,M1,1,0
+1,-2.5,GO:0002892,regulation of type II hypersensitivity,M1,1,0
+1,-4.6,GO:0051054,positive regulation of DNA metabolic process,M1,1,0
+1,-2.5,GO:0006515,protein quality control for misfolded or incompletely synthesized proteins,M1,1,0
+1,-25,R-MMU-69601,Ubiquitin Mediated Degradation of Phosphorylated Cdc25A,M1,1,0
+1,-2.3,GO:0097734,extracellular exosome biogenesis,M1,1,0
+1,-2.5,GO:0070227,lymphocyte apoptotic process,M1,1,0
+1,-2.1,R-MMU-210991,Basigin interactions,M1,1,0
+1,-12,CORUM:39,Immunoproteasome,M1,1,0
+1,-2.2,mmu_M00050,"Guanine ribonucleotide biosynthesis IMP => GDP,GTP",M1,1,0
+1,-9.5,R-MMU-77387,Insulin receptor recycling,M1,1,0
+1,-3.6,GO:0002698,negative regulation of immune effector process,M1,1,0
+1,-2.7,GO:0071216,cellular response to biotic stimulus,M1,1,0
+1,-3.1,GO:0019262,N-acetylneuraminate catabolic process,M1,1,0
+1,-5,GO:0034599,cellular response to oxidative stress,M1,1,0
+1,-4.8,GO:0031347,regulation of defense response,M1,1,0
+1,-3.7,R-MMU-3928662,EPHB-mediated forward signaling,M1,1,0
+1,-4.5,GO:0007034,vacuolar transport,M1,1,0
+1,-4.3,GO:0006163,purine nucleotide metabolic process,M1,1,0
+1,-3.4,R-MMU-109582,Hemostasis,M1,1,0
+1,-2.7,GO:0009120,deoxyribonucleoside metabolic process,M1,1,0
+1,-2.8,GO:1901032,negative regulation of response to reactive oxygen species,M1,1,0
+1,-11,R-MMU-5688426,Deubiquitination,M1,1,0
+1,-2.5,GO:0006909,phagocytosis,M1,1,0
+1,-3.8,R-MMU-72662,"Activation of the mRNA upon binding of the cap-binding complex and eIFs, and subsequent binding to 43S",M1,1,0
+1,-5.5,R-MMU-199992,trans-Golgi Network Vesicle Budding,M1,1,0
+1,-4.6,GO:0045730,respiratory burst,M1,1,0
+1,-4.3,mmu_M00087,beta-Oxidation,M1,1,0
+1,-4.4,R-MMU-9705462,Inactivation of CSF3 (G-CSF) signaling,M1,1,0
+1,-3.3,GO:0031647,regulation of protein stability,M1,1,0
+1,-2.6,R-MMU-937061,TRIF(TICAM1)-mediated TLR4 signaling ,M1,1,0
+1,-24,R-MMU-8852276,The role of GTSE1 in G2/M progression after G2 checkpoint,M1,1,0
+1,-6.1,GO:2001233,regulation of apoptotic signaling pathway,M1,1,0
+1,-3.1,mmu_M00085,"Fatty acid biosynthesis, elongation, mitochondria",M1,1,0
+1,-3.3,mmu05132,Salmonella infection,M1,1,0
+1,-18,R-MMU-983169,Class I MHC mediated antigen processing & presentation,M1,1,0
+1,-4.8,GO:0006979,response to oxidative stress,M1,1,0
+1,-6.8,GO:0019941,modification-dependent protein catabolic process,M1,1,0
+1,-2.2,R-MMU-194315,Signaling by Rho GTPases,M1,1,0
+1,-9.7,R-MMU-69278,"Cell Cycle, Mitotic",M1,1,0
+1,-7.6,R-MMU-9711097,Cellular response to starvation,M1,1,0
+1,-2.7,GO:0002703,regulation of leukocyte mediated immunity,M1,1,0
+1,-5.9,GO:0071451,cellular response to superoxide,M1,1,0
+1,-5.2,CORUM:3047,Parvulin-associated pre-rRNP complex,M1,1,0
+1,-4.1,GO:1901137,carbohydrate derivative biosynthetic process,M1,1,0
+1,-4.4,GO:0050764,regulation of phagocytosis,M1,1,0
+1,-2.1,GO:0002532,production of molecular mediator involved in inflammatory response,M1,1,0
+1,-5.6,GO:0002478,antigen processing and presentation of exogenous peptide antigen,M1,1,0
+1,-2.1,mmu05340,Primary immunodeficiency,M1,1,0
+1,-2.4,GO:0002281,macrophage activation involved in immune response,M1,1,0
+1,-4.9,GO:0034614,cellular response to reactive oxygen species,M1,1,0
+1,-2.4,GO:0042558,pteridine-containing compound metabolic process,M1,1,0
+1,-2.1,GO:0033238,regulation of cellular amine metabolic process,M1,1,0
+1,-2.2,GO:0061912,selective autophagy,M1,1,0
+1,-4.8,GO:0002181,cytoplasmic translation,M1,1,0
+1,-13,R-MMU-5689880,Ub-specific processing proteases,M1,1,0
+1,-8.5,GO:0009206,purine ribonucleoside triphosphate biosynthetic process,M1,1,0
+1,-3.3,R-MMU-5656169,Termination of translesion DNA synthesis,M1,1,0
+1,-3.6,GO:0010823,negative regulation of mitochondrion organization,M1,1,0
+1,-2.6,GO:0002275,myeloid cell activation involved in immune response,M1,1,0
+1,-3.4,mmu04216,Ferroptosis,M1,1,0
+1,-22,R-MMU-5687128,MAPK6/MAPK4 signaling,M1,1,0
+1,-4,GO:0009259,ribonucleotide metabolic process,M1,1,0
+1,-3.2,R-MMU-556833,Metabolism of lipids,M1,1,0
+1,-22,R-MMU-69615,G1/S DNA Damage Checkpoints,M1,1,0
+1,-2.5,CORUM:414,"(ER)-localized multiprotein complex, in absence of Ig heavy chains",M1,1,0
+1,-24,R-MMU-5358346,Hedgehog ligand biogenesis,M1,1,0
+1,-26,R-MMU-5607764,CLEC7A (Dectin-1) signaling,M1,1,0
+1,-2.7,GO:0002263,cell activation involved in immune response,M1,1,0
+1,-2.4,GO:0033029,regulation of neutrophil apoptotic process,M1,1,0
+1,-2.9,GO:1902105,regulation of leukocyte differentiation,M1,1,0
+1,-2.1,GO:0009156,ribonucleoside monophosphate biosynthetic process,M1,1,0
+1,-2.6,GO:0003159,morphogenesis of an endothelium,M1,1,0
+1,-8.3,R-MMU-72706,GTP hydrolysis and joining of the 60S ribosomal subunit,M1,1,0
+1,-3,R-MMU-174824,"Plasma lipoprotein assembly, remodeling, and clearance",M1,1,0
+1,-3.3,GO:0002468,dendritic cell antigen processing and presentation,M1,1,0
+1,-2.4,GO:0030098,lymphocyte differentiation,M1,1,0
+1,-25,R-MMU-4641257,Degradation of AXIN,M1,1,0
+1,-18,R-MMU-1280215,Cytokine Signaling in Immune system,M1,1,0
+1,-3.1,R-MMU-975144,IRAK1 recruits IKK complex upon TLR7/8 or 9 stimulation,M1,1,0
+1,-2.2,GO:1903037,regulation of leukocyte cell-cell adhesion,M1,1,0
+1,-2.3,GO:0070231,T cell apoptotic process,M1,1,0
+1,-4.3,mmu_M00002,"Glycolysis, core module involving three-carbon compounds",M1,1,0
+1,-3.2,GO:0045185,maintenance of protein location,M1,1,0
+1,-2.3,GO:0002449,lymphocyte mediated immunity,M1,1,0
+1,-6.3,GO:0042775,mitochondrial ATP synthesis coupled electron transport,M1,1,0
+1,-4.6,R-MMU-446203,Asparagine N-linked glycosylation,M1,1,0
+1,-2.5,GO:0110095,cellular detoxification of aldehyde,M1,1,0
+1,-6.6,GO:0016032,viral process,M1,1,0
+1,-2.8,GO:0010632,regulation of epithelial cell migration,M1,1,0
+1,-3.3,R-MMU-8866654,E3 ubiquitin ligases ubiquitinate target proteins,M1,1,0
+1,-2.3,GO:0002679,respiratory burst involved in defense response,M1,1,0
+1,-8.2,GO:0009201,ribonucleoside triphosphate biosynthetic process,M1,1,0
+1,-3.9,GO:0035967,cellular response to topologically incorrect protein,M1,1,0
+1,-4.2,ko04210,Apoptosis,M1,1,0
+1,-3.8,GO:0032272,negative regulation of protein polymerization,M1,1,0
+1,-22,R-MMU-69017,CDK-mediated phosphorylation and removal of Cdc6,M1,1,0
+1,-2.8,GO:1903706,regulation of hemopoiesis,M1,1,0
+1,-2.7,WP401,Mitochondrial LC-Fatty Acid Beta-Oxidation,M1,1,0
+1,-2.1,GO:0016226,iron-sulfur cluster assembly,M1,1,0
+1,-2,GO:0045428,regulation of nitric oxide biosynthetic process,M1,1,0
+1,-2.9,GO:0019395,fatty acid oxidation,M1,1,0
+1,-8,GO:0019884,antigen processing and presentation of exogenous antigen,M1,1,0
+1,-2.2,R-MMU-1679131,Trafficking and processing of endosomal TLR,M1,1,0
+1,-19,R-MMU-5689603,UCH proteinases,M1,1,0
+1,-7.3,GO:0034341,response to interferon-gamma,M1,1,0
+1,-2.6,GO:0002699,positive regulation of immune effector process,M1,1,0
+1,-9.3,GO:0045454,cell redox homeostasis,M1,1,0
+1,-23,R-MMU-202424,Downstream TCR signaling,M1,1,0
+1,-4.2,GO:0006873,cellular ion homeostasis,M1,1,0
+1,-3.9,GO:0043068,positive regulation of programmed cell death,M1,1,0
+1,-3.1,R-MMU-76005,Response to elevated platelet cytosolic Ca2+,M1,1,0
+1,-2.5,GO:0043536,positive regulation of blood vessel endothelial cell migration,M1,1,0
+1,-3.6,R-MMU-390471,Association of TriC/CCT with target proteins during biosynthesis,M1,1,0
+1,-2.3,GO:1903076,regulation of protein localization to plasma membrane,M1,1,0
+1,-2.7,GO:0044829,positive regulation by host of viral genome replication,M1,1,0
+1,-10,R-MMU-68886,M Phase,M1,1,0
+1,-3,GO:0051271,negative regulation of cellular component movement,M1,1,0
+1,-5.6,ko03010,Ribosome,M1,1,0
+1,-2,GO:0009126,purine nucleoside monophosphate metabolic process,M1,1,0
+1,-3.5,GO:1905897,regulation of response to endoplasmic reticulum stress,M1,1,0
+1,-19,R-MMU-69206,G1/S Transition,M1,1,0
+1,-4.3,GO:0007006,mitochondrial membrane organization,M1,1,0
+1,-3.8,GO:0023035,CD40 signaling pathway,M1,1,0
+1,-3.3,GO:0070661,leukocyte proliferation,M1,1,0
+1,-2,R-MMU-8856688,Golgi-to-ER retrograde transport,M1,1,0
+1,-3.7,GO:0035458,cellular response to interferon-beta,M1,1,0
+1,-25,R-MMU-349425,Autodegradation of the E3 ubiquitin ligase COP1,M1,1,0
+1,-2.5,GO:0042304,regulation of fatty acid biosynthetic process,M1,1,0
+1,-28,R-MMU-2262752,Cellular responses to stress,M1,1,0
+1,-2,GO:0001911,negative regulation of leukocyte mediated cytotoxicity,M1,1,0
+1,-4.4,R-MMU-77285,Beta oxidation of myristoyl-CoA to lauroyl-CoA,M1,1,0
+1,-3.1,R-MMU-156590,Glutathione conjugation,M1,1,0
+1,-2.8,R-MMU-390466,Chaperonin-mediated protein folding,M1,1,0
+1,-2.6,R-MMU-948021,Transport to the Golgi and subsequent modification,M1,1,0
+1,-3.9,GO:0098771,inorganic ion homeostasis,M1,1,0
+1,-3.3,R-MMU-8856825,Cargo recognition for clathrin-mediated endocytosis,M1,1,0
+1,-9.7,GO:0006457,protein folding,M1,1,0
+1,-6.3,GO:0019430,removal of superoxide radicals,M1,1,0
+1,-3.1,GO:0030041,actin filament polymerization,M1,1,0
+1,-8.8,mmu04145,Phagosome,M1,1,0
+1,-2.7,GO:0010637,negative regulation of mitochondrial fusion,M1,1,0
+1,-2.7,R-MMU-3371511,HSF1 activation,M1,1,0
+1,-2.3,GO:0042269,regulation of natural killer cell mediated cytotoxicity,M1,1,0
+1,-3,GO:0030833,regulation of actin filament polymerization,M1,1,0
+1,-2.7,GO:0033028,myeloid cell apoptotic process,M1,1,0
+1,-2.2,mmu05100,Bacterial invasion of epithelial cells,M1,1,0
+1,-2.2,GO:0002695,negative regulation of leukocyte activation,M1,1,0
+1,-3.3,GO:0042098,T cell proliferation,M1,1,0
+1,-3.2,GO:0030593,neutrophil chemotaxis,M1,1,0
+1,-2.1,GO:1904706,negative regulation of vascular associated smooth muscle cell proliferation,M1,1,0
+1,-4.3,R-MMU-937041,IKK complex recruitment mediated by RIP1,M1,1,0
+1,-2.1,R-MMU-168164,Toll Like Receptor 3 (TLR3) Cascade,M1,1,0
+1,-4.9,GO:0007033,vacuole organization,M1,1,0
+1,-10,CORUM:38,20S proteasome,M1,1,0
+1,-3.6,GO:0007596,blood coagulation,M1,1,0
+1,-5.2,GO:0006954,inflammatory response,M1,1,0
+1,-3,GO:0006413,translational initiation,M1,1,0
+1,-3.2,GO:0006879,cellular iron ion homeostasis,M1,1,0
+1,-3,ko00790,Folate biosynthesis,M1,1,0
+1,-22,R-MMU-8939236,RUNX1 regulates transcription of genes involved in differentiation of HSCs,M1,1,0
+1,-2.4,GO:0044788,modulation by host of viral process,M1,1,0
+1,-3.5,R-MMU-5213460,RIPK1-mediated regulated necrosis,M1,1,0
+1,-3.1,GO:0042994,cytoplasmic sequestering of transcription factor,M1,1,0
+1,-2.9,GO:0006900,vesicle budding from membrane,M1,1,0
+1,-3,R-MMU-195258,RHO GTPase Effectors,M1,1,0
+1,-23,ko00190,Oxidative phosphorylation,M1,1,0
+1,-2.9,GO:0010885,regulation of cholesterol storage,M1,1,0
+1,-2.5,R-MMU-2173795,Downregulation of SMAD2/3:SMAD4 transcriptional activity,M1,1,0
+1,-2.9,GO:0032981,mitochondrial respiratory chain complex I assembly,M1,1,0
+1,-25,R-MMU-1168372,Downstream signaling events of B Cell Receptor (BCR),M1,1,0
+1,-22,R-MMU-450531,Regulation of mRNA stability by proteins that bind AU-rich elements,M1,1,0
+1,-18,R-MMU-69242,S Phase,M1,1,0
+1,-22,WP519,Proteasome Degradation,M1,1,0
+1,-2,GO:0090132,epithelium migration,M1,1,0
+1,-6.6,R-MMU-1592230,Mitochondrial biogenesis,M1,1,0
+1,-2.1,GO:0031099,regeneration,M1,1,0
+1,-2.7,GO:0030336,negative regulation of cell migration,M1,1,0
+1,-3.8,R-MMU-168643,"Nucleotide-binding domain, leucine rich repeat containing receptor (NLR) signaling pathways",M1,1,0
+1,-3.7,GO:0042832,defense response to protozoan,M1,1,0
+1,-7,GO:0043632,modification-dependent macromolecule catabolic process,M1,1,0
+1,-4,GO:0010821,regulation of mitochondrion organization,M1,1,0
+1,-5.5,GO:0006605,protein targeting,M1,1,0
+1,-25,R-MMU-5610785,GLI3 is processed to GLI3R by the proteasome,M1,1,0
+1,-17,R-MMU-69481,G2/M Checkpoints,M1,1,0
+1,-5.5,GO:0002274,myeloid leukocyte activation,M1,1,0
+1,-2.6,R-MMU-2565942,Regulation of PLK1 Activity at G2/M Transition,M1,1,0
+1,-2.7,R-MMU-432722,Golgi Associated Vesicle Biogenesis,M1,1,0
+1,-2.7,GO:0045621,positive regulation of lymphocyte differentiation,M1,1,0
+1,-2.3,GO:1900048,positive regulation of hemostasis,M1,1,0
+1,-24,R-MMU-69541,Stabilization of p53,M1,1,0
+1,-4.1,R-MMU-983712,Ion channel transport,M1,1,0
+1,-2.9,GO:0070201,regulation of establishment of protein localization,M1,1,0
+1,-3.1,GO:0055076,transition metal ion homeostasis,M1,1,0
+1,-2.9,GO:0002694,regulation of leukocyte activation,M1,1,0
+1,-13,R-MMU-1428517,The citric acid (TCA) cycle and respiratory electron transport,M1,1,0
+1,-2.6,GO:0010634,positive regulation of epithelial cell migration,M1,1,0
+1,-2.1,GO:0007041,lysosomal transport,M1,1,0
+1,-2.4,GO:0070670,response to interleukin-4,M1,1,0
+1,-3.4,ko00010,Glycolysis / Gluconeogenesis,M1,1,0
+1,-2.7,GO:0042147,"retrograde transport, endosome to Golgi",M1,1,0
+1,-4.2,GO:0051235,maintenance of location,M1,1,0
+1,-2.9,ko00071,Fatty acid degradation,M1,1,0
+1,-2.7,GO:0051683,establishment of Golgi localization,M1,1,0
+1,-2.2,ko04064,NF-kappa B signaling pathway,M1,1,0
+1,-2.1,GO:0030155,regulation of cell adhesion,M1,1,0
+1,-15,R-MMU-2555396,Mitotic Metaphase and Anaphase,M1,1,0
+1,-8.4,GO:0006119,oxidative phosphorylation,M1,1,0
+1,-3.5,GO:0010942,positive regulation of cell death,M1,1,0
+1,-2.9,GO:0010917,negative regulation of mitochondrial membrane potential,M1,1,0
+1,-2.6,R-MMU-166016,Toll Like Receptor 4 (TLR4) Cascade,M1,1,0
+1,-2.5,R-MMU-8964043,Plasma lipoprotein clearance,M1,1,0
+1,-2.5,GO:0040017,positive regulation of locomotion,M1,1,0
+1,-8.5,GO:0022900,electron transport chain,M1,1,0
+1,-2.4,R-MMU-8852135,Protein ubiquitination,M1,1,0
+1,-2.4,R-MMU-1268020,Mitochondrial protein import,M1,1,0
+1,-7.4,GO:0006839,mitochondrial transport,M1,1,0
+1,-2.8,R-MMU-9646399,Aggrephagy,M1,1,0
+1,-2.2,GO:0051220,cytoplasmic sequestering of protein,M1,1,0
+1,-2.1,GO:0006090,pyruvate metabolic process,M1,1,0
+1,-7,WP4466,Oxidative Stress and Redox Pathway,M1,1,0
+1,-2.8,GO:0050821,protein stabilization,M1,1,0
+1,-3.2,GO:0046209,nitric oxide metabolic process,M1,1,0
+1,-2.8,GO:0051258,protein polymerization,M1,1,0
+1,-4,mmu04210,Apoptosis,M1,1,0
+1,-3.8,GO:0006888,endoplasmic reticulum to Golgi vesicle-mediated transport,M1,1,0
+1,-28,R-MMU-8953897,Cellular responses to external stimuli,M1,1,0
+1,-3.8,GO:0048193,Golgi vesicle transport,M1,1,0
+1,-4.4,GO:0071402,cellular response to lipoprotein particle stimulus,M1,1,0
+1,-3.6,ko04621,NOD-like receptor signaling pathway,M1,1,0
+1,-2.4,GO:0032787,monocarboxylic acid metabolic process,M1,1,0
+1,-2.8,GO:0070228,regulation of lymphocyte apoptotic process,M1,1,0
+1,-2.6,GO:0046718,viral entry into host cell,M1,1,0
+1,-2.4,GO:0002521,leukocyte differentiation,M1,1,0
+1,-2.4,GO:1901998,toxin transport,M1,1,0
+1,-4.1,GO:0097529,myeloid leukocyte migration,M1,1,0
+1,-2.1,WP37,IL-1 Signaling Pathway,M1,1,0
+1,-2.9,GO:0072657,protein localization to membrane,M1,1,0
+1,-23,R-MMU-2454202,Fc epsilon receptor (FCERI) signaling,M1,1,0
+1,-4.1,GO:0055086,nucleobase-containing small molecule metabolic process,M1,1,0
+1,-2.4,R-MMU-2995410,Nuclear Envelope (NE) Reassembly,M1,1,0
+1,-2.6,GO:0018958,phenol-containing compound metabolic process,M1,1,0
+1,-2.7,R-MMU-76002,"Platelet activation, signaling and aggregation",M1,1,0
+1,-18,R-MMU-382556,ABC-family proteins mediated transport,M1,1,0
+1,-5.3,ko05323,Rheumatoid arthritis,M1,1,0
+1,-13,R-MMU-382551,Transport of small molecules,M1,1,0
+1,-4,R-MMU-2029482,Regulation of actin dynamics for phagocytic cup formation,M1,1,0
+1,-4.4,CORUM:51,CCT complex (chaperonin containing TCP1 complex),M1,1,0
+1,-3,mmu00790,Folate biosynthesis,M1,1,0
+1,-2.4,GO:0046129,purine ribonucleoside biosynthetic process,M1,1,0
+1,-2.2,R-MMU-2173789,TGF-beta receptor signaling activates SMADs,M1,1,0
+1,-3.3,GO:0051881,regulation of mitochondrial membrane potential,M1,1,0
+1,-6.1,CORUM:382,"Respiratory chain complex I, mitochondrial",M1,1,0
+1,-2.5,GO:2000144,"positive regulation of DNA-templated transcription, initiation",M1,1,0
+1,-2,GO:0034142,toll-like receptor 4 signaling pathway,M1,1,0
+1,-2.4,GO:0009163,nucleoside biosynthetic process,M1,1,0
+1,-3.8,GO:0001805,positive regulation of type III hypersensitivity,M1,1,0
+1,-2.2,GO:0051345,positive regulation of hydrolase activity,M1,1,0
+1,-2,GO:0034394,protein localization to cell surface,M1,1,0
+1,-14,WP295,Electron Transport Chain,M1,1,0
+1,-3,GO:0042180,cellular ketone metabolic process,M1,1,0
+1,-8.6,GO:1902600,proton transmembrane transport,M1,1,0
+1,-2.9,M00072,N-glycosylation by oligosaccharyltransferase,M1,1,0
+1,-4.7,GO:0030641,regulation of cellular pH,M1,1,0
+1,-2.9,GO:0071621,granulocyte chemotaxis,M1,1,0
+1,-2.5,GO:0002250,adaptive immune response,M1,1,0
+1,-3,GO:0042559,pteridine-containing compound biosynthetic process,M1,1,0
+1,-3.4,R-MMU-77348,Beta oxidation of octanoyl-CoA to hexanoyl-CoA,M1,1,0
+1,-2.5,GO:0045579,positive regulation of B cell differentiation,M1,1,0
+1,-6.9,R-MMU-611105,Respiratory electron transport,M1,1,0
+1,-26,R-MMU-1234176,Oxygen-dependent proline hydroxylation of Hypoxia-inducible Factor Alpha,M1,1,0
+1,-8.3,GO:0001817,regulation of cytokine production,M1,1,0
+1,-6.6,GO:0080171,lytic vacuole organization,M1,1,0
+1,-2.3,GO:2000379,positive regulation of reactive oxygen species metabolic process,M1,1,0
+1,-2,R-MMU-8863795,Downregulation of ERBB2 signaling,M1,1,0
+1,-7.6,GO:0019882,antigen processing and presentation,M1,1,0
+1,-3.8,GO:0090151,establishment of protein localization to mitochondrial membrane,M1,1,0
+1,-2.4,GO:0042451,purine nucleoside biosynthetic process,M1,1,0
+1,-2,GO:0060759,regulation of response to cytokine stimulus,M1,1,0
+1,-2.6,R-MMU-166166,MyD88-independent TLR4 cascade ,M1,1,0
+1,-2,GO:0010884,positive regulation of lipid storage,M1,1,0
+1,-6.6,GO:0007040,lysosome organization,M1,1,0
+1,-2.4,GO:0009988,cell-cell recognition,M1,1,0
+1,-2.3,R-MMU-9716542,"Signaling by Rho GTPases, Miro GTPases and RHOBTB3",M1,1,0
+1,-29,R-MMU-75815,Ubiquitin-dependent degradation of Cyclin D,M1,1,0
+1,-4.5,GO:0062197,cellular response to chemical stress,M1,1,0
+1,-3.1,GO:1901070,guanosine-containing compound biosynthetic process,M1,1,0
+1,-4.9,GO:0002831,regulation of response to biotic stimulus,M1,1,0
+1,-2.1,GO:0019915,lipid storage,M1,1,0
+1,-20,R-MMU-453276,Regulation of mitotic cell cycle,M1,1,0
+1,-3,GO:0006783,heme biosynthetic process,M1,1,0
+1,-2.1,GO:0009167,purine ribonucleoside monophosphate metabolic process,M1,1,0
+1,-2.4,GO:0048525,negative regulation of viral process,M1,1,0
+1,-13,mmu05010,Alzheimer's disease,M1,1,0
+1,-2.9,GO:0002317,plasma cell differentiation,M1,1,0
+1,-2.8,GO:0051205,protein insertion into membrane,M1,1,0
+1,-27,R-MMU-5607761,Dectin-1 mediated noncanonical NF-kB signaling,M1,1,0
+1,-26,R-MMU-5621481,C-type lectin receptors (CLRs),M1,1,0
+1,-21,R-MMU-1280218,Adaptive Immune System,M1,1,0
+1,-5.2,GO:0006120,"mitochondrial electron transport, NADH to ubiquinone",M1,1,0
+1,-2.6,GO:0061154,endothelial tube morphogenesis,M1,1,0
+1,-2.2,GO:0002579,positive regulation of antigen processing and presentation,M1,1,0
+1,-22,R-MMU-5658442,Regulation of RAS by GAPs,M1,1,0
+1,-2.2,GO:2000142,"regulation of DNA-templated transcription, initiation",M1,1,0
+1,-6.8,GO:0042773,ATP synthesis coupled electron transport,M1,1,0
+1,-8.4,GO:0009145,purine nucleoside triphosphate biosynthetic process,M1,1,0
+1,-2,R-MMU-1660662,Glycosphingolipid metabolism,M1,1,0
+1,-24,mmu03050,Proteasome,M1,1,0
+1,-2.8,GO:0008630,intrinsic apoptotic signaling pathway in response to DNA damage,M1,1,0
+1,-19,R-MMU-6807070,PTEN Regulation,M1,1,0
+1,-9.9,R-MMU-5673001,RAF/MAP kinase cascade,M1,1,0
+1,-2.5,R-MMU-110320,Translesion Synthesis by POLH,M1,1,0
+1,-2.2,R-MMU-70326,Glucose metabolism,M1,1,0
+1,-2.3,GO:0010638,positive regulation of organelle organization,M1,1,0
+1,-2.1,R-MMU-5205647,Mitophagy,M1,1,0
+1,-2.1,mmu05322,Systemic lupus erythematosus,M1,1,0
+1,-3,R-MMU-73893,DNA Damage Bypass,M1,1,0
+1,-2.4,R-MMU-71387,Metabolism of carbohydrates,M1,1,0
+1,-3.9,R-MMU-927802,Nonsense-Mediated Decay (NMD),M1,1,0
+1,-2.9,GO:1904092,regulation of autophagic cell death,M1,1,0
+1,-2.3,WP1253,Type II interferon signaling (IFNG),M1,1,0
+1,-16,ko05016,Huntington's disease,M1,1,0
+1,-2.7,GO:1905155,positive regulation of membrane invagination,M1,1,0
+1,-3.6,mmu04666,Fc gamma R-mediated phagocytosis,M1,1,0
+1,-2.9,R-MMU-6814122,Cooperation of PDCL (PhLP1) and TRiC/CCT in G-protein beta folding,M1,1,0
+1,-2.2,GO:1903975,regulation of glial cell migration,M1,1,0
+1,-2.5,GO:0042542,response to hydrogen peroxide,M1,1,0
+1,-5,R-MMU-1799339,SRP-dependent cotranslational protein targeting to membrane,M1,1,0
+1,-14,WP1248,Oxidative phosphorylation,M1,1,0
+1,-25,R-MMU-69202,Cyclin E associated events during G1/S transition ,M1,1,0
+1,-2.5,GO:2001235,positive regulation of apoptotic signaling pathway,M1,1,0
+1,-2.2,GO:1902686,mitochondrial outer membrane permeabilization involved in programmed cell death,M1,1,0
+1,-26,R-MMU-8854050,FBXL7 down-regulates AURKA during mitotic entry and in early mitosis,M1,1,0
+1,-7.8,R-MMU-72737,Cap-dependent Translation Initiation,M1,1,0
+1,-2.8,GO:0072665,protein localization to vacuole,M1,1,0
+1,-2.2,mmu03013,RNA transport,M1,1,0
+1,-2.1,GO:0070199,establishment of protein localization to chromosome,M1,1,0
+1,-3.7,GO:2001057,reactive nitrogen species metabolic process,M1,1,0
+1,-21,R-MMU-176814,Activation of APC/C and APC/C:Cdc20 mediated degradation of mitotic proteins,M1,1,0
+1,-3.7,GO:0044242,cellular lipid catabolic process,M1,1,0
+1,-2.3,GO:0030194,positive regulation of blood coagulation,M1,1,0
+1,-5,GO:0001909,leukocyte mediated cytotoxicity,M1,1,0
+1,-2,R-MMU-975871,MyD88 cascade initiated on plasma membrane,M1,1,0
+1,-2.2,GO:1904407,positive regulation of nitric oxide metabolic process,M1,1,0
+1,-25,R-MMU-1234174,Cellular response to hypoxia,M1,1,0
+1,-5.7,R-MMU-8868773,rRNA processing in the nucleus and cytosol,M1,1,0
+1,-2.2,R-MMU-425561,Sodium/Calcium exchangers,M1,1,0
+1,-2.1,mmu00520,Amino sugar and nucleotide sugar metabolism,M1,1,0
+1,-3,GO:1905517,macrophage migration,M1,1,0
+1,-3.8,GO:0055080,cation homeostasis,M1,1,0
+1,-3.7,GO:0045088,regulation of innate immune response,M1,1,0
+1,-3.6,GO:1904851,positive regulation of establishment of protein localization to telomere,M1,1,0
+1,-4.5,GO:0006458,'de novo' protein folding,M1,1,0
+1,-2.3,GO:0051204,protein insertion into mitochondrial membrane,M1,1,0
+1,-5,GO:1901293,nucleoside phosphate biosynthetic process,M1,1,0
+1,-6.4,GO:0015986,ATP synthesis coupled proton transport,M1,1,0
+1,-21,R-MMU-8878159,Transcriptional regulation by RUNX3,M1,1,0
+1,-6.4,GO:0015985,"energy coupled proton transport, down electrochemical gradient",M1,1,0
+1,-2.8,GO:2000146,negative regulation of cell motility,M1,1,0
+1,-2.7,GO:0006914,autophagy,M1,1,0
+1,-2.5,GO:0060099,"regulation of phagocytosis, engulfment",M1,1,0
+1,-2.2,GO:0060261,positive regulation of transcription initiation from RNA polymerase II promoter,M1,1,0
+1,-4.9,R-MMU-975956,Nonsense Mediated Decay (NMD) independent of the Exon Junction Complex (EJC),M1,1,0
+1,-3.1,GO:0051604,protein maturation,M1,1,0
+1,-2.2,M00050,"Guanine ribonucleotide biosynthesis IMP => GDP,GTP",M1,1,0
+1,-2.1,GO:0034405,response to fluid shear stress,M1,1,0
+1,-4.4,GO:0051453,regulation of intracellular pH,M1,1,0
+1,-2.2,GO:0007162,negative regulation of cell adhesion,M1,1,0
+1,-2.5,GO:0001794,type IIa hypersensitivity,M1,1,0
+1,-3.8,R-MMU-72649,Translation initiation complex formation,M1,1,0
+1,-3.4,GO:0035966,response to topologically incorrect protein,M1,1,0
+1,-19,R-MMU-69239,Synthesis of DNA,M1,1,0

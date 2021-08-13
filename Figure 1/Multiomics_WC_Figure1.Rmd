@@ -1,0 +1,496 @@
+---
+title: Multiomics reveals persistence of obesity-associated adipose tissue immune
+  cell phenotypes during weight loss and subsequent weight regain
+author: "Matthew A. Cottam"
+subtitle: "Figure 1"
+output:
+  html_document:
+    toc: yes
+    df_print: paged
+  html_notebook:
+    theme: journal
+    fig_caption: yes
+    toc: yes
+---
+
+# Setup
+
+```{r prep, warning=FALSE, message=FALSE}
+library(plyr)
+library(dplyr)
+library(ggplot2)
+library(ggpubr)
+library(ggsci)
+library(Seurat)
+library(RColorBrewer)
+library(ggridges)
+library(viridis)
+
+#Weight cycling group colors
+wccols <- c("Lean" = "#878787", 
+            "Obese" = "#518db6",
+            "WL" = "#94cc73",
+            "WC" = "#e96b53")
+```
+
+# Figure 1
+
+Figure one introduces our weight cycling model and the resulting phenotype from mice across multiple previous studies to show the robustness of the model and resulting glucose impairment.
+
+```{r Fig1Setup}
+#Import Body Mass Data
+bodymass <- read.csv("../Inputs/Fig1/WC-Grouped_BodyMass.csv")
+bodymass <- reshape2::melt(bodymass, id.vars=c("MouseID","Group","Study"), measure.vars=colnames(bodymass)[4:31], variable.name="Week", value.name="Bodymass")
+bodymass$Group <- factor(bodymass$Group, levels = c("Lean","Obese","WL","WC"))
+bodymass <- subset(bodymass, MouseID!="1852" & MouseID!="1853" & MouseID!="1854" & MouseID!="1855" &
+                             MouseID!="1860" & MouseID!="1861" & MouseID!="1863" & MouseID!="1867") #These animals are part of a separate study model and are removed.
+bodymass <- subset(bodymass, Bodymass!="NA")
+#Body Mass Error Calculation
+bodymass_sem <- bodymass %>%
+  group_by(Group, Week) %>%
+  summarize(mean = mean(Bodymass), sd = sd(Bodymass))
+bodymass_n <- bodymass %>% dplyr::count(Group, Week)
+bodymass_sem$n <- bodymass_n$n
+bodymass_sem <- bodymass_sem %>% mutate(sem = sd/sqrt(n))
+colnames(bodymass_sem) = c("Group","Week","Bodymass","sd","n","sem")
+
+#Import Food Intake
+foodintake <- read.csv("../Inputs/Fig1/WC-Grouped_FoodIntake.csv") #Samples from MC2 did not have food intake measured.
+foodintake <- foodintake[,-(31:52)] #Extra empty columns in the csv?
+foodintake <- reshape2::melt(foodintake, id.vars=c("MouseID","Group","Study"), measure.vars=colnames(foodintake)[4:30], variable.name="Week", value.name="foodintake")
+colnames(foodintake) <- c("Mouse","Group","Study","Week","FoodIntake")
+foodintake$Group <- factor(foodintake$Group, levels = c("Lean","Obese","WL","WC"))
+foodintake <- subset(foodintake, Mouse!="1852" & Mouse!="1853" & Mouse!="1854" & Mouse!="1855" &
+                             Mouse!="1860" & Mouse!="1861" & Mouse!="1863" & Mouse!="1867")
+foodintake <- subset(foodintake, FoodIntake!="NA")
+
+#Food Intake Error Calculation
+foodintake_sem <- foodintake %>%
+  group_by(Group, Week) %>%
+  summarize(mean = mean(FoodIntake), sd = sd(FoodIntake))
+foodintake_n <- foodintake %>% dplyr::count(Group, Week)
+foodintake_sem$n <- foodintake_n$n
+foodintake_sem <- foodintake_sem %>% mutate(sem = sd/sqrt(n))
+colnames(foodintake_sem) = c("Group","Week","FoodIntake","sd","n","sem")
+
+#Import Cumulative Food Intake
+CumulativeFI <- read.csv("../Inputs/Fig1/WC-Grouped_CumulativeFoodIntake.csv")
+CumulativeFI <- reshape2::melt(CumulativeFI, id.vars=c("MouseID","Group","Study"), measure.vars=colnames(CumulativeFI)[5:32], variable.name="Week", value.name="c_foodintake")
+colnames(CumulativeFI) <- c("Mouse","Group","Study","Week","C_FoodIntake")
+CumulativeFI$Group <- factor(CumulativeFI$Group, levels = c("Lean","Obese","WL","WC"))
+CumulativeFI <- subset(CumulativeFI, Mouse!="1852" & Mouse!="1853" & Mouse!="1854" & Mouse!="1855" &
+                             Mouse!="1860" & Mouse!="1861" & Mouse!="1863" & Mouse!="1867")
+CumulativeFI <- subset(CumulativeFI, C_FoodIntake!="NA")
+
+#Food Intake Error Calculation
+CumulativeFI_sem <- CumulativeFI %>%
+  group_by(Group, Week) %>%
+  summarize(mean = mean(C_FoodIntake), sd = sd(C_FoodIntake))
+CumulativeFI_n <- CumulativeFI %>% dplyr::count(Group, Week)
+CumulativeFI_sem$n <- CumulativeFI_n$n
+CumulativeFI_sem <- CumulativeFI_sem %>% mutate(sem = sd/sqrt(n))
+colnames(CumulativeFI_sem) = c("Group","Week","C_FoodIntake","sd","n","sem")
+
+#Import Body Comp (NMR)
+bodycomp <- read.csv("../Inputs/Fig1/WC-Grouped_BodyComp.csv")
+bodycomp <- reshape2::melt(bodycomp, id.vars=c("MouseID","Group","Study"), measure.vars=colnames(bodycomp)[5:6], variable.name="Source", value.name="Mass")
+bodycomp <- subset(bodycomp, MouseID!="1852" & MouseID!="1853" & MouseID!="1854" & MouseID!="1855" &
+                             MouseID!="1860" & MouseID!="1861" & MouseID!="1863" & MouseID!="1867" & 
+                             Mass!="NA")
+bodycomp$Group <- factor(bodycomp$Group, levels = c("Lean","Obese","WL","WC"))
+#For HLC90 and HLC56, the body comp was found to be broken and measuring inaccurately. The other studies were done in the VMMPC, where the machine is better maintained.
+bodycomp <- subset(bodycomp, Study!= "HLC56" & Study != "HLC90")
+
+#Body Comp Error Calculation
+bodycomp_sem <- bodycomp %>%
+  group_by(Group, Source) %>%
+  summarize(mean = mean(Mass), sd = sd(Mass))
+bodycomp_n <- bodycomp %>% dplyr::count(Group, Source)
+bodycomp_sem$n <- bodycomp_n$n
+bodycomp_sem <- bodycomp_sem %>% mutate(sem = sd/sqrt(n))
+colnames(bodycomp_sem) = c("Group","Source","Mass","sd","n","sem")
+
+#Import ipGTT
+gtt <- read.csv("../Inputs/Fig1/WC-Grouped_ipGTT.csv")
+gtt <- gtt[,-12] #Most studies only went out to 120 or 150 min, so removing the 180min time point.
+gtt <- reshape2::melt(gtt, id.vars=c("MouseID","Group","Study"), measure.vars=colnames(gtt)[4:11], variable.name="Time", value.name="PlasmaGlucose")
+colnames(gtt) <- c("Mouse","Group","Study","Time","PlasmaGlucose")
+gtt$Group <- factor(gtt$Group, levels = c("Lean","Obese","WL","WC"))
+gtt$Time <- ifelse(gtt$Time == "X0",0,
+                   ifelse(gtt$Time == "X15", 15,
+                          ifelse(gtt$Time == "X30",30,
+                                 ifelse(gtt$Time == "X45",45,
+                                        ifelse(gtt$Time == "X60",60,
+                                               ifelse(gtt$Time == "X90",90,
+                                                      ifelse(gtt$Time == "X120", 120,
+                                                             ifelse(gtt$Time == "X150", 150, NA)))))))) #This is definitely not the most efficient way to do this, but it works and is robust.
+gtt <- subset(gtt, Mouse!="1852" & Mouse!="1853" & Mouse!="1854" & Mouse!="1855" &
+                             Mouse!="1860" & Mouse!="1861" & Mouse!="1863" & Mouse!="1867")
+gtt <- subset(gtt, PlasmaGlucose!="NA")
+
+#ipGTT Error Calculation
+gtt_sem <- gtt %>%
+  group_by(Group, Time) %>%
+  summarize(mean = mean(PlasmaGlucose), sd = sd(PlasmaGlucose))
+gtt_n <- gtt %>% dplyr::count(Group, Time)
+gtt_sem$n <- gtt_n$n
+gtt_sem <- gtt_sem %>% mutate(sem = sd/sqrt(n))
+colnames(gtt_sem) = c("Group","Time","PlasmaGlucose","sd","n","sem")
+
+#Import Sac Mass
+tissuemass <- read.csv("../Inputs/Fig1/WC-Grouped_TissueMass.csv") #Depending on study constraints, we expect many NA values here.
+tissuemass <- reshape2::melt(tissuemass, id.vars=c("MouseID","Group","Study"), measure.vars=colnames(tissuemass)[4:6], variable.name="Tissue", value.name="Mass")
+tissuemass <- subset(tissuemass, MouseID!="1852" & MouseID!="1853" & MouseID!="1854" & MouseID!="1855" &
+                             MouseID!="1860" & MouseID!="1861" & MouseID!="1863" & MouseID!="1867" & 
+                             Mass!="NA")
+tissuemass <- subset(tissuemass, MouseID!="1387" & MouseID!="1388" & MouseID!="1389" & MouseID!="1390") #Liver mass for these mice was not recorded for total tissue weight (just a small piece for protein measurement). I've removed them from all tissue weights altogether to avoid any confusion.
+tissuemass$Group <- factor(tissuemass$Group, levels = c("Lean","Obese","WL","WC"))
+
+#Sac Mass Error Calculation
+tissuemass_sem <- tissuemass %>%
+  group_by(Group, Tissue) %>%
+  summarize(mean = mean(Mass), sd = sd(Mass))
+tissuemass_n <- tissuemass %>% dplyr::count(Group, Tissue)
+tissuemass_sem$n <- tissuemass_n$n
+tissuemass_sem <- tissuemass_sem %>% mutate(sem = sd/sqrt(n))
+colnames(tissuemass_sem) = c("Group","Tissue","Mass","sd","n","sem")
+
+#Calculate the AUC
+gtt <- gtt %>% arrange(Mouse)
+auc <- distinct(gtt[,1:2])
+AUC=NULL
+for (mouse in unique(gtt$Mouse)){
+AUC <- rbind(AUC,(sum(diff(subset(gtt, Mouse==mouse)$Time)*(head(subset(gtt, Mouse==mouse)$PlasmaGlucose,-1)+tail(subset(gtt, Mouse==mouse)$PlasmaGlucose,-1)))/2))
+}
+auc$AUC <- AUC[,1]
+auc$Group <- factor(auc$Group, levels=c("Lean","Obese","WL","WC"))
+
+#Error for AUC
+auc_sem <- auc %>%
+  group_by(Group) %>%
+  summarize(mean = mean(AUC), sd = sd(AUC))
+auc_n <- auc %>% dplyr::count(Group)
+auc_sem$n <- auc_n$n
+auc_sem <- auc_sem %>% mutate(sem = sd/sqrt(n))
+colnames(auc_sem) = c("Group","AUC","sd","n","sem")
+
+#Figure options
+wccols = c("#878787", "#518db6","#94cc73","#e96b53")
+```
+
+## Figure 1A
+Figure 1 panel A is just a summary schematic of our WC model.
+
+## Figure 1B
+
+```{r Fig1b, fig.height=3, fig.width=4, message=FALSE, warning=FALSE}
+ggplot(bodymass, aes(x=as.numeric(Week)-1, y=Bodymass, color=Group)) + 
+  geom_point(stat="summary", size=2) + 
+  geom_line(stat="summary", size=1) +
+  geom_errorbar(data=bodymass_sem, aes(ymin=Bodymass-sem, ymax=Bodymass+sem), width=0.5) + 
+  theme_pubr(base_size=12) +
+  NoLegend() + 
+  labs(x="Weeks on Diet", y="Body Mass (g)") +
+  scale_x_continuous(breaks=seq(from=0, to=27, by=3)) + 
+  ylim(0,60) + 
+  scale_color_manual(values=wccols) +
+  geom_vline(xintercept = c(9,18), linetype="dashed")
+
+#ANOVA
+compare_means(Bodymass ~ Group, data = bodymass, method="anova") #Across all weeks 
+compare_means(Bodymass ~ Group, data = bodymass, group.by="Week",method="anova") #By week
+
+#T.tests with Bonferroni correction for multiple comparisons
+compare_means(Bodymass ~ Group, data = bodymass, group.by="Week", method="t.test", p.adjust.method="bonferroni")
+
+```
+
+## Figure 1C
+
+```{r Fig1c, fig.height=3, fig.width=4, message=FALSE}
+ggplot(foodintake, aes(x=as.numeric(Week), y=FoodIntake, color=Group)) + 
+  geom_point(stat="summary", size=2) + 
+  geom_line(stat="summary", size=1) +
+  geom_errorbar(data=foodintake_sem, aes(ymin=FoodIntake-sem, ymax=FoodIntake+sem), width=0.5) + 
+  theme_pubr(base_size=12) +
+  NoLegend() + 
+  labs(x="Weeks on Diet", y="Food Intake \n (Avrg kcal/day/mouse)") +
+  scale_x_continuous(breaks=seq(from=0, to=27, by=3)) + 
+  ylim(0,25) + 
+  scale_color_manual(values=wccols) +
+  geom_vline(xintercept = c(9,18), linetype="dashed")
+
+#ANOVA
+compare_means(FoodIntake ~ Group, data = foodintake, method="anova") #Across all weeks 
+compare_means(FoodIntake ~ Group, data = foodintake, group.by="Week",method="anova") #By week
+
+#T.tests with Bonferroni correction for multiple comparisons
+compare_means(FoodIntake ~ Group, data = foodintake, group.by="Week", method="t.test", p.adjust.method="bonferroni")
+```
+
+## Figure 1D
+
+```{r Fig1d, fig.height=3, fig.width=4, message=FALSE}
+ggplot(CumulativeFI, aes(x=as.numeric(Week)-1, y=C_FoodIntake, color=Group)) + 
+  geom_point(stat="summary", size=2) + 
+  geom_line(data=subset(CumulativeFI, Week=="wk0" | Week=="wk9"|Week=="wk18"|Week=="wk27"), aes(x=as.numeric(Week)-1, y=C_FoodIntake, color=Group),stat="summary", size=1) +
+  geom_errorbar(data=CumulativeFI_sem, aes(ymin=C_FoodIntake-sem, ymax=C_FoodIntake+sem), width=0.5) + 
+  theme_pubr(base_size=12) +
+  NoLegend() + 
+  labs(x="Weeks on Diet", y="Cumulative Food Intake \n (kcal/mouse)") +
+  scale_x_continuous(breaks=seq(from=0, to=27, by=3)) + 
+  ylim(0,4000) + 
+  scale_color_manual(values=wccols) +
+  geom_vline(xintercept = c(9,18), linetype="dashed")
+
+
+#Calculate slope for each interval
+slopeFI <- CumulativeFI[which(CumulativeFI$Week %in% c("wk0","wk9","wk18","wk27")),] %>% group_by(Group, Week) %>%
+  summarize(mean = mean(C_FoodIntake)) %>% mutate(Week=as.numeric(Week)-1)
+
+
+
+#Model splitting by group; each model is for a 9wk interval
+model1 <- dlply(slopeFI[slopeFI$Week %in% c(0,9),], c("Group"), function(df) 
+  lm(mean ~ Week, data = df))
+
+model2 <- dlply(slopeFI[slopeFI$Week %in% c(9,18),], c("Group"), function(df) 
+  lm(mean ~ Week, data = df))
+
+model3 <- dlply(slopeFI[slopeFI$Week %in% c(18,27),], c("Group"), function(df) 
+  lm(mean ~ Week, data = df))
+
+# Apply coef to each model and return a data frame
+ldply(model1, coef)
+ldply(model2, coef)
+ldply(model3, coef)
+
+```
+
+## Figure 1E
+
+```{r Fig1e, fig.height=3, fig.width=4}
+ggplot(subset(bodycomp,Source=="Lean_g"), aes(x=Group, y=Mass, fill=Group)) + 
+  geom_bar(stat="summary", color="black", width=0.8) + 
+  geom_errorbar(data=subset(bodycomp_sem, Source=="Lean_g"), aes(ymin=Mass-sem, ymax=Mass+sem), width=0.25) + 
+  geom_jitter(size=0.5, width=0.3, alpha=0.7) + 
+  theme_pubr(base_size=11) +
+  NoLegend() + 
+  labs(x="", y="Lean Mass (g)") + 
+  scale_fill_manual(values=wccols) +
+  theme(aspect.ratio = 1.5, axis.text.x = element_text(angle=45, hjust=1, vjust=0.98)) 
+
+ggplot(subset(bodycomp,Source=="Fat_g"), aes(x=Group, y=Mass, fill=Group)) + 
+  geom_bar(stat="summary", color="black", width=0.8) + 
+  geom_errorbar(data=subset(bodycomp_sem, Source=="Fat_g"), aes(ymin=Mass-sem, ymax=Mass+sem), width=0.25) + 
+  geom_jitter(size=0.5, width=0.3, alpha=0.7) + 
+  theme_pubr(base_size=11) +
+  NoLegend() + 
+  labs(x="", y="Fat Mass (g)") + 
+  scale_fill_manual(values=wccols) +
+  theme(aspect.ratio = 1.5, axis.text.x = element_text(angle=45, hjust=1, vjust=0.98)) 
+
+### T.test with Bonferroni correction for multiple comparisons
+compare_means(Mass ~ Group, data = subset(bodycomp,Source=="Lean_g"), method="t.test", p.adjust.method = "bonferroni")# Lean Mass
+
+compare_means(Mass ~ Group, data = subset(bodycomp,Source=="Fat_g"), method="t.test", p.adjust.method = "bonferroni")# Fat Mass
+```
+
+## Figure 1F
+
+```{r Fig1f, fig.height=3, fig.width=4}
+#GTT -----
+ggplot(gtt_sem, aes(x=Time, y=PlasmaGlucose, color=Group)) + 
+  geom_point(stat="summary", size=2) + 
+  geom_line(stat="summary", size=1) +
+  geom_errorbar(data=gtt_sem, aes(ymin=PlasmaGlucose-sem, ymax=PlasmaGlucose+sem), width=0.25) + 
+  theme_pubr(base_size=12) +
+  NoLegend() + 
+  labs(x="Time (min)", y="Plasma Glucose (mg/dL)") +
+  scale_x_continuous(breaks=seq(from=0, to=150, by=30)) + 
+  ylim(0,500) + 
+  scale_color_manual(values=wccols) 
+
+#ANOVA
+compare_means(PlasmaGlucose ~ Group, data = gtt, method="anova") #Across all timepoints
+compare_means(PlasmaGlucose ~ Group, data = gtt, group.by="Time",method="anova") #By time
+
+#T.tests with Bonferroni correction for multiple comparisons
+compare_means(PlasmaGlucose ~ Group, data = gtt, group.by="Time", method="t.test", p.adjust.method="bonferroni")
+
+#To copy Legend only
+ggplot(gtt_sem, aes(x=Time, y=PlasmaGlucose, color=Group)) + 
+  geom_point(stat="summary", size=2) + 
+  geom_line(stat="summary", size=1) +
+  geom_errorbar(data=gtt_sem, aes(ymin=PlasmaGlucose-sem, ymax=PlasmaGlucose+sem), width=0.25) + 
+  theme_classic(base_size=12) +
+  labs(x="Time (min)", y="Plasma Glucose (mg/dL)") +
+  scale_x_continuous(breaks=seq(from=0, to=150, by=30)) + 
+  ylim(0,500) + 
+  scale_color_manual(values=wccols) 
+#AUC------
+ggplot(auc_sem, aes(x=Group, y=AUC, fill=Group)) + 
+  geom_bar(stat="summary", color="black") + 
+  geom_errorbar(data=auc_sem, aes(ymin=AUC-sem, ymax=AUC+sem), width=0.25) + 
+  geom_jitter(data=auc, aes(y=AUC, x=Group), size=0.5, width=0.3, alpha=0.7) +
+  theme_pubr(base_size=11) +
+  NoLegend() + 
+  labs(x="", y="Plasma Glucose AUC") + 
+  ylim(0,50000) + 
+  scale_fill_manual(values=wccols) +
+  theme(aspect.ratio = 1.5, axis.text.x = element_text(angle=45, hjust=1, vjust=0.98))
+
+#T.tests with Bonferroni correction for multiple comparisons
+compare_means(AUC ~ Group, data = auc, method="t.test", p.adjust.method = "bonferroni")
+
+```
+
+## Figure 1G
+
+```{r Fig1G, fig.height=3, fig.width=4, message=FALSE, warning=FALSE}
+# Without stats (added in Ppt)
+ggplot(subset(tissuemass,Tissue=="pgAT"), aes(x=Group, y=Mass, fill=Group)) + 
+  geom_bar(stat="summary", color="black", width=0.8) + 
+  geom_errorbar(data=subset(tissuemass_sem, Tissue=="pgAT"), aes(ymin=Mass-sem, ymax=Mass+sem), width=0.25) + 
+  geom_jitter(size=0.5, width=0.3, alpha=0.7) + 
+  theme_pubr(base_size=11) +
+  NoLegend() + 
+  labs(x="", y="eAT Mass (g)") + 
+  scale_fill_manual(values=wccols) +
+  theme(aspect.ratio = 1.5, axis.text.x = element_text(angle=45, hjust=1, vjust=0.98)) 
+
+ggplot(subset(tissuemass,Tissue=="sAT"), aes(x=Group, y=Mass, fill=Group)) + 
+  geom_bar(stat="summary", color="black", width=0.8) + 
+  geom_errorbar(data=subset(tissuemass_sem, Tissue=="sAT"), aes(ymin=Mass-sem, ymax=Mass+sem), width=0.25) +  
+  geom_jitter(size=0.5, width=0.3, alpha=0.7) + 
+  theme_pubr(base_size=11) +
+  NoLegend() + 
+  labs(x="", y="sAT Mass (g)") + 
+  scale_fill_manual(values=wccols) +
+  theme(aspect.ratio = 1.5, axis.text.x = element_text(angle=45, hjust=1, vjust=0.98)) 
+
+ggplot(subset(tissuemass,Tissue=="Liver"), aes(x=Group, y=Mass, fill=Group)) + 
+  geom_bar(stat="summary", color="black", width=0.8) + 
+  geom_errorbar(data=subset(tissuemass_sem, Tissue=="Liver"), aes(ymin=Mass-sem, ymax=Mass+sem), width=0.25) + 
+  geom_jitter(size=0.5, width=0.3, alpha=0.7) + 
+  theme_pubr(base_size=11) +
+  NoLegend() + 
+  labs(x="", y="Liver Mass (g)") + 
+  scale_fill_manual(values=wccols) +
+  theme(aspect.ratio = 1.5, axis.text.x = element_text(angle=45, hjust=1, vjust=0.98)) 
+  
+
+# For stats
+## eAT/pgAT
+compare_means(Mass ~ Group, data = subset(tissuemass,Tissue=="pgAT"), method="t.test", p.adjust.method = "bonferroni")
+
+## sAT
+compare_means(Mass ~ Group, data = subset(tissuemass,Tissue=="sAT"), method="t.test", p.adjust.method = "bonferroni")
+
+## Liver
+compare_means(Mass ~ Group, data = subset(tissuemass,Tissue=="Liver"), method="t.test", p.adjust.method = "bonferroni")
+```
+
+## Figure 1H
+
+Immunofluorescence for Perilipin-1, no analysis performed in R.
+
+## Figure 1I
+For manuscript: I did not calculate stats in the published data because the distribution is more biologically meaningful. However, there is a statistical difference in adipocyte (or at least, lipid droplet) size between samples. This code reproduces Figure1 panel I, but also provides statistics and other visualization methods for any future reference. 
+
+Note: We subset based on the diameter knowing that adipocytes <20 or >150 are probably artifacts (dead CLS, immune cells, bubbles in the coverslip media).
+```{r Figisetup}
+adipocount <- read.csv("../Inputs/Fig1/MC74_AdipocyteCount_Skeletonize.csv")
+adipocount$Group <- factor(adipocount$Group, levels = c("Lean","Obese","WL","WC"))
+```
+
+```{r Fig1i, fig.width=5, fig.height=4}
+#T.test with Bonferroni correction for multiple comparisons
+## With size thresholds
+compare_means(Diameter ~ Group, data = subset(adipocount, Diameter<150 & Diameter>20), method="t.test", p.adjust.method = "bonferroni")
+## Without adjusting for size thresholds
+compare_means(Diameter ~ Group, data = adipocount, method="t.test", p.adjust.method = "bonferroni")
+
+#Plot distribution with a box and whisker plot
+ggboxplot(d=subset(adipocount, Diameter<150 & Diameter>20), 
+          x="Group", 
+          y="Diameter",  
+          fill="Group", 
+          add = "mean_se")  +
+    theme_classic() +
+    scale_fill_manual(values=wccols) +
+    theme(axis.text.x=element_text(face="bold", size=10)) + 
+    labs(x="", y="") +
+    theme(axis.text.x = element_blank(), axis.ticks = element_blank()) +
+    NoLegend() 
+
+#Plot distribution with a violin plot
+ggplot(subset(adipocount, Diameter<150 & Diameter>20), aes(x=Group, y=Diameter, fill=Group)) + 
+  geom_violin(draw_quantiles = c(0.25, 0.5, 0.75), 
+              scale = "count", 
+              trim = FALSE, 
+              adjust = 1) +
+  labs(x="Group", y="Estimated Diameter (um)") + 
+  scale_fill_manual(values=wccols) + 
+  theme_classic()
+
+#Plot a density distribution
+ggplot(subset(adipocount, Diameter<150 & Diameter>10), aes(Diameter)) + 
+  geom_histogram(aes(y=..density.., fill=Group),stat="bin", binwidth=5,position="identity", alpha=0.4) + 
+  theme_classic() + 
+  scale_fill_manual(values=wccols) + 
+  geom_density(aes(color=Group)) + 
+  scale_color_manual(values=wccols) 
+
+#Ridgeplot colored by adipocyte size
+ggplot(subset(adipocount, Diameter<150 & Diameter>10), aes(y=Group, x=Diameter, fill=stat(x))) + 
+  geom_density_ridges_gradient(scale = 3, 
+                               size= 0.2, 
+                               rel_min_height=0.01,
+                               quantile_lines=TRUE,
+                               quantiles=0.5) + 
+  theme_classic() + 
+  scale_fill_viridis(name="Diameter", 
+                     option="C",
+                     limits=c(0,150)) +
+  NoLegend()
+
+#Ridgeplot colored by group with median plotted for all cells (no downsampling)
+ggplot(subset(adipocount, Diameter<150 & Diameter>20), aes(y=Group, x=Diameter, fill=Group, alpha=0.8)) + 
+  geom_density_ridges2(scale = 3,
+                       size= 0.2, 
+                       rel_min_height=0.01,
+                       quantile_lines=TRUE,
+                       quantiles=0.5,
+                       vline_size=0.5) + 
+  theme_classic() + 
+  scale_fill_manual(values=wccols) +
+  NoLegend()
+
+#Downsampled ridgeplot with rain jitter of samples showing distribution for a random 20000 cells (~5000 per group)
+ggplot(subset(adipocount[sample(1:nrow(adipocount), 20000),], Diameter<150 & Diameter>20), aes(y=Group, x=Diameter, fill=Group, alpha=0.9)) + 
+  geom_density_ridges2(aes(point_color=Group, vline_color=Group),
+                       scale = 3,
+                       size= 0.2, 
+                       rel_min_height=0.01,
+                       jittered_points=TRUE,
+                       quantile_lines=TRUE,
+                       quantiles=0.5,
+                       vline_size=0.75,
+                       point_size=0.01,
+                       point_alpha=1,
+                       position="points_jitter") + 
+  labs(x=expression("Lipid Droplet Diameter" ~(μm^2)),y="") +
+  theme_classic(base_size = 16) + 
+  scale_fill_manual(values=wccols) +
+  scale_fill_manual(aesthetics=c("point_color", "vline_color"),values=wccols) +
+  scale_color_manual(values=wccols) +
+  NoLegend() +
+  theme(panel.grid.major = element_line(color="lightgrey"))
+```
+
+#Session Info
+```{r}
+sessionInfo()
+```
+

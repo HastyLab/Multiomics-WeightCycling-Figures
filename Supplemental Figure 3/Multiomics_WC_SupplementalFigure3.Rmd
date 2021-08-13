@@ -1,0 +1,186 @@
+---
+title: Multiomics reveals persistence of obesity-associated adipose tissue immune
+  cell phenotypes during weight loss and subsequent weight regain
+author: "Matthew A. Cottam"
+subtitle: "Supplemental Figure 3"
+output:
+  html_document:
+    toc: yes
+    df_print: paged
+  html_notebook:
+    theme: journal
+    fig_caption: yes
+    toc: yes
+---
+
+# Setup
+
+```{r prep, warning=FALSE, message=FALSE}
+library(Seurat)
+library(RColorBrewer)
+library(ggplot2)
+library(ggpubr)
+
+#Data file
+data.integrated <- readRDS("../Inputs/IntegratedData.rds")
+
+#Color panels
+maccols <- brewer.pal(n=8, name="Blues")[c(-1,-3,-5,-7)]
+monocols <- c("#ff8ade","#e324ad")
+dccols <- brewer.pal(n=9, name="Greens")[-1]
+tcols <- brewer.pal(n=8, name="Reds")[-1]
+nkcols <- c("#876149","#6e3f22")
+bcols <- brewer.pal(n=4, name="Purples")[-1]
+othcols <- c("#71a157","#00c5cc","#a18e25","#b282b3")
+strcols <- brewer.pal(n=4, name="Oranges")[-1]
+wccols = c("#878787", "#518db6","#94cc73","#e96b53")
+
+cols <- c(maccols,monocols,dccols,tcols,nkcols,bcols,othcols,strcols)
+
+llcols <- c("#4292C6","#ff8ade","#238B45","#EF3B2C","#876149","#9E9AC8","#71a157","#00c5cc","#a18e25","#b282b3","#FD8D3C")
+```
+
+# Supplemental Figure 3
+
+## Supplemental Figure 3A
+```{r SuppFig3Asetup,  warning=FALSE, message=FALSE}
+Lean <- subset(data.integrated, orig.ident=="Lean")
+Obese <- subset(data.integrated, orig.ident=="Obese")
+WL <- subset(data.integrated, orig.ident=="WL")
+WC <- subset(data.integrated, orig.ident=="WC")
+
+Lean$HTO_maxID <- factor(Lean$HTO_maxID, levels=c("Hashtag4", "Hashtag3","Hashtag2","Hashtag1"))
+Idents(Lean) <- "HTO_maxID"
+Lean <- RenameIdents(Lean, 
+                     "Hashtag1" = "Lean #1",
+                     "Hashtag2" = "Lean #2",
+                     "Hashtag3" = "Lean #3",
+                     "Hashtag4" = "Lean #4")
+Obese$HTO_maxID <- factor(Obese$HTO_maxID, levels=c("Hashtag9","Hashtag8","Hashtag6","Hashtag5"))
+Idents(Obese) <- "HTO_maxID"
+Obese <- RenameIdents(Obese, 
+                     "Hashtag5" = "Obese #1",
+                     "Hashtag6" = "Obese #2",
+                     "Hashtag8" = "Obese #3",
+                     "Hashtag9" = "Obese #4")
+WL$HTO_maxID <- factor(WL$HTO_maxID, levels=c("Hashtag4", "Hashtag3","Hashtag2","Hashtag1"))
+Idents(WL) <- "HTO_maxID"
+WL <- RenameIdents(WL, 
+                     "Hashtag1" = "WL #1",
+                     "Hashtag2" = "WL #2",
+                     "Hashtag3" = "WL #3",
+                     "Hashtag4" = "WL #4")
+WC$HTO_maxID <- factor(WC$HTO_maxID, levels=c("Hashtag9","Hashtag8","Hashtag6","Hashtag5"))
+Idents(WC) <- "HTO_maxID"
+WC <- RenameIdents(WC, 
+                     "Hashtag5" = "WC #1",
+                     "Hashtag6" = "WC #2",
+                     "Hashtag8" = "WC #3",
+                     "Hashtag9" = "WC #4")
+```
+
+
+```{r SuppFig3A, echo=FALSE, fig.height=2.5, fig.width=5}
+Idents(Lean) <- "HTO_maxID"
+Lean <- RenameIdents(Lean, 
+                     "Hashtag1" = "Lean2 #1",
+                     "Hashtag2" = "Lean #2",
+                     "Hashtag3" = "Lean #3",
+                     "Hashtag4" = "Lean #4")
+Idents(Obese) <- "HTO_maxID"
+Obese <- RenameIdents(Obese, 
+                     "Hashtag5" = "Obese #1",
+                     "Hashtag6" = "Obese #2",
+                     "Hashtag8" = "Obese #3",
+                     "Hashtag9" = "Obese #4")
+Idents(WL) <- "HTO_maxID"
+WL <- RenameIdents(WL, 
+                     "Hashtag1" = "WL #1",
+                     "Hashtag2" = "WL #2",
+                     "Hashtag3" = "WL #3",
+                     "Hashtag4" = "WL #4")
+Idents(WC) <- "HTO_maxID"
+WC <- RenameIdents(WC, 
+                     "Hashtag5" = "WC #1",
+                     "Hashtag6" = "WC #2",
+                     "Hashtag8" = "WC #3",
+                     "Hashtag9" = "WC #4")
+
+RidgePlot(Lean, 
+          assay = "HTO", 
+          features = rownames(Lean[["HTO"]])[1:4], 
+          stack=T, 
+          fill.by="ident",
+          same.y.lims=TRUE) +
+  labs(y="") +
+  NoLegend() +
+  theme(strip.text.x = element_text(angle=0), 
+        axis.text.y = element_text(face="bold.italic")) +
+  scale_fill_brewer(palette="Spectral")
+RidgePlot(Obese, 
+          assay = "HTO", 
+          features = rownames(Obese[["HTO"]])[5:8], 
+          stack=T, 
+          fill.by="ident",
+          same.y.lims=TRUE) +
+  labs(y="") +
+  NoLegend() +
+  theme(strip.text.x = element_text(angle=0), 
+        axis.text.y = element_text(face="bold.italic"))  +
+    scale_fill_brewer(palette="Spectral")
+RidgePlot(WL, 
+          assay = "HTO", 
+          features = rownames(WL[["HTO"]])[1:4], 
+          stack=T, 
+          fill.by="ident",
+          same.y.lims=TRUE) +
+  labs(y="") +
+  NoLegend() +
+  theme(strip.text.x = element_text(angle=0), 
+        axis.text.y = element_text(face="bold.italic")) +
+    scale_fill_brewer(palette="Spectral")
+RidgePlot(WC, 
+          assay = "HTO", 
+          features = rownames(WC[["HTO"]])[5:8], 
+          stack=T, 
+          fill.by="ident",
+          same.y.lims=TRUE) +
+  labs(y="") +
+  NoLegend() +
+  theme(strip.text.x = element_text(angle=0), 
+        axis.text.y = element_text(face="bold.italic")) +
+    scale_fill_brewer(palette="Spectral")
+
+```
+
+## Supplemental Figure 3B
+
+```{r SuppFig3B, echo=TRUE, warning=FALSE, fig.width=6, fig.height=6}
+DimPlot(Lean, group.by="HTO_maxID", pt.size=0.5) + 
+  theme_void() + 
+  labs(title="") + 
+  scale_color_brewer(palette="Spectral") + 
+  NoLegend()
+DimPlot(Obese, group.by="HTO_maxID", pt.size=0.5) + 
+  theme_void() + 
+  labs(title="") + 
+  scale_color_brewer(palette="Spectral") + 
+  NoLegend()
+DimPlot(WL, group.by="HTO_maxID", pt.size=0.5) + 
+  theme_void() + 
+  labs(title="") + 
+  scale_color_brewer(palette="Spectral") + 
+  NoLegend()
+DimPlot(WC, group.by="HTO_maxID", pt.size=0.5) + 
+  theme_void() + 
+  labs(title="") + 
+  scale_color_brewer(palette="Spectral") + 
+  NoLegend()
+```
+
+# Session Info
+
+```{r si}
+sessionInfo()
+```
+

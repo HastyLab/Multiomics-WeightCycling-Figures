@@ -1,0 +1,77 @@
+---
+title: Multiomics reveals persistence of obesity-associated adipose tissue immune
+  cell phenotypes during weight loss and subsequent weight regain
+author: "Matthew A. Cottam"
+subtitle: "Supplemental Figure 4"
+output:
+  html_document:
+    toc: yes
+    df_print: paged
+  html_notebook:
+    theme: journal
+    fig_caption: yes
+    toc: yes
+---
+
+# Setup
+
+```{r prep, warning=FALSE, message=FALSE}
+library(Seurat)
+library(RColorBrewer)
+library(ggplot2)
+library(ggpubr)
+library(formattable)
+library(dplyr)
+
+#Data file
+data.integrated <- readRDS("../Inputs/IntegratedData.rds")
+
+#Color panels
+maccols <- brewer.pal(n=8, name="Blues")[c(-1,-3,-5,-7)]
+monocols <- c("#ff8ade","#e324ad")
+dccols <- brewer.pal(n=9, name="Greens")[-1]
+tcols <- brewer.pal(n=8, name="Reds")[-1]
+nkcols <- c("#876149","#6e3f22")
+bcols <- brewer.pal(n=4, name="Purples")[-1]
+othcols <- c("#71a157","#00c5cc","#a18e25","#b282b3")
+strcols <- brewer.pal(n=4, name="Oranges")[-1]
+wccols = c("#878787", "#518db6","#94cc73","#e96b53")
+
+cols <- c(maccols,monocols,dccols,tcols,nkcols,bcols,othcols,strcols)
+
+llcols <- c("#4292C6","#ff8ade","#238B45","#EF3B2C","#876149","#9E9AC8","#71a157","#00c5cc","#a18e25","#b282b3","#FD8D3C")
+```
+
+# Supplemental Figure 4
+
+```{r SuppFig4setup, warning=FALSE, message=FALSE}
+DefaultAssay(data.integrated) <- "integrated"
+Idents(data.integrated) <- data.integrated$highlevel2
+all.markers <- FindAllMarkers(data.integrated, only.pos = TRUE, min.pct = 0.8, logfc.threshold = 0.5, verbose=FALSE)
+```
+
+```{r SuppFig4Markers, warning=FALSE, message=FALSE}
+top5 <- all.markers %>% group_by(cluster) %>% top_n(n = 5, wt = avg_log2FC)
+top5 %>% formattable()
+```
+
+```{r SuppFig4, fig.width=10, fig.height=14, warning=FALSE, message=FALSE}
+DoHeatmap(subset(data.integrated, downsample=200), 
+          features=unique(top5$gene),
+          group.by="highlevel2",
+          group.colors=cols,
+          assay="integrated",
+          raster=FALSE, 
+          label=FALSE,
+          disp.min=0,
+          disp.max=2) + 
+    NoLegend() + 
+    scale_fill_distiller(type="seq", palette="YlOrRd", direction=1)
+```
+
+# Session Info
+
+```{r si}
+sessionInfo()
+```
+

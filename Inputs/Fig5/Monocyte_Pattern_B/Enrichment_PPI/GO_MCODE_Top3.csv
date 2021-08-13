@@ -1,0 +1,15 @@
+Network,Annotation
+MyList,R-MMU-6798695|Neutrophil degranulation|-13.4;GO:0044242|cellular lipid catabolic process|-9.6;GO:0016042|lipid catabolic process|-9.3
+MyList_MCODE_ALL,R-MMU-6798695|Neutrophil degranulation|-16.6;R-MMU-5653656|Vesicle-mediated transport|-10.6;R-MMU-199991|Membrane Trafficking|-9.3
+MyList_SUB1_MCODE_1,R-MMU-6807505|RNA polymerase II transcribes snRNA genes|-5.6;R-MMU-113418|Formation of the Early Elongation Complex|-5.0;R-MMU-8957275|Post-translational protein phosphorylation|-4.8
+MyList_SUB1_MCODE_2,R-MMU-8856828|Clathrin-mediated endocytosis|-10.9;R-MMU-199991|Membrane Trafficking|-9.7;R-MMU-5653656|Vesicle-mediated transport|-9.5
+MyList_SUB1_MCODE_3,R-MMU-6798695|Neutrophil degranulation|-19.0;GO:0030865|cortical cytoskeleton organization|-9.2;GO:0008360|regulation of cell shape|-9.1
+MyList_SUB1_MCODE_4,R-MMU-6807878|COPI-mediated anterograde transport|-4.7;R-MMU-8856688|Golgi-to-ER retrograde transport|-4.2;R-MMU-199977|ER to Golgi Anterograde Transport|-4.1
+MyList_SUB1_MCODE_5,GO:0006511|ubiquitin-dependent protein catabolic process|-2.9;GO:0019941|modification-dependent protein catabolic process|-2.9;GO:0043632|modification-dependent macromolecule catabolic process|-2.8
+MyList_SUB1_MCODE_6,R-MMU-9033241|Peroxisomal protein import|-14.3;R-MMU-9609507|Protein localization|-13.0;ko04146|Peroxisome|-10.7
+MyList_SUB1_MCODE_7,R-MMU-983168|Antigen processing: Ubiquitination & Proteasome degradation|-6.8;R-MMU-983169|Class I MHC mediated antigen processing & presentation|-6.4;R-MMU-1280218|Adaptive Immune System|-5.3
+MyList_SUB1_MCODE_8,GO:0061952|midbody abscission|-11.8;GO:1902410|mitotic cytokinetic process|-11.2;GO:0045324|late endosome to vacuole transport|-11.2
+MyList_SUB1_MCODE_9,R-MMU-418594|G alpha (i) signalling events|-5.6;R-MMU-388396|GPCR downstream signalling|-4.7;R-MMU-372790|Signaling by GPCR|-4.6
+MyList_SUB1_MCODE_10,GO:0034314|Arp2/3 complex-mediated actin nucleation|-8.2;GO:0045010|actin nucleation|-7.8;ko05100|Bacterial invasion of epithelial cells|-7.3
+MyList_SUB1_MCODE_11,"R-MMU-114608|Platelet degranulation |-6.8;R-MMU-76005|Response to elevated platelet cytosolic Ca2+|-6.7;R-MMU-76002|Platelet activation, signaling and aggregation|-5.8"
+MyList_SUB1_MCODE_12,ko00230|Purine metabolism|-6.2;mmu00230|Purine metabolism|-6.2

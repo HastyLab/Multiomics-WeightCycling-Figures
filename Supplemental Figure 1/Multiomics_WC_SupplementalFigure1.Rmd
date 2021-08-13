@@ -1,0 +1,267 @@
+---
+title: Multiomics reveals persistence of obesity-associated adipose tissue immune
+  cell phenotypes during weight loss and subsequent weight regain
+author: "Matthew A. Cottam"
+subtitle: "Supplemental Figure 1"
+output:
+  html_document:
+    toc: yes
+    df_print: paged
+  html_notebook:
+    theme: journal
+    fig_caption: yes
+    toc: yes
+---
+
+# Setup
+
+```{r prep, warning=FALSE, message=FALSE}
+library(Seurat)
+library(RColorBrewer)
+library(ggplot2)
+library(dplyr)
+library(ggpubr)
+library(reshape2)
+
+#Data file
+data.integrated <- readRDS("../Inputs/IntegratedData.rds")
+
+#Color panels
+maccols <- brewer.pal(n=8, name="Blues")[c(-1,-3,-5,-7)]
+monocols <- c("#ff8ade","#e324ad")
+dccols <- brewer.pal(n=9, name="Greens")[-1]
+tcols <- brewer.pal(n=8, name="Reds")[-1]
+nkcols <- c("#876149","#6e3f22")
+bcols <- brewer.pal(n=4, name="Purples")[-1]
+othcols <- c("#71a157","#00c5cc","#a18e25","#b282b3")
+strcols <- brewer.pal(n=4, name="Oranges")[-1]
+wccols = c("#878787", "#518db6","#94cc73","#e96b53")
+
+cols <- c(maccols,monocols,dccols,tcols,nkcols,bcols,othcols,strcols)
+
+llcols <- c("#4292C6","#ff8ade","#238B45","#EF3B2C","#876149","#9E9AC8","#71a157","#00c5cc","#a18e25","#b282b3","#FD8D3C")
+```
+
+# Supplemental Figure 1
+
+The animals that were part of the sequencing experiment originated from HLC90. The data for these specific 16 mice are plotted in this supplemental figure.
+
+```{r Supp1Setup}
+#Import Body Mass Data
+bodymass <- read.csv("../Inputs/SuppFig1/HLC90_Seq-Mice_BodyMass.csv")
+bodymass <- reshape2::melt(bodymass, id.vars=c("Mouse.","Group"), measure.vars=colnames(bodymass)[3:29], variable.name="Week", value.name="Bodymass")
+colnames(bodymass) <- c("Mouse","Group","Week","Bodymass")
+bodymass$Group <- factor(bodymass$Group, levels = c("Lean","Obese","WL","WC"))
+
+#Body Mass Error Calculation
+bodymass_sem <- bodymass %>%
+  group_by(Group, Week) %>%
+  summarize(mean = mean(Bodymass), sd = sd(Bodymass))
+bodymass_sem <- bodymass_sem %>% mutate(sem = sd/sqrt(4))
+colnames(bodymass_sem) = c("Group","Week","Bodymass","sd","sem")
+
+#Import Food Intake
+foodintake <- read.csv("../Inputs/SuppFig1/HLC90_Seq-Mice_FoodIntake.csv")
+foodintake <- reshape2::melt(foodintake, id.vars=c("Mouse.","Group"), measure.vars=colnames(foodintake)[3:28], variable.name="Week", value.name="foodintake")
+colnames(foodintake) <- c("Mouse","Group","Week","FoodIntake")
+foodintake$Group <- factor(foodintake$Group, levels = c("Lean","Obese","WL","WC"))
+
+#Food Intake Error Calculation
+foodintake_sem <- foodintake %>%
+  group_by(Group, Week) %>%
+  summarize(mean = mean(FoodIntake), sd = sd(FoodIntake))
+foodintake_sem <- foodintake_sem %>% mutate(sem = sd/sqrt(4))
+colnames(foodintake_sem) = c("Group","Week","FoodIntake","sd","sem")
+
+#Import ipGTT
+gtt <- read.csv("../Inputs/SuppFig1/HLC90_Seq-Mice_ipGTT.csv")
+gtt <- reshape2::melt(gtt, id.vars=c("Mouse.","Group"), measure.vars=colnames(gtt)[3:9], variable.name="Time", value.name="PlasmaGlucose")
+colnames(gtt) <- c("Mouse","Group","Time","PlasmaGlucose")
+gtt$Group <- factor(gtt$Group, levels = c("Lean","Obese","WL","WC"))
+gtt$Time <- ifelse(gtt$Time == "t0",0,
+                   ifelse(gtt$Time == "t15", 15,
+                          ifelse(gtt$Time == "t30",30,
+                                 ifelse(gtt$Time == "t45",45,
+                                        ifelse(gtt$Time == "t60",60,
+                                               ifelse(gtt$Time == "t90",90,
+                                                      ifelse(gtt$Time == "t120", 120,NA))))))) #This is definitely not the most efficient way to do this, but it works and is robust.
+
+#ipGTT Error Calculation
+gtt_sem <- gtt %>%
+  group_by(Group, Time) %>%
+  summarize(mean = mean(PlasmaGlucose), sd = sd(PlasmaGlucose))
+gtt_sem <- gtt_sem %>% mutate(sem = sd/sqrt(4))
+colnames(gtt_sem) = c("Group","Time","PlasmaGlucose","sd","sem")
+
+#Import Sac Mass
+tissuemass <- read.csv("../Inputs/SuppFig1/HLC90_Seq-Mice_eATMass.csv")
+tissuemass <- reshape2::melt(tissuemass, id.vars=c("Mouse.","Group"), measure.vars=colnames(tissuemass)[3:4], variable.name="Source", value.name="Mass")
+colnames(tissuemass) <- c("Mouse","Group","Source","Mass")
+tissuemass$Group <- factor(tissuemass$Group, levels = c("Lean","Obese","WL","WC"))
+
+#Sac Mass Error Calculation
+tissuemass_sem <- tissuemass %>%
+  group_by(Group, Source) %>%
+  summarize(mean = mean(Mass), sd = sd(Mass))
+tissuemass_sem <- tissuemass_sem %>% mutate(sem = sd/sqrt(4))
+colnames(tissuemass_sem) = c("Group","Source","Mass","sd","sem")
+
+#Calculate the AUC
+#7 measurements per mouse; 16 mice
+gtt <- gtt %>% arrange(Mouse)
+auc <- data.frame(Mouse = unique(gtt$Mouse))
+auc$Group <- c(rep("Lean",4), rep("Obese",4),rep("WL",4),rep("WC",4))
+AUC=NULL
+for (mouse in unique(gtt$Mouse)){
+AUC <- rbind(AUC,(sum(diff(subset(gtt, Mouse==mouse)$Time)*(head(subset(gtt, Mouse==mouse)$PlasmaGlucose,-1)+tail(subset(gtt, Mouse==mouse)$PlasmaGlucose,-1)))/2))
+}
+auc$AUC <- AUC[,1]
+
+#WL is missing a value for the final time point of mouse #1933,H so we have to calculate that AUC separately and replace it.
+m1933 <- subset(gtt,Mouse==1933)[1:6,]
+auc[11,3] <- sum(diff(m1933$Time)*(head(m1933$PlasmaGlucose,-1)+tail(m1933$PlasmaGlucose,-1)))/2
+
+auc$Group <- factor(auc$Group, levels=c("Lean","Obese","WL","WC"))
+
+#Error for AUC
+auc_sem <- auc %>%
+  group_by(Group) %>%
+  summarize(mean = mean(AUC), sd = sd(AUC))
+auc_sem <- auc_sem %>% mutate(sem = sd/sqrt(4))
+colnames(auc_sem) = c("Group","AUC","sd","sem")
+```
+
+## Supplemental Figure 1A
+
+```{r Supp1a, fig.height=3, fig.width=4}
+ggplot(bodymass, aes(x=as.numeric(Week)-1, y=Bodymass, color=Group)) + 
+  geom_point(stat="summary", size=2) + 
+  geom_line(stat="summary", size=1) +
+  geom_errorbar(data=bodymass_sem, aes(ymin=Bodymass-sem, ymax=Bodymass+sem), width=0.25) + 
+  theme_pubr(base_size=12) +
+  NoLegend() + 
+  labs(x="Weeks on Diet", y="Body Mass (g)") +
+  scale_x_continuous(breaks=seq(from=0, to=27, by=3)) + 
+  ylim(0,60) + 
+  scale_color_manual(values=wccols) +
+  geom_vline(xintercept = c(9,18), linetype="dashed")
+
+#ANOVA
+compare_means(Bodymass ~ Group, data = bodymass, method="anova") #Across all weeks 
+compare_means(Bodymass ~ Group, data = bodymass, group.by="Week",method="anova") #By week
+
+#T.tests with Bonferroni correction for multiple comparisons
+compare_means(Bodymass ~ Group, data = bodymass, group.by="Week", method="t.test", p.adjust.method="bonferroni")
+```
+
+## Supplemental Figure 1B
+
+```{r Supp1b, fig.height=3, fig.width=4}
+ggplot(foodintake, aes(x=as.numeric(Week), y=FoodIntake, color=Group)) + 
+  geom_point(stat="summary", size=2) + 
+  geom_line(stat="summary", size=1) +
+  geom_errorbar(data=foodintake_sem, aes(ymin=FoodIntake-sem, ymax=FoodIntake+sem), width=0.25) + 
+  theme_pubr(base_size=12) +
+  NoLegend() + 
+  labs(x="Weeks on Diet", y="Food Intake \n (Avrg kcal/day/mouse)") +
+  scale_x_continuous(breaks=seq(from=0, to=27, by=3)) + 
+  ylim(0,25) + 
+  scale_color_manual(values=wccols) +
+  geom_vline(xintercept = c(9,18), linetype="dashed")
+
+#ANOVA
+compare_means(FoodIntake ~ Group, data = foodintake, method="anova") #Across all weeks 
+compare_means(FoodIntake ~ Group, data = foodintake, group.by="Week",method="anova") #By week
+
+#T.tests with Bonferroni correction for multiple comparisons
+compare_means(FoodIntake ~ Group, data = foodintake, group.by="Week", method="t.test", p.adjust.method="bonferroni")
+```
+
+## Supplemental Figure 1C and 1D
+
+```{r Supp1candd, fig.height=3, fig.width=4}
+#Total mass
+ggplot(subset(tissuemass,Source=="TotalMass"), aes(x=Group, y=Mass, fill=Group)) + 
+  geom_bar(stat="summary", color="black", width=0.8) + 
+  geom_errorbar(data=subset(tissuemass_sem, Source=="TotalMass"), aes(ymin=Mass-sem, ymax=Mass+sem), width=0.25) + 
+  theme_pubr(base_size=11) +
+  NoLegend() + 
+  labs(x="", y="Body Mass (g)") + 
+  scale_fill_manual(values=wccols) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.1)))  +
+  theme(aspect.ratio = 1.5, axis.text.x = element_text(angle=45, hjust=1, vjust=0.98)) 
+
+#T.tests with Bonferroni correction for multiple comparisons
+compare_means(Mass ~ Group, data = subset(tissuemass,Source=="TotalMass"), method="t.test", p.adjust.method = "bonferroni")
+
+#eAT Mass
+ggplot(subset(tissuemass,Source=="eATMass"), aes(x=Group, y=Mass, fill=Group)) + 
+  geom_bar(stat="summary", color="black", width=0.8) + 
+  geom_errorbar(data=subset(tissuemass_sem, Source=="eATMass"), aes(ymin=Mass-sem, ymax=Mass+sem), width=0.25) + 
+  theme_pubr(base_size=11) +
+  NoLegend() + 
+  labs(x="", y="eAT Mass (g)") + 
+  scale_fill_manual(values=wccols) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.1)))  +
+  theme(aspect.ratio = 1.5, axis.text.x = element_text(angle=45, hjust=1, vjust=0.98)) 
+
+#T.tests with Bonferroni correction for multiple comparisons
+compare_means(Mass ~ Group, data = subset(tissuemass,Source=="eATMass"), method="t.test", p.adjust.method = "bonferroni")
+  
+```
+
+## Supplemental Figure 1E
+
+```{r Supp1e, fig.height=3, fig.width=4}
+ggplot(gtt, aes(x=Time, y=PlasmaGlucose, color=Group)) + 
+  geom_point(stat="summary", size=2) + 
+  geom_line(stat="summary", size=1) +
+  geom_errorbar(data=gtt_sem, aes(ymin=PlasmaGlucose-sem, ymax=PlasmaGlucose+sem), width=0.25) + 
+  theme_pubr(base_size=12) +
+  NoLegend() + 
+  labs(x="Time (min)", y="Plasma Glucose (mg/dL)") +
+  scale_x_continuous(breaks=seq(from=0, to=120, by=30)) + 
+  ylim(0,500) + 
+  scale_color_manual(values=wccols) 
+
+#ANOVA
+compare_means(PlasmaGlucose ~ Group, data = gtt, method="anova") #Across all timepoints
+compare_means(PlasmaGlucose ~ Group, data = gtt, group.by="Time",method="anova") #By time
+
+#T.tests with Bonferroni correction for multiple comparisons
+compare_means(PlasmaGlucose ~ Group, data = gtt, group.by="Time", method="t.test", p.adjust.method="bonferroni")
+
+#For Legend
+ggplot(gtt, aes(x=Time, y=PlasmaGlucose, color=Group)) + 
+  geom_point(stat="summary", size=2) + 
+  geom_line(stat="summary", size=1) +
+  geom_errorbar(data=gtt_sem, aes(ymin=PlasmaGlucose-sem, ymax=PlasmaGlucose+sem), width=0.25) + 
+  theme_classic(base_size=12) +
+  labs(x="Time (min)", y="Plasma Glucose (mg/dL)") +
+  scale_x_continuous(breaks=seq(from=0, to=120, by=30)) + 
+  ylim(0,500) + 
+  scale_color_manual(values=wccols) 
+```
+
+## Supplemental Figure 1F
+
+```{r Supp1f, fig.height=3, fig.width=4}
+ggplot(auc, aes(x=Group, y=AUC, fill=Group)) + 
+  geom_bar(stat="summary", color="black") + 
+  geom_errorbar(data=auc_sem, aes(ymin=AUC-sem, ymax=AUC+sem), width=0.25) + 
+  theme_pubr(base_size=16) +
+  NoLegend() + 
+  labs(x="", y="Plasma Glucose AUC") + 
+  ylim(0,40000) + 
+  scale_fill_manual(values=wccols) 
+
+#T.tests with Bonferroni correction for multiple comparisons
+compare_means(AUC ~ Group, data = auc, method="t.test", p.adjust.method = "bonferroni")
+```
+
+# Session Info
+
+```{r si}
+sessionInfo()
+```
+

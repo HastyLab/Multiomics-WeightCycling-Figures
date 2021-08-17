@@ -1,4 +1,4 @@
-# Multiomics-WeightCycling-Figures
+# Multi-omics in weight cycling - Reproducing Figures
 This repository provides code to reproduce relevant figures in the following publication: ***Under Review***. If you use code accessed through this github resource, please remember to cite our work:
 
 **CITATION INFORMATION**

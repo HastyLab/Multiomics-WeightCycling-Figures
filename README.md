@@ -11,7 +11,7 @@ To generate any of our figures, you will need our Seurat v4 data object (Integra
 * accession number: GSE182233 
 * link: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE182233
 
-Clicking this will allow you to download the integrated date file directly: <a href="https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE182233&format=file&file=GSE182233%5FIntegratedData%2Erds%2Egz">DataIntegrated.rds</a>. You will need to gunzip this file prior to importing it into R.
+Clicking this will allow you to download the integrated date file directly: <a href="https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE182233&format=file&file=GSE182233%5FIntegratedData%2Erds%2Egz">IntegratedData.rds</a>. You will need to gunzip this file prior to importing it into R.
 
 You can also generate this integrated data file yourself by following <a href="https://github.com/HastyLab/Multiomics-WeightCycling-Vignettes">our vignettes.</a> 
 

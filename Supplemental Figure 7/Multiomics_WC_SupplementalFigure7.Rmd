@@ -1,8 +1,8 @@
 ---
 title: Multiomics reveals persistence of obesity-associated adipose tissue immune
-  cell phenotypes during weight loss and subsequent weight regain
+  cell phenotypes during weight loss and weight regain in mice
 author: "Matthew A. Cottam"
-subtitle: "Figure 4"
+subtitle: "Supplemental Figure 7"
 output:
   html_document:
     toc: yes
@@ -15,18 +15,13 @@ output:
 
 # Setup
 
-```{r prep, echo=TRUE, warning=FALSE, message=FALSE}
+```{r prep, warning=FALSE, message=FALSE}
 library(Seurat)
 library(RColorBrewer)
 library(ggplot2)
-library(dplyr)
 library(ggpubr)
-library(SingleCellExperiment)
-library(ggrepel)
-library(reticulate)
-library(viridis)
-library(ProjecTILs)
-library(ggnewscale)
+library(formattable)
+library(dplyr)
 
 #Data file
 data.integrated <- readRDS("../Inputs/IntegratedData.rds")
@@ -45,165 +40,145 @@ wccols = c("#878787", "#518db6","#94cc73","#e96b53")
 cols <- c(maccols,monocols,dccols,tcols,nkcols,bcols,othcols,strcols)
 
 llcols <- c("#4292C6","#ff8ade","#238B45","#EF3B2C","#876149","#9E9AC8","#71a157","#00c5cc","#a18e25","#b282b3","#FD8D3C")
+
+#Calculate cellspm
+cellspm <- table(data.integrated$individual_mice, data.integrated$highlevel2)
+propcellspm <- prop.table(cellspm, margin=1)
+#Convert to a dataframe
+cellspm <- as.data.frame(cellspm)
+propcellspm <- as.data.frame(propcellspm)
+#Change column names
+colnames(cellspm) <- c("Mouse","Cluster","Counts")
+colnames(propcellspm) <- c("Mouse","Cluster","Frequency")
+#Add a column indicating the groups to each table
+cellspm$Group <- gsub("_Hashtag.","", cellspm$Mouse)
+propcellspm$Group <- gsub("_Hashtag.","", propcellspm$Mouse)
+#Normalize "Counts" to "Counts per hundred cells sequenced"
+cphc<-list()
+cellspm <- cellspm %>% arrange(.,Mouse)
+for (i in levels(cellspm$Mouse)){
+  x <- sum(subset(cellspm, Mouse==i)$Counts)/100
+  y <- subset(cellspm, Mouse==i)$Counts/x
+  cphc <- append(cphc, y)
+}
+cellspm$CountsPerHundred <- as.numeric(cphc)
+#Function to calculate standard error for each given variable (cell cluster)
+ data_summary <- function(data, varname, groupnames){
+  require(plyr)
+  summary_func <- function(x, col){
+    c(mean = mean(x[[col]], na.rm=TRUE),
+      se = sd(x[[col]], na.rm=TRUE) / sqrt(sum(!is.na(x[[col]]))))
+  }
+  data_sum<-ddply(data, groupnames, .fun=summary_func,
+                  varname)
+names(data_sum)[names(data_sum) == 'mean'] <- varname
+return(data_sum)
+}
+#Summarize the data
+clustercounts <- data_summary(cellspm, varname="CountsPerHundred", groupnames=c("Group","Cluster"))
+clusterprops <- data_summary(propcellspm, varname="Frequency", groupnames=c("Group","Cluster"))
 ```
 
-# Supplemental Figure 7
+# Supplemental Figure 7 
 
-## Supplemental Figure 7A
-
-```{r SuppFig7Asetup, fig.width=3, fig.height=3, warning=FALSE, message=FALSE}
-#Download ProjectTILs reference from Figshare: https://figshare.com/articles/dataset/ProjecTILs_murine_reference_atlas_of_tumor-infiltrating_T_cells_version_1/12478571/2
-#download.file('https://ndownloader.figshare.com/files/23136746', destfile="../Inputs/SuppFig7/ref_TILAtlas_mouse_v1.rds")
-
-#Subset for T cells
-Tcells <- subset(data.integrated, highlevel2=="Th1 CD4+ T Cells" | highlevel2=="Th2 CD4+ T Cells" | highlevel2=="Tregs" | 
-                   highlevel2=="Effector Memory CD8+ T Cells" | highlevel2=="Central Memory CD8+ T Cells"| highlevel2=="Cycling CD8+ T Cells")
-
-#Load ProjecTILs Seurat reference using cancer atlas
-ref <- load.reference.map("../Inputs/SuppFig7/ref_TILAtlas_mouse_v1.rds")
-refCols <- c("#edbe2a", "#A58AFF", "#53B400", "#F8766D", "#00B6EB", "#d1cfcc", "#FF0000", "#87f6a5", "#e812dd")
-DimPlot(ref,label = T, cols =refCols) + theme_void() + NoLegend()
-
-#Project diet groups onto ProjecTILs annotated cells
-LeanPTils <- make.projection(subset(Tcells, orig.ident=="Lean"), ref=ref, skip.normalize=T, seurat.k.filter=100, filter.cells=F)
-ObesePTils <- make.projection(subset(Tcells, orig.ident=="Obese"), ref=ref, skip.normalize=T, seurat.k.filter=100, filter.cells=F)
-WLPTils <- make.projection(subset(Tcells, orig.ident=="WL"), ref=ref, skip.normalize=T, seurat.k.filter=100, filter.cells=F)
-WCPTils <- make.projection(subset(Tcells, orig.ident=="WC"), ref=ref, skip.normalize=T, seurat.k.filter=100, filter.cells=F)
-
-#Predict cellstate for mapping
-LeanPTils <- cellstate.predict(ref=ref, query=LeanPTils)
-ObesePTils <- cellstate.predict(ref=ref, query=ObesePTils)
-WLPTils <- cellstate.predict(ref=ref, query=WLPTils)
-WCPTils <- cellstate.predict(ref=ref, query=WCPTils)
+## Supplemental Figure 7a
+```{r SuppFig7A, echo=TRUE, fig.width=12, fig.height=4, warning=FALSE, message=FALSE}
+fig7cols <- c(rep("#e6e6e6",20),"#99000D","#876149","#6e3f22",rep("#e6e6e6",10))
+DimPlot(data.integrated, split.by="orig.ident",group.by="highlevel2") + 
+  NoLegend() + 
+  labs(title="") &
+  scale_color_manual(values=fig7cols) &
+ NoAxes()
 ```
 
-```{r SuppFig7A, fig.width=2, fig.height=2, warning=FALSE, message=FALSE}
-#Reference and labels
-DimPlot(ref, reduction="umap", label=F, cols=c("#edbe2a", "#A58AFF", "#53B400", "#F8766D", 
-                "#00B6EB", "#d1cfcc", "#FF0000", "#87f6a5", "#e812dd"))+
-    theme_void() +
-  NoLegend() 
-DimPlot(ref, reduction="umap", label=F, cols=c("#edbe2a", "#A58AFF", "#53B400", "#F8766D", 
-                "#00B6EB", "#d1cfcc", "#FF0000", "#87f6a5", "#e812dd"))+
-    theme_void() 
+## Supplemental Figure 7b
 
-#Diet groups
-DimPlot(ref, reduction="umap", label=F, cols=c(rep("#e8e8e8",9))) +
-  geom_point(data.frame(LeanPTils@reductions$umap@cell.embeddings), 
-             mapping = aes(x = UMAP_1, y = UMAP_2),
-             alpha = 1,
-             size = 1.5,
-             shape = 16,
-             color = wccols[1]) + 
-  theme_void() +
-  NoLegend() 
-
-DimPlot(ref, reduction="umap", label=F, cols=c(rep("#e8e8e8",9))) +
-  geom_point(data.frame(ObesePTils@reductions$umap@cell.embeddings), 
-             mapping = aes(x = UMAP_1, y = UMAP_2),
-             alpha = 1,
-             size = 1.5,
-             shape = 16,
-             color = wccols[2]) + 
-  theme_void() +
-  NoLegend() 
-
-DimPlot(ref, reduction="umap", label=F, cols=c(rep("#e8e8e8",9))) +
-  geom_point(data.frame(WLPTils@reductions$umap@cell.embeddings), 
-             mapping = aes(x = UMAP_1, y = UMAP_2),
-             alpha = 1,
-             size = 1.5,
-             shape = 16,
-             color = wccols[3]) + 
-  theme_void() +
-  NoLegend() 
-
-DimPlot(ref, reduction="umap", label=F, cols=c(rep("#e8e8e8",9))) +
-  geom_point(data.frame(WCPTils@reductions$umap@cell.embeddings), 
-             mapping = aes(x = UMAP_1, y = UMAP_2),
-             alpha = 1,
-             size = 1.5,
-             shape = 16,
-             color = wccols[4]) + 
-  theme_void() +
-  NoLegend() 
+```{r SuppFig7Bsetup, warning=FALSE, message=FALSE}
+SuppFig7gdNKTcells <- subset(data.integrated, highlevel2=="gd T Cells" | highlevel2=="NK Cells" | highlevel2=="NKT Cells" )
 ```
 
-## Supplemental Figure 7B
-
-```{r SuppFig7bsetup, warning=FALSE, message=FALSE}
-Texhaustion_gex <- list(c("Pdcd1","Tigit","Tox","Entpd1","Lag3"))
-
-LeanPTils <- AddModuleScore(LeanPTils,
-                             features=Texhaustion_gex,
-                             assay="RNA",
-                             name='Texhaustion_gex')
-ObesePTils <- AddModuleScore(ObesePTils,
-                             features=Texhaustion_gex,
-                             assay="RNA",
-                             name='Texhaustion_gex')
-WLPTils <- AddModuleScore(WLPTils,
-                             features=Texhaustion_gex,
-                             assay="RNA",
-                             name='Texhaustion_gex')
-WCPTils <- AddModuleScore(WCPTils,
-                             features=Texhaustion_gex,
-                             assay="RNA",
-                             name='Texhaustion_gex')
+```{r SuppFig7B, fig.width=6, fig.height=6, warning=FALSE, message=FALSE}
+Idents(SuppFig7gdNKTcells) <- SuppFig7gdNKTcells$highlevel2
+DefaultAssay(SuppFig7gdNKTcells) <- "RNA"
+VlnPlot(SuppFig7gdNKTcells, 
+        features=c("Cd3e","Trdc","Klrb1b","Klrb1c"), 
+        stack=T, 
+        flip=T,
+        fill.by="ident",
+        cols=c("#99000D","#876149","#6e3f22")) +
+  labs(x="") + 
+  scale_x_discrete(labels=c(paste("\u03b3","/","\u03b4"," T Cells", sep=""),"NK Cells","NKT Cells")) + 
+  NoLegend() +
+  theme(aspect.ratio = 0.8, strip.text=element_text(face="bold.italic"), axis.text.x=element_text(size=14)) 
 ```
 
-```{r SuppFig7B, fig.width=2, fig.height=2, warning=FALSE, message=FALSE}
-LeanPTils_ex <- data.frame(LeanPTils@reductions$umap@cell.embeddings)
-LeanPTils_ex$ex <- unname(LeanPTils$Texhaustion_gex1)
-DimPlot(ref, reduction="umap", label=F, cols=c(rep("#e8e8e8",9))) + 
-  new_scale("color") + 
-        geom_point(LeanPTils_ex, 
-                   mapping = aes(x = UMAP_1, y = UMAP_2, color=ex), 
-                   alpha = 1, 
-                   size = 1.5, 
-                   shape = 16) +
-  scale_color_viridis(option="A", limits=c(-1,1.5),breaks=c(-1,0,1)) +
-  theme_void() +
-  NoLegend() 
+## Supplemental Figure 7c
 
-ObesePTils_ex <- data.frame(ObesePTils@reductions$umap@cell.embeddings)
-ObesePTils_ex$ex <- unname(ObesePTils$Texhaustion_gex1)
-DimPlot(ref, reduction="umap", label=F, cols=c(rep("#e8e8e8",9))) + 
-  new_scale("color") + 
-        geom_point(ObesePTils_ex, 
-                   mapping = aes(x = UMAP_1, y = UMAP_2, color=ex), 
-                   alpha = 1, 
-                   size = 1.5, 
-                   shape = 16) +
-  scale_color_viridis(option="A", limits=c(-1,1.5),breaks=c(-1,0,1)) +
-  theme_void() +
-  NoLegend() 
+```{r SuppFig7Csetup, echo=TRUE, warning=FALSE, message=FALSE}
+gdNKTcellspm <- subset(cellspm, 
+                          Cluster=="gd T Cells" | 
+                          Cluster=="NK Cells" | 
+                          Cluster=="NKT Cells")
+gdNKTcellspm$Group <- factor(gdNKTcellspm$Group, levels = c("Lean","Obese","WL","WC"))
+gdNKTcounts <- subset(clustercounts, 
+                          Cluster=="gd T Cells" | 
+                          Cluster=="NK Cells" | 
+                          Cluster=="NKT Cells")
+gdNKTcounts$Group <- factor(gdNKTcounts$Group, levels = c("Lean","Obese","WL","WC"))
+```
 
-WLPTils_ex <- data.frame(WLPTils@reductions$umap@cell.embeddings)
-WLPTils_ex$ex <- unname(WLPTils$Texhaustion_gex1)
-DimPlot(ref, reduction="umap", label=F, cols=c(rep("#e8e8e8",9))) + 
-  new_scale("color") + 
-        geom_point(WLPTils_ex, 
-                   mapping = aes(x = UMAP_1, y = UMAP_2, color=ex), 
-                   alpha = 1, 
-                   size = 1.5, 
-                   shape = 16) +
-  scale_color_viridis(option="A", limits=c(-1,1.5),breaks=c(-1,0,1)) +
-  theme_void() +
-  NoLegend() 
+```{r SuppFig7Cstats, echo=TRUE, fig.width=3, fig.height=3, warning=FALSE, message=FALSE}
+#T tests with bonferroni correction are used here comparing all groups to the reference lean control group.
+compare_means(CountsPerHundred ~ Group, data = subset(gdNKTcellspm, Cluster=="gd T Cells"), method="t.test", p.adjust.method = "bonferroni")
 
-WCPTils_ex <- data.frame(WCPTils@reductions$umap@cell.embeddings)
-WCPTils_ex$ex <- unname(WCPTils$Texhaustion_gex1)
-DimPlot(ref, reduction="umap", label=F, cols=c(rep("#e8e8e8",9))) + 
-  new_scale("color") + 
-        geom_point(WCPTils_ex, 
-                   mapping = aes(x = UMAP_1, y = UMAP_2, color=ex), 
-                   alpha = 1, 
-                   size = 1.5, 
-                   shape = 16) +
-  scale_color_viridis(option="A", limits=c(-1,1.5),breaks=c(-1,0,1)) +
-  theme_void() +
-  NoLegend() 
+compare_means(CountsPerHundred ~ Group, data = subset(gdNKTcellspm, Cluster=="NK Cells"), method="t.test", p.adjust.method = "bonferroni")
+
+compare_means(CountsPerHundred ~ Group, data = subset(gdNKTcellspm, Cluster=="NKT Cells"), method="t.test", p.adjust.method = "bonferroni")
+```
+
+```{r SuppFig7C, echo=TRUE, fig.width=3, fig.height=3, warning=FALSE, message=FALSE}
+ggboxplot(d=subset(gdNKTcellspm, Cluster=="gd T Cells"), 
+          x="Group", 
+          y="CountsPerHundred",  
+          fill="Group", 
+          facet.by="Cluster", 
+          add = "mean_se")  +
+    theme_classic() +
+    scale_fill_manual(values=wccols) +
+    theme(axis.text.y=element_text(face="bold", size=10)) + 
+    labs(x="", y="") +
+    theme(axis.text.x = element_blank(), axis.ticks = element_blank(), strip.text = element_text(face="bold", size=10)) +
+    facet_wrap(~Cluster) + 
+    NoLegend() + 
+    ylim(0,10)
+ggboxplot(d=subset(gdNKTcellspm, Cluster=="NK Cells"), 
+          x="Group", 
+          y="CountsPerHundred",  
+          fill="Group", 
+          facet.by="Cluster", 
+          add = "mean_se") +
+    theme_classic() +
+    scale_fill_manual(values=wccols) +
+    theme(axis.text.y=element_text(face="bold", size=10)) + 
+    labs(x="", y="") +
+    theme(axis.text.x = element_blank(), axis.ticks = element_blank(), strip.text = element_text(face="bold", size=10)) +
+    facet_wrap(~Cluster) + 
+    NoLegend() + 
+    ylim(0,15)
+ggboxplot(d=subset(gdNKTcellspm, Cluster=="NKT Cells"), 
+          x="Group", 
+          y="CountsPerHundred",  
+          fill="Group", 
+          facet.by="Cluster", 
+          add = "mean_se") +
+    theme_classic() +
+    scale_fill_manual(values=wccols) +
+    theme(axis.text.y=element_text(face="bold", size=10)) + 
+    labs(x="", y="") +
+    theme(axis.text.x = element_blank(), axis.ticks = element_blank(), strip.text = element_text(face="bold", size=10)) +
+    facet_wrap(~Cluster) + 
+    NoLegend() + 
+    ylim(0,5)
 ```
 
 # Session Info
@@ -211,3 +186,4 @@ DimPlot(ref, reduction="umap", label=F, cols=c(rep("#e8e8e8",9))) +
 ```{r si}
 sessionInfo()
 ```
+

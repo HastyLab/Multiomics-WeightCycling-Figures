@@ -1,6 +1,6 @@
 ---
 title: Multiomics reveals persistence of obesity-associated adipose tissue immune
-  cell phenotypes during weight loss and subsequent weight regain
+  cell phenotypes during weight loss and weight regain in mice
 author: "Matthew A. Cottam"
 subtitle: "Supplemental Figure 5"
 output:
@@ -20,7 +20,7 @@ library(Seurat)
 library(RColorBrewer)
 library(ggplot2)
 library(ggpubr)
-library(formattable)
+library(plyr)
 library(dplyr)
 
 #Data file
@@ -40,145 +40,210 @@ wccols = c("#878787", "#518db6","#94cc73","#e96b53")
 cols <- c(maccols,monocols,dccols,tcols,nkcols,bcols,othcols,strcols)
 
 llcols <- c("#4292C6","#ff8ade","#238B45","#EF3B2C","#876149","#9E9AC8","#71a157","#00c5cc","#a18e25","#b282b3","#FD8D3C")
-
-#Calculate cellspm
-cellspm <- table(data.integrated$individual_mice, data.integrated$highlevel2)
-propcellspm <- prop.table(cellspm, margin=1)
-#Convert to a dataframe
-cellspm <- as.data.frame(cellspm)
-propcellspm <- as.data.frame(propcellspm)
-#Change column names
-colnames(cellspm) <- c("Mouse","Cluster","Counts")
-colnames(propcellspm) <- c("Mouse","Cluster","Frequency")
-#Add a column indicating the groups to each table
-cellspm$Group <- gsub("_Hashtag.","", cellspm$Mouse)
-propcellspm$Group <- gsub("_Hashtag.","", propcellspm$Mouse)
-#Normalize "Counts" to "Counts per hundred cells sequenced"
-cphc<-list()
-cellspm <- cellspm %>% arrange(.,Mouse)
-for (i in levels(cellspm$Mouse)){
-  x <- sum(subset(cellspm, Mouse==i)$Counts)/100
-  y <- subset(cellspm, Mouse==i)$Counts/x
-  cphc <- append(cphc, y)
-}
-cellspm$CountsPerHundred <- as.numeric(cphc)
-#Function to calculate standard error for each given variable (cell cluster)
- data_summary <- function(data, varname, groupnames){
-  require(plyr)
-  summary_func <- function(x, col){
-    c(mean = mean(x[[col]], na.rm=TRUE),
-      se = sd(x[[col]], na.rm=TRUE) / sqrt(sum(!is.na(x[[col]]))))
-  }
-  data_sum<-ddply(data, groupnames, .fun=summary_func,
-                  varname)
-names(data_sum)[names(data_sum) == 'mean'] <- varname
-return(data_sum)
-}
-#Summarize the data
-clustercounts <- data_summary(cellspm, varname="CountsPerHundred", groupnames=c("Group","Cluster"))
-clusterprops <- data_summary(propcellspm, varname="Frequency", groupnames=c("Group","Cluster"))
 ```
 
-# Supplemental Figure 5 
+# Supplemental Figure 5
 
-## Supplemental Figure 5a
-```{r SuppFig5A, echo=TRUE, fig.width=12, fig.height=4, warning=FALSE, message=FALSE}
-fig6cols <- c(rep("#e6e6e6",20),"#99000D","#876149","#6e3f22",rep("#e6e6e6",10))
-DimPlot(data.integrated, split.by="orig.ident",group.by="highlevel2") + 
-  NoLegend() + 
-  labs(title="") &
-  scale_color_manual(values=fig6cols) &
- NoAxes()
+## Supplemental Figure 5A
+```{r SuppFig5Asetup,  warning=FALSE, message=FALSE}
+Lean <- subset(data.integrated, orig.ident=="Lean")
+Obese <- subset(data.integrated, orig.ident=="Obese")
+WL <- subset(data.integrated, orig.ident=="WL")
+WC <- subset(data.integrated, orig.ident=="WC")
+
+Lean$HTO_maxID <- factor(Lean$HTO_maxID, levels=c("Hashtag4", "Hashtag3","Hashtag2","Hashtag1"))
+Idents(Lean) <- "HTO_maxID"
+Lean <- RenameIdents(Lean, 
+                     "Hashtag1" = "Lean #1",
+                     "Hashtag2" = "Lean #2",
+                     "Hashtag3" = "Lean #3",
+                     "Hashtag4" = "Lean #4")
+Obese$HTO_maxID <- factor(Obese$HTO_maxID, levels=c("Hashtag9","Hashtag8","Hashtag6","Hashtag5"))
+Idents(Obese) <- "HTO_maxID"
+Obese <- RenameIdents(Obese, 
+                     "Hashtag5" = "Obese #1",
+                     "Hashtag6" = "Obese #2",
+                     "Hashtag8" = "Obese #3",
+                     "Hashtag9" = "Obese #4")
+WL$HTO_maxID <- factor(WL$HTO_maxID, levels=c("Hashtag4", "Hashtag3","Hashtag2","Hashtag1"))
+Idents(WL) <- "HTO_maxID"
+WL <- RenameIdents(WL, 
+                     "Hashtag1" = "WL #1",
+                     "Hashtag2" = "WL #2",
+                     "Hashtag3" = "WL #3",
+                     "Hashtag4" = "WL #4")
+WC$HTO_maxID <- factor(WC$HTO_maxID, levels=c("Hashtag9","Hashtag8","Hashtag6","Hashtag5"))
+Idents(WC) <- "HTO_maxID"
+WC <- RenameIdents(WC, 
+                     "Hashtag5" = "WC #1",
+                     "Hashtag6" = "WC #2",
+                     "Hashtag8" = "WC #3",
+                     "Hashtag9" = "WC #4")
 ```
 
-## Supplemental Figure 5b
-```{r SuppFig5Bsetup, warning=FALSE, message=FALSE}
-SuppFig5gdNKTcells <- subset(data.integrated, highlevel2=="gd T Cells" | highlevel2=="NK Cells" | highlevel2=="NKT Cells" )
-```
 
-```{r SuppFig5B, fig.width=6, fig.height=6, warning=FALSE, message=FALSE}
-Idents(SuppFig5gdNKTcells) <- SuppFig5gdNKTcells$highlevel2
-DefaultAssay(SuppFig5gdNKTcells) <- "RNA"
-VlnPlot(SuppFig5gdNKTcells, 
-        features=c("Cd3e","Trdc","Klrb1b","Klrb1c"), 
-        stack=T, 
-        flip=T,
-        fill.by="ident",
-        cols=c("#99000D","#876149","#6e3f22")) +
-  labs(x="") + 
-  scale_x_discrete(labels=c(paste("\u03b3","/","\u03b4"," T Cells", sep=""),"NK Cells","NKT Cells")) + 
+```{r SuppFig5A, echo=FALSE, fig.height=2.5, fig.width=5}
+Idents(Lean) <- "HTO_maxID"
+Lean <- RenameIdents(Lean, 
+                     "Hashtag1" = "Lean #1",
+                     "Hashtag2" = "Lean #2",
+                     "Hashtag3" = "Lean #3",
+                     "Hashtag4" = "Lean #4")
+Idents(Obese) <- "HTO_maxID"
+Obese <- RenameIdents(Obese, 
+                     "Hashtag5" = "Obese #1",
+                     "Hashtag6" = "Obese #2",
+                     "Hashtag8" = "Obese #3",
+                     "Hashtag9" = "Obese #4")
+Idents(WL) <- "HTO_maxID"
+WL <- RenameIdents(WL, 
+                     "Hashtag1" = "WL #1",
+                     "Hashtag2" = "WL #2",
+                     "Hashtag3" = "WL #3",
+                     "Hashtag4" = "WL #4")
+Idents(WC) <- "HTO_maxID"
+WC <- RenameIdents(WC, 
+                     "Hashtag5" = "WC #1",
+                     "Hashtag6" = "WC #2",
+                     "Hashtag8" = "WC #3",
+                     "Hashtag9" = "WC #4")
+
+RidgePlot(Lean, 
+          assay = "HTO", 
+          features = rownames(Lean[["HTO"]])[1:4], 
+          stack=T, 
+          fill.by="ident",
+          same.y.lims=TRUE) +
+  labs(y="") +
   NoLegend() +
-  theme(aspect.ratio = 0.8) 
+  theme(strip.text.x = element_text(angle=0), 
+        axis.text.y = element_text(face="bold.italic")) +
+  scale_fill_brewer(palette="Spectral")
+RidgePlot(Obese, 
+          assay = "HTO", 
+          features = rownames(Obese[["HTO"]])[5:8], 
+          stack=T, 
+          fill.by="ident",
+          same.y.lims=TRUE) +
+  labs(y="") +
+  NoLegend() +
+  theme(strip.text.x = element_text(angle=0), 
+        axis.text.y = element_text(face="bold.italic"))  +
+    scale_fill_brewer(palette="Spectral")
+RidgePlot(WL, 
+          assay = "HTO", 
+          features = rownames(WL[["HTO"]])[1:4], 
+          stack=T, 
+          fill.by="ident",
+          same.y.lims=TRUE) +
+  labs(y="") +
+  NoLegend() +
+  theme(strip.text.x = element_text(angle=0), 
+        axis.text.y = element_text(face="bold.italic")) +
+    scale_fill_brewer(palette="Spectral")
+RidgePlot(WC, 
+          assay = "HTO", 
+          features = rownames(WC[["HTO"]])[5:8], 
+          stack=T, 
+          fill.by="ident",
+          same.y.lims=TRUE) +
+  labs(y="") +
+  NoLegend() +
+  theme(strip.text.x = element_text(angle=0), 
+        axis.text.y = element_text(face="bold.italic")) +
+    scale_fill_brewer(palette="Spectral")
 
 ```
 
-## Supplemental Figure 5c
+## Supplemental Figure 5B
 
-```{r SuppFig5Csetup, echo=TRUE, warning=FALSE, message=FALSE}
-gdNKTcellspm <- subset(cellspm, 
-                          Cluster=="gd T Cells" | 
-                          Cluster=="NK Cells" | 
-                          Cluster=="NKT Cells")
-gdNKTcellspm$Group <- factor(gdNKTcellspm$Group, levels = c("Lean","Obese","WL","WC"))
-gdNKTcounts <- subset(clustercounts, 
-                          Cluster=="gd T Cells" | 
-                          Cluster=="NK Cells" | 
-                          Cluster=="NKT Cells")
-gdNKTcounts$Group <- factor(gdNKTcounts$Group, levels = c("Lean","Obese","WL","WC"))
+```{r SuppFig5B, echo=TRUE, warning=FALSE, fig.width=6, fig.height=6}
+DimPlot(Lean, group.by="HTO_maxID", pt.size=0.5) + 
+  theme_void() + 
+  labs(title="") + 
+  scale_color_brewer(palette="Spectral") + 
+  NoLegend()
+DimPlot(Obese, group.by="HTO_maxID", pt.size=0.5) + 
+  theme_void() + 
+  labs(title="") + 
+  scale_color_brewer(palette="Spectral") + 
+  NoLegend()
+DimPlot(WL, group.by="HTO_maxID", pt.size=0.5) + 
+  theme_void() + 
+  labs(title="") + 
+  scale_color_brewer(palette="Spectral") + 
+  NoLegend()
+DimPlot(WC, group.by="HTO_maxID", pt.size=0.5) + 
+  theme_void() + 
+  labs(title="") + 
+  scale_color_brewer(palette="Spectral") + 
+  NoLegend()
 ```
 
-```{r SuppFig5Cstats, echo=TRUE, fig.width=3, fig.height=3, warning=FALSE, message=FALSE}
-#T tests with bonferroni correction are used here comparing all groups to the reference lean control group.
-compare_means(CountsPerHundred ~ Group, data = subset(gdNKTcellspm, Cluster=="gd T Cells"), method="t.test", p.adjust.method = "bonferroni")
+## Supplemental Figure 5B Inset
 
-compare_means(CountsPerHundred ~ Group, data = subset(gdNKTcellspm, Cluster=="NK Cells"), method="t.test", p.adjust.method = "bonferroni")
+```{r SuppFig5Binset, echo=TRUE, warning=FALSE, fig.width=2, fig.height=2}
+# Generate a data table with the counts of each hashtag per group
+pie_data <- data.frame(Group = c(rep("Lean",4),
+                                 rep("Obese",4),
+                                 rep("WL",4),
+                                 rep("WC",4)), 
+       Hashtag = c(levels(Lean$HTO_maxID),
+                   levels(Obese$HTO_maxID),
+                   levels(WL$HTO_maxID),
+                   levels(WC$HTO_maxID)),
+       Cells = c(plyr::count(Lean$HTO_maxID)$freq,
+                 plyr::count(Obese$HTO_maxID)$freq,
+                 plyr::count(WL$HTO_maxID)$freq,
+                 plyr::count(WC$HTO_maxID)$freq))
 
-compare_means(CountsPerHundred ~ Group, data = subset(gdNKTcellspm, Cluster=="NKT Cells"), method="t.test", p.adjust.method = "bonferroni")
-```
+# Calculate y position to plot frequency. See guide here: https://www.r-graph-gallery.com/piechart-ggplot2.html
+Lean_pie <- subset(pie_data, Group=="Lean") %>% 
+  arrange(desc(Group)) %>%
+  mutate(prop = Cells / sum(Cells) *100) %>%
+  mutate(ypos = cumsum(prop)- 0.5*prop )
+Obese_pie <- subset(pie_data, Group=="Obese") %>% 
+  arrange(desc(Group)) %>%
+  mutate(prop = Cells / sum(Cells) *100) %>%
+  mutate(ypos = cumsum(prop)- 0.5*prop )
+WL_pie <- subset(pie_data, Group=="WL") %>% 
+  arrange(desc(Group)) %>%
+  mutate(prop = Cells / sum(Cells) *100) %>%
+  mutate(ypos = cumsum(prop)- 0.5*prop )
+WC_pie <- subset(pie_data, Group=="WC") %>% 
+  arrange(desc(Group)) %>%
+  mutate(prop = Cells / sum(Cells) *100) %>%
+  mutate(ypos = cumsum(prop)- 0.5*prop )
 
-```{r SuppFig5C, echo=TRUE, fig.width=3, fig.height=3, warning=FALSE, message=FALSE}
-ggboxplot(d=subset(gdNKTcellspm, Cluster=="gd T Cells"), 
-          x="Group", 
-          y="CountsPerHundred",  
-          fill="Group", 
-          facet.by="Cluster", 
-          add = "mean_se")  +
-    theme_classic() +
-    scale_fill_manual(values=wccols) +
-    theme(axis.text.y=element_text(face="bold", size=10)) + 
-    labs(x="", y="") +
-    theme(axis.text.x = element_blank(), axis.ticks = element_blank(), strip.text = element_text(face="bold", size=10)) +
-    facet_wrap(~Cluster) + 
-    NoLegend() + 
-    ylim(0,10)
-ggboxplot(d=subset(gdNKTcellspm, Cluster=="NK Cells"), 
-          x="Group", 
-          y="CountsPerHundred",  
-          fill="Group", 
-          facet.by="Cluster", 
-          add = "mean_se") +
-    theme_classic() +
-    scale_fill_manual(values=wccols) +
-    theme(axis.text.y=element_text(face="bold", size=10)) + 
-    labs(x="", y="") +
-    theme(axis.text.x = element_blank(), axis.ticks = element_blank(), strip.text = element_text(face="bold", size=10)) +
-    facet_wrap(~Cluster) + 
-    NoLegend() + 
-    ylim(0,15)
-ggboxplot(d=subset(gdNKTcellspm, Cluster=="NKT Cells"), 
-          x="Group", 
-          y="CountsPerHundred",  
-          fill="Group", 
-          facet.by="Cluster", 
-          add = "mean_se") +
-    theme_classic() +
-    scale_fill_manual(values=wccols) +
-    theme(axis.text.y=element_text(face="bold", size=10)) + 
-    labs(x="", y="") +
-    theme(axis.text.x = element_blank(), axis.ticks = element_blank(), strip.text = element_text(face="bold", size=10)) +
-    facet_wrap(~Cluster) + 
-    NoLegend() + 
-    ylim(0,5)
+# Plot pie charts to be used as plot insets
+ggplot(Lean_pie, aes(x="", y=prop, fill=Hashtag)) +
+  geom_bar(stat="identity", width=1, color="black") +
+  coord_polar("y", start=0) +
+  scale_fill_brewer(palette="Spectral") +
+  theme_void() + 
+  NoLegend() +
+  geom_text(aes(y = ypos, label = round(prop, digits=0)), color = "white", size=6)
+ggplot(Obese_pie, aes(x="", y=prop, fill=Hashtag)) +
+  geom_bar(stat="identity", width=1, color="black") +
+  coord_polar("y", start=0) +
+  scale_fill_brewer(palette="Spectral") +
+  theme_void() + 
+  NoLegend() +
+  geom_text(aes(y = ypos, label = round(prop, digits=0)), color = "white", size=6)
+ggplot(WL_pie, aes(x="", y=prop, fill=Hashtag)) +
+  geom_bar(stat="identity", width=1, color="black") +
+  coord_polar("y", start=0) +
+  scale_fill_brewer(palette="Spectral") +
+  theme_void() + 
+  NoLegend() +
+  geom_text(aes(y = ypos, label = round(prop, digits=0)), color = "white", size=6)
+ggplot(WC_pie, aes(x="", y=prop, fill=Hashtag)) +
+  geom_bar(stat="identity", width=1, color="black") +
+  coord_polar("y", start=0) +
+  scale_fill_brewer(palette="Spectral") +
+  theme_void() + 
+  NoLegend() +
+  geom_text(aes(y = ypos, label = round(prop, digits=0)), color = "white", size=6)
 ```
 
 # Session Info

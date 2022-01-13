@@ -1,10 +1,18 @@
-# 	Multiomics reveals persistence of obesity-associated immune cell phenotypes in adipose tissue during weight loss and subsequent weight regain - Reproducing Figures
+# 	Multiomics reveals persistence of obesity-associated immune cell phenotypes in adipose tissue during weight loss and weight regain in mice
+
+## Reproducing Figures
 This repository provides code to reproduce relevant figures in the following publication: ***Under Review***. If you use code accessed through this github resource, please remember to cite our work.
 
-## **Citation Information:**
+## Citation Information:
+
+The associated manuscript is currently under peer review, but you can cite our pre-print: 
+
 ### Multiomics reveals persistence of obesity-associated immune cell phenotypes in adipose tissue during weight loss and subsequent weight regain.
-#### Matthew A Cottam, Heather L Caslin, Nathan C Winn, Alyssa H Hasty
-##### bioRxiv 2021.08.20.455954; **doi:** https://doi.org/10.1101/2021.08.20.455954
+
+#### Matthew A Cottam, Heather L Caslin, Nathan C Winn, Alyssa H Hasty 
+
+##### bioRxiv 2021.08.20.455954; **doi:** https://doi.org/10.1101/2021.08.20.455954 
+
 Access to APA or BibTeX formatted citation information can be found on the right panel under "Cite this repository".
 
 ## Instructions 

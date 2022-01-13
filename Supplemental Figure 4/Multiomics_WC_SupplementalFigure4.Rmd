@@ -1,6 +1,6 @@
 ---
 title: Multiomics reveals persistence of obesity-associated adipose tissue immune
-  cell phenotypes during weight loss and subsequent weight regain
+  cell phenotypes during weight loss and weight regain in mice
 author: "Matthew A. Cottam"
 subtitle: "Supplemental Figure 4"
 output:
@@ -20,8 +20,6 @@ library(Seurat)
 library(RColorBrewer)
 library(ggplot2)
 library(ggpubr)
-library(formattable)
-library(dplyr)
 
 #Data file
 data.integrated <- readRDS("../Inputs/IntegratedData.rds")
@@ -44,33 +42,124 @@ llcols <- c("#4292C6","#ff8ade","#238B45","#EF3B2C","#876149","#9E9AC8","#71a157
 
 # Supplemental Figure 4
 
-```{r SuppFig4setup, warning=FALSE, message=FALSE}
-DefaultAssay(data.integrated) <- "integrated"
-Idents(data.integrated) <- data.integrated$highlevel2
-all.markers <- FindAllMarkers(data.integrated, only.pos = TRUE, min.pct = 0.8, logfc.threshold = 0.5, verbose=FALSE)
+## Supplemental Figure 4A
+
+```{r SuppFig4A, fig.width=3, fig.height=3, warning=FALSE, message=FALSE}
+DefaultAssay(data.integrated) <- "RNA"
+Idents(data.integrated) <- data.integrated$lowlevel2
+
+FeatureScatter(data.integrated, feature1="Cd4", feature2="adt_CD4", pt.size=1.5) +
+  labs(x=substitute(paste(italic("Cd4 "),"mRNA")), y="CD4 Protein", title="") + 
+  scale_color_manual(values=llcols) +
+  theme_pubr(base_size=12) +
+  NoLegend()
+
+FeatureScatter(data.integrated, feature1="Cd3e", feature2="adt_CD3", pt.size=1.5) +
+  labs(x=substitute(paste(italic("Cd3e "),"mRNA")), y="CD3e Protein", title="") + 
+  scale_color_manual(values=llcols) +
+  theme_pubr(base_size=12) +
+  NoLegend()
+
+FeatureScatter(data.integrated, feature1="Cd19", feature2="adt_CD19", pt.size=1.5) +
+  labs(x=substitute(paste(italic("Cd19 "),"mRNA")), y="CD19 Protein", title="") + 
+  scale_color_manual(values=llcols) +
+  theme_pubr(base_size=12) +
+  NoLegend()
+
+#For Legend
+FeatureScatter(data.integrated, feature1="Cd4", feature2="adt_CD4", pt.size=1.5) +
+  labs(x="Cd4 mRNA", y="CD4 Protein", title="") + 
+  scale_color_manual(values=llcols) +
+  theme_bw(base_size=14) +
+  theme(legend.position="right")
 ```
 
-```{r SuppFig4Markers, warning=FALSE, message=FALSE}
-top5 <- all.markers %>% group_by(cluster) %>% top_n(n = 5, wt = avg_log2FC)
-top5 %>% formattable()
+## Supplemental Figure 4B
+
+```{r SuppFig4B, fig.width=3, fig.height=3, warning=FALSE, message=FALSE}
+
+FeatureScatter(data.integrated, feature1="Cd4", feature2="Cd19", pt.size=1.5) +
+  labs(x="", y="", title="") + 
+  scale_color_manual(values=llcols) +
+  theme_pubr(base_size=12) +
+  NoLegend() 
+
+FeatureScatter(data.integrated, feature1="Cd4", feature2="adt_CD19", pt.size=1.5) +
+  labs(x="", y="", title="") + 
+  scale_color_manual(values=llcols) +
+  theme_pubr(base_size=12) +
+  NoLegend() 
+
+FeatureScatter(data.integrated, feature1="adt_CD4", feature2="Cd19", pt.size=1.5) +
+  labs(x="", y="", title="") + 
+  scale_color_manual(values=llcols) +
+  theme_pubr(base_size=12) +
+  NoLegend() 
+
+FeatureScatter(data.integrated, feature1="adt_CD4", feature2="adt_CD19", pt.size=1.5) +
+  labs(x="", y="", title="") + 
+  scale_color_manual(values=llcols) +
+  theme_pubr(base_size=12) +
+  NoLegend() 
+
+# For Axis Labels
+FeatureScatter(data.integrated, feature1="Cd4", feature2="Cd19", pt.size=0.5) +
+  labs(x=substitute(paste(italic("Cd4 "),"mRNA")), y=substitute(paste(italic("Cd19"),"mRNA")), title="") + 
+  scale_color_manual(values=llcols) +
+  theme_pubr(base_size=12) +
+  NoLegend() 
+
+FeatureScatter(data.integrated, feature1="Cd4", feature2="Cd19", pt.size=0.5) +
+  labs(x="CD4 Protein", y="CD19 Protein", title="") + 
+  scale_color_manual(values=llcols) +
+  theme_pubr(base_size=12) +
+  NoLegend() 
 ```
 
-```{r SuppFig4, fig.width=10, fig.height=14, warning=FALSE, message=FALSE}
-DoHeatmap(subset(data.integrated, downsample=200), 
-          features=unique(top5$gene),
-          group.by="highlevel2",
-          group.colors=cols,
-          assay="integrated",
-          raster=FALSE, 
-          label=FALSE,
-          disp.min=0,
-          disp.max=2) + 
-    NoLegend() + 
-    scale_fill_distiller(type="seq", palette="YlOrRd", direction=1)
+## Supplemental Figure 4C
+
+```{r SuppFig4C, fig.width=3, fig.height=3, warning=FALSE, message=FALSE}
+
+FeatureScatter(data.integrated, feature1="Cd4", feature2="Cd3e", pt.size=1.5) +
+  labs(x="", y="", title="") + 
+  scale_color_manual(values=llcols) +
+  theme_pubr(base_size=12) +
+  NoLegend() 
+
+FeatureScatter(data.integrated, feature1="Cd4", feature2="adt_CD3", pt.size=1.5) +
+  labs(x="", y="", title="") + 
+  scale_color_manual(values=llcols) +
+  theme_pubr(base_size=12) +
+  NoLegend() 
+
+FeatureScatter(data.integrated, feature1="adt_CD4", feature2="Cd3e", pt.size=1.5) +
+  labs(x="", y="", title="") + 
+  scale_color_manual(values=llcols) +
+  theme_pubr(base_size=12) +
+  NoLegend() 
+
+FeatureScatter(data.integrated, feature1="adt_CD4", feature2="adt_CD3", pt.size=1.5) +
+  labs(x="", y="", title="") + 
+  scale_color_manual(values=llcols) +
+  theme_pubr(base_size=12) +
+  NoLegend() 
+
+# For Axis Labels
+FeatureScatter(data.integrated, feature1="Cd4", feature2="Cd3e", pt.size=0.5) +
+  labs(x=substitute(paste(italic("Cd4 "),"mRNA")), y=substitute(paste(italic("Cd3e"),"mRNA")), title="") + 
+  scale_color_manual(values=llcols) +
+  theme_pubr(base_size=12) +
+  NoLegend() 
+
+FeatureScatter(data.integrated, feature1="Cd4", feature2="adt_CD3", pt.size=0.5) +
+  labs(x="CD4 Protein", y="CD3e Protein", title="") + 
+  scale_color_manual(values=llcols) +
+  theme_pubr(base_size=12) +
+  NoLegend() 
 ```
+
 
 # Session Info
-
 ```{r si}
 sessionInfo()
 ```

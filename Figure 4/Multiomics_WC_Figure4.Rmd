@@ -1,6 +1,6 @@
 ---
 title: Multiomics reveals persistence of obesity-associated adipose tissue immune
-  cell phenotypes during weight loss and subsequent weight regain
+  cell phenotypes during weight loss and weight regain in mice
 author: "Matthew A. Cottam"
 subtitle: "Figure 4"
 output:
@@ -26,6 +26,7 @@ library(ggrepel)
 library(reticulate)
 library(viridis)
 library(ProjecTILs)
+library(scales)
 
 #Data file
 data.integrated <- readRDS("../Inputs/IntegratedData.rds")
@@ -122,7 +123,7 @@ VlnPlot(fig4Tcells,
   labs(x="") + 
   scale_x_discrete(labels=c("Th1","Th2","Tregs",expression("T"['EM']), expression("T"['CM']),"Cycling")) + 
   NoLegend() +
-  theme(aspect.ratio = 0.25) 
+  theme(aspect.ratio = 0.25, strip.text=element_text(face="bold.italic")) 
 ```
 
 ## Figure 4C
@@ -327,12 +328,9 @@ scv$pl$velocity_embedding_stream(adata_Tcell,
                                  min_mass=0,
                                  alpha=0.5)
 
-
 #save as "scvelo2.png" - This is already available in the "figures" folder.
 scv$pl$paga(adata_Tcell, basis='umap', size=100, alpha=0.1,
              min_edge_width=2, node_size_scale=1.5)
-
-
 ```
 
 ```{r Fig4eouts, fig.width=5, fig.height=5}
@@ -341,11 +339,11 @@ knitr::include_graphics("figures/scvelo1.png")
 knitr::include_graphics("figures/scvelo2.png")
 ```
 
-
 ## Figure 4F
 
 ```{r fig4F, fig.width=8, fig.height=2, warning=FALSE}
 Texhaustion_gex <- list(c("Pdcd1","Tigit","Tox","Entpd1","Lag3"))
+DefaultAssay(fig4Tcells) <- "RNA"
 
 fig4Tcells <- AddModuleScore(fig4Tcells,
                              features=Texhaustion_gex,
@@ -353,30 +351,62 @@ fig4Tcells <- AddModuleScore(fig4Tcells,
                              name='Texhaustion_gex')
 
 FeaturePlot(fig4Tcells, 
-            features="Texhaustion_gex1", split.by="orig.ident") & 
+            features="Texhaustion_gex1", split.by="orig.ident", order=T) & 
   xlim(1,13) &
   ylim(-5,4) & 
   theme_void() & 
   labs(title="") & 
   NoLegend() &
-  scale_color_viridis(option="A", limits=c(-1,1.5), breaks=c(-1,0,1))
+  scale_color_viridis(option="A", limits=c(0,2), breaks=c(0,1,2), oob=squish)
 
-#For scale bar
+#For scale bars
 FeaturePlot(fig4Tcells, 
-            features="Texhaustion_gex1", split.by="orig.ident") & 
+            features="Texhaustion_gex1", split.by="orig.ident", order=T) & 
   xlim(1,13) &
   ylim(-5,4) & 
   theme_void() & 
   labs(title="") & 
   theme(legend.position="bottom") &
-  scale_color_viridis(option="A", limits=c(-1,1.5),breaks=c(-1,0,1))
+  scale_color_viridis(option="A", limits=c(0,2),breaks=c(0,1,2), oob=squish)
 ```
 
 ## Figure 4G
 
-```{r fig4Gsetup2, fig.width=3, fig.height=3}
-#Download ProjectTILs reference from Figshare: https://figshare.com/articles/dataset/ProjecTILs_murine_reference_atlas_of_tumor-infiltrating_T_cells_version_1/12478571/2
-#download.file('https://ndownloader.figshare.com/files/23166794', destfile="../Inputs/Fig4/ref_LCMV_Atlas_mouse_v1.rds")
+```{r fig4G, fig.width=8, fig.height=2, warning=FALSE}
+Texhaustion_ADT <- list(c("TIGIT","CD279"))
+
+DefaultAssay(fig4Tcells) <- "RNA"
+
+fig4Tcells<- AddModuleScore(fig4Tcells,
+                             features=Texhaustion_ADT,
+                             name='Texhaustion_ADT')
+
+FeaturePlot(fig4Tcells, 
+            features="Texhaustion_ADT1", split.by="orig.ident", order=T) & 
+  xlim(1,13) &
+  ylim(-5,4) & 
+  theme_void() & 
+  labs(title="") &
+  NoLegend() &
+  scale_color_viridis(option="A", limits=c(0,2), breaks=c(0,1,2), oob=squish)
+
+#For scale bars
+
+FeaturePlot(fig4Tcells, 
+            features="Texhaustion_ADT1", split.by="orig.ident", order=T) & 
+  xlim(1,13) &
+  ylim(-5,4) & 
+  theme_void() & 
+  labs(title="") & 
+  theme(legend.position="bottom") &
+  scale_color_viridis(option="A", limits=c(0,2), breaks=c(0,1,2), oob=squish)
+```
+
+## Figure 4H
+
+```{r figHsetup2, fig.width=3, fig.height=3}
+#Download ProjectTILs reference from Figshare: https://figshare.com/articles/dataset/ProjecTILs_murine_reference_atlas_of_virus-specific_CD8_T_cells_version_1/12489518
+#download.file('https://figshare.com/ndownloader/files/23136746', destfile="../Inputs/Fig4/ref_LCMV_Atlas_mouse_v1.rds")
 
 #Split Tcells into CD8 or CD4
 fig4Tcells <- RenameIdents(fig4Tcells, 
@@ -407,7 +437,7 @@ WLPTils2 <- cellstate.predict(ref=ref2, query=WLPTils2)
 WCPTils2 <- cellstate.predict(ref=ref2, query=WCPTils2)
 ```
 
-```{r fig4G2, fig.height=2, fig.width=2}
+```{r fig4H2, fig.height=2, fig.width=2}
 #Reference and labels
 DimPlot(ref2, reduction="umap", label=F, cols=c("#edbe2a", "#A58AFF", "#53B400", "#F8766D", 
                 "#00B6EB", "#d1cfcc", "#FF0000", "#87f6a5", "#e812dd"), pt.size=0.5)+

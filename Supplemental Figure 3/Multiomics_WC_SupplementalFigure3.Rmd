@@ -1,6 +1,6 @@
 ---
 title: Multiomics reveals persistence of obesity-associated adipose tissue immune
-  cell phenotypes during weight loss and subsequent weight regain
+  cell phenotypes during weight loss and weight regain in mice
 author: "Matthew A. Cottam"
 subtitle: "Supplemental Figure 3"
 output:
@@ -16,166 +16,173 @@ output:
 # Setup
 
 ```{r prep, warning=FALSE, message=FALSE}
-library(Seurat)
 library(RColorBrewer)
 library(ggplot2)
+library(dplyr)
 library(ggpubr)
-
-#Data file
-data.integrated <- readRDS("../Inputs/IntegratedData.rds")
+library(reshape2)
+library(viridis)
+library(readxl)
+library(Seurat)
 
 #Color panels
-maccols <- brewer.pal(n=8, name="Blues")[c(-1,-3,-5,-7)]
-monocols <- c("#ff8ade","#e324ad")
-dccols <- brewer.pal(n=9, name="Greens")[-1]
-tcols <- brewer.pal(n=8, name="Reds")[-1]
-nkcols <- c("#876149","#6e3f22")
-bcols <- brewer.pal(n=4, name="Purples")[-1]
-othcols <- c("#71a157","#00c5cc","#a18e25","#b282b3")
-strcols <- brewer.pal(n=4, name="Oranges")[-1]
-wccols = c("#878787", "#518db6","#94cc73","#e96b53")
-
-cols <- c(maccols,monocols,dccols,tcols,nkcols,bcols,othcols,strcols)
-
-llcols <- c("#4292C6","#ff8ade","#238B45","#EF3B2C","#876149","#9E9AC8","#71a157","#00c5cc","#a18e25","#b282b3","#FD8D3C")
+wccols = c("Lean" = "#878787", "Obese" = "#518db6", "WL" = "#94cc73", "WC" = "#e96b53")
 ```
 
 # Supplemental Figure 3
 
-## Supplemental Figure 3A
-```{r SuppFig3Asetup,  warning=FALSE, message=FALSE}
-Lean <- subset(data.integrated, orig.ident=="Lean")
-Obese <- subset(data.integrated, orig.ident=="Obese")
-WL <- subset(data.integrated, orig.ident=="WL")
-WC <- subset(data.integrated, orig.ident=="WC")
+```{r Supp3Setup}
+#Import Body Mass Data for female mice
+f_bodymass <- read_excel("../Inputs/SuppFig3/SuppFig3_Data.xlsx",sheet=4)
+f_bodymass <- reshape2::melt(f_bodymass, id.vars=c("MouseID","Group"), measure.vars=colnames(f_bodymass)[3:30], variable.name="Week", value.name="Bodymass")
+colnames(f_bodymass) <- c("Mouse","Group","Week","Bodymass")
+f_bodymass$Group <- factor(f_bodymass$Group, levels = c("Lean","Obese","WL","WC"))
 
-Lean$HTO_maxID <- factor(Lean$HTO_maxID, levels=c("Hashtag4", "Hashtag3","Hashtag2","Hashtag1"))
-Idents(Lean) <- "HTO_maxID"
-Lean <- RenameIdents(Lean, 
-                     "Hashtag1" = "Lean #1",
-                     "Hashtag2" = "Lean #2",
-                     "Hashtag3" = "Lean #3",
-                     "Hashtag4" = "Lean #4")
-Obese$HTO_maxID <- factor(Obese$HTO_maxID, levels=c("Hashtag9","Hashtag8","Hashtag6","Hashtag5"))
-Idents(Obese) <- "HTO_maxID"
-Obese <- RenameIdents(Obese, 
-                     "Hashtag5" = "Obese #1",
-                     "Hashtag6" = "Obese #2",
-                     "Hashtag8" = "Obese #3",
-                     "Hashtag9" = "Obese #4")
-WL$HTO_maxID <- factor(WL$HTO_maxID, levels=c("Hashtag4", "Hashtag3","Hashtag2","Hashtag1"))
-Idents(WL) <- "HTO_maxID"
-WL <- RenameIdents(WL, 
-                     "Hashtag1" = "WL #1",
-                     "Hashtag2" = "WL #2",
-                     "Hashtag3" = "WL #3",
-                     "Hashtag4" = "WL #4")
-WC$HTO_maxID <- factor(WC$HTO_maxID, levels=c("Hashtag9","Hashtag8","Hashtag6","Hashtag5"))
-Idents(WC) <- "HTO_maxID"
-WC <- RenameIdents(WC, 
-                     "Hashtag5" = "WC #1",
-                     "Hashtag6" = "WC #2",
-                     "Hashtag8" = "WC #3",
-                     "Hashtag9" = "WC #4")
+#Body Mass Error Calculation for female mice
+f_bodymass_sem <- f_bodymass %>%
+  group_by(Group, Week) %>%
+  dplyr::summarize(mean = mean(Bodymass), sd = sd(Bodymass)) 
+f_bodymass_n <- f_bodymass %>% dplyr::count(Group, Week)
+f_bodymass_sem$n <- f_bodymass_n$n
+f_bodymass_sem <- f_bodymass_sem %>% mutate(sem = sd/sqrt(n)) %>% tidyr::drop_na()
+colnames(f_bodymass_sem) = c("Group","Week","Bodymass","sd","n","sem")
+
+#Body Composition Data for female mice
+f_bodycomp <- read_excel("../Inputs/SuppFig3/SuppFig3_Data.xlsx", sheet=5)
+f_bodycomp <- reshape2::melt(f_bodycomp, id.vars=c("MouseID","Group"), measure.vars=colnames(f_bodycomp)[3:4], variable.name="Source", value.name="Bodycomp")
+colnames(f_bodycomp) <- c("Mouse","Group","Source","Bodycomp")
+f_bodycomp$Group <- factor(f_bodycomp$Group, levels = c("Lean","Obese","WL","WC"))
+
+#Body Composition Error Calculation for female mice
+f_bodycomp_sem <- f_bodycomp %>%
+  group_by(Group, Source) %>%
+  dplyr::summarize(mean = mean(Bodycomp), sd = sd(Bodycomp)) 
+f_bodycomp_n <- f_bodycomp %>% dplyr::count(Group, Source)
+f_bodycomp_sem$n <- f_bodycomp_n$n
+f_bodycomp_sem <- f_bodycomp_sem %>% mutate(sem = sd/sqrt(n)) %>% tidyr::drop_na()
+colnames(f_bodycomp_sem) = c("Group","Source","Bodycomp","sd","n","sem")
+
+#Import ipGTT Data for female mice
+f_gtt <- read_excel("../Inputs/SuppFig3/SuppFig3_Data.xlsx",sheet=6)
+f_gtt <- reshape2::melt(f_gtt, id.vars=c("MouseID","Group"), measure.vars=colnames(f_gtt)[3:10], variable.name="Time", value.name="PlasmaGlucose")
+f_gtt$Group <- factor(f_gtt$Group, levels = c("Lean","Obese","WL","WC"))
+f_gtt <- subset(f_gtt, PlasmaGlucose!="NA")
+
+#ipGTT Error Calculation for female mice
+f_gtt_sem <- f_gtt %>%
+  group_by(Group, Time) %>%
+  dplyr::summarize(mean = mean(PlasmaGlucose), sd = sd(PlasmaGlucose))
+f_gtt_n <- f_gtt %>% dplyr::count(Group, Time)
+f_gtt_sem$n <- f_gtt_n$n
+f_gtt_sem <- f_gtt_sem %>% mutate(sem = sd/sqrt(n))
+colnames(f_gtt_sem) = c("Group","Time","PlasmaGlucose","sd","n","sem")
+
+#Calculate the AUC for female mice
+f_gtt <- f_gtt %>% arrange(MouseID)
+f_auc <- distinct(f_gtt[,1:2])
+f_gtt$Time <- as.numeric(as.character(f_gtt$Time))
+f_AUC=NULL
+for (mouse in unique(f_gtt$MouseID)){
+f_AUC <- rbind(f_AUC,(sum(diff(subset(f_gtt, MouseID==mouse)$Time)*(head(subset(f_gtt, MouseID==mouse)$PlasmaGlucose,-1)+tail(subset(f_gtt, MouseID==mouse)$PlasmaGlucose,-1)))/2))
+}
+f_auc$AUC <- f_AUC[,1]
+f_auc$Group <- factor(f_auc$Group, levels=c("Lean","Obese","WL","WC"))
+
+#Error for AUC for female mice
+f_auc_sem <- f_auc %>%
+  group_by(Group) %>%
+  dplyr::summarize(mean = mean(AUC), sd = sd(AUC))
+f_auc_n <- f_auc %>% dplyr::count(Group)
+f_auc_sem$n <- f_auc_n$n
+f_auc_sem <- f_auc_sem %>% mutate(sem = sd/sqrt(n))
+colnames(f_auc_sem) = c("Group","AUC","sd","n","sem")
 ```
 
+## Supplemental Figure 3A
 
-```{r SuppFig3A, echo=FALSE, fig.height=2.5, fig.width=5}
-Idents(Lean) <- "HTO_maxID"
-Lean <- RenameIdents(Lean, 
-                     "Hashtag1" = "Lean2 #1",
-                     "Hashtag2" = "Lean #2",
-                     "Hashtag3" = "Lean #3",
-                     "Hashtag4" = "Lean #4")
-Idents(Obese) <- "HTO_maxID"
-Obese <- RenameIdents(Obese, 
-                     "Hashtag5" = "Obese #1",
-                     "Hashtag6" = "Obese #2",
-                     "Hashtag8" = "Obese #3",
-                     "Hashtag9" = "Obese #4")
-Idents(WL) <- "HTO_maxID"
-WL <- RenameIdents(WL, 
-                     "Hashtag1" = "WL #1",
-                     "Hashtag2" = "WL #2",
-                     "Hashtag3" = "WL #3",
-                     "Hashtag4" = "WL #4")
-Idents(WC) <- "HTO_maxID"
-WC <- RenameIdents(WC, 
-                     "Hashtag5" = "WC #1",
-                     "Hashtag6" = "WC #2",
-                     "Hashtag8" = "WC #3",
-                     "Hashtag9" = "WC #4")
+```{r Supp3a,  fig.width=4, fig.height=3}
+#Body Mass over time
+ggplot(f_bodymass, aes(x=as.numeric(Week)-1, y=Bodymass, color=Group)) + 
+  geom_point(stat="summary", size=2) + 
+  geom_line(stat="summary", size=1) +
+  geom_errorbar(data=f_bodymass_sem, aes(ymin=Bodymass-sem, ymax=Bodymass+sem), width=0.25) + 
+  theme_pubr(base_size=12) +
+  NoLegend() + 
+  labs(x="Weeks on Diet", y="Body Mass (g)") +
+  scale_x_continuous(breaks=seq(from=0, to=27, by=3)) + 
+  ylim(0,60) + 
+  scale_color_manual(values=wccols) +
+  geom_vline(xintercept = c(9,18), linetype="dashed") 
 
-RidgePlot(Lean, 
-          assay = "HTO", 
-          features = rownames(Lean[["HTO"]])[1:4], 
-          stack=T, 
-          fill.by="ident",
-          same.y.lims=TRUE) +
-  labs(y="") +
-  NoLegend() +
-  theme(strip.text.x = element_text(angle=0), 
-        axis.text.y = element_text(face="bold.italic")) +
-  scale_fill_brewer(palette="Spectral")
-RidgePlot(Obese, 
-          assay = "HTO", 
-          features = rownames(Obese[["HTO"]])[5:8], 
-          stack=T, 
-          fill.by="ident",
-          same.y.lims=TRUE) +
-  labs(y="") +
-  NoLegend() +
-  theme(strip.text.x = element_text(angle=0), 
-        axis.text.y = element_text(face="bold.italic"))  +
-    scale_fill_brewer(palette="Spectral")
-RidgePlot(WL, 
-          assay = "HTO", 
-          features = rownames(WL[["HTO"]])[1:4], 
-          stack=T, 
-          fill.by="ident",
-          same.y.lims=TRUE) +
-  labs(y="") +
-  NoLegend() +
-  theme(strip.text.x = element_text(angle=0), 
-        axis.text.y = element_text(face="bold.italic")) +
-    scale_fill_brewer(palette="Spectral")
-RidgePlot(WC, 
-          assay = "HTO", 
-          features = rownames(WC[["HTO"]])[5:8], 
-          stack=T, 
-          fill.by="ident",
-          same.y.lims=TRUE) +
-  labs(y="") +
-  NoLegend() +
-  theme(strip.text.x = element_text(angle=0), 
-        axis.text.y = element_text(face="bold.italic")) +
-    scale_fill_brewer(palette="Spectral")
-
+#T.tests with Bonferroni correction for multiple comparisons for body mass over time
+compare_means(Bodymass ~ Group, data = f_bodymass %>% tidyr::drop_na(), group.by="Week", method="t.test", p.adjust.method="bonferroni")
 ```
 
 ## Supplemental Figure 3B
 
-```{r SuppFig3B, echo=TRUE, warning=FALSE, fig.width=6, fig.height=6}
-DimPlot(Lean, group.by="HTO_maxID", pt.size=0.5) + 
-  theme_void() + 
-  labs(title="") + 
-  scale_color_brewer(palette="Spectral") + 
-  NoLegend()
-DimPlot(Obese, group.by="HTO_maxID", pt.size=0.5) + 
-  theme_void() + 
-  labs(title="") + 
-  scale_color_brewer(palette="Spectral") + 
-  NoLegend()
-DimPlot(WL, group.by="HTO_maxID", pt.size=0.5) + 
-  theme_void() + 
-  labs(title="") + 
-  scale_color_brewer(palette="Spectral") + 
-  NoLegend()
-DimPlot(WC, group.by="HTO_maxID", pt.size=0.5) + 
-  theme_void() + 
-  labs(title="") + 
-  scale_color_brewer(palette="Spectral") + 
-  NoLegend()
+```{r Supp3b, fig.height=3, fig.width=3}
+ggplot(subset(f_bodycomp,Source=="Lean_mass"), aes(x=Group, y=Bodycomp, fill=Group)) + 
+  geom_bar(stat="summary", width=0.8) + 
+  geom_errorbar(data=subset(f_bodycomp_sem, Source=="Lean_mass"), aes(ymin=Bodycomp-sem, ymax=Bodycomp+sem), width=0.25) + 
+  theme_pubr(base_size=12) +
+  NoLegend() +  
+  ylim(0,30) +
+  labs(x="", y="Lean Mass (g)") + 
+  scale_fill_manual(values=wccols) +
+  theme(aspect.ratio = 1.5)
+
+ggplot(subset(f_bodycomp,Source=="Fat_mass"), aes(x=Group, y=Bodycomp, fill=Group)) + 
+  geom_bar(stat="summary", width=0.8) + 
+  geom_errorbar(data=subset(f_bodycomp_sem, Source=="Fat_mass"), aes(ymin=Bodycomp-sem, ymax=Bodycomp+sem), width=0.25) + 
+  theme_pubr(base_size=12) +
+  NoLegend() +  
+  ylim(0,25) +
+  labs(x="", y="Fat Mass (g)") + 
+  scale_fill_manual(values=wccols) +
+  theme(aspect.ratio = 1.5)
+
+### T.test with Bonferroni correction for multiple comparisons
+# Lean Mass
+compare_means(Bodycomp ~ Group, data = subset(f_bodycomp,Source=="Lean_mass"), method="t.test", p.adjust.method = "bonferroni") 
+
+# Fat Mass
+compare_means(Bodycomp ~ Group, data = subset(f_bodycomp,Source=="Fat_mass"), method="t.test", p.adjust.method = "bonferroni") 
+```
+
+## Supplemental Figure 3C
+
+```{r Supp3c, fig.height=3, fig.width=4}
+#GTT Curve
+ggplot(f_gtt, aes(x=as.numeric(as.character(Time)), y=PlasmaGlucose, color=Group)) + 
+  geom_point(stat="summary", size=2) + 
+  geom_line(stat="summary", size=1) +
+  geom_errorbar(data=f_gtt_sem, aes(ymin=PlasmaGlucose-sem, ymax=PlasmaGlucose+sem), width=0.25) + 
+  theme_pubr(base_size=12) +
+  NoLegend() + 
+  labs(x="Time (min)", y="Plasma Glucose (mg/dL)") +
+  scale_x_continuous(breaks=seq(from=0, to=150, by=30)) + 
+  ylim(0,500) + 
+  scale_color_manual(values=wccols) 
+
+#ANOVA
+compare_means(PlasmaGlucose ~ Group, data = f_gtt, group.by="Time",method="anova") #By time
+
+#T.tests with Bonferroni correction for multiple comparisons
+compare_means(PlasmaGlucose ~ Group, data = f_gtt, group.by="Time", method="t.test", p.adjust.method="bonferroni")
+
+#AUC
+ggplot(f_auc_sem, aes(x=Group, y=AUC, fill=Group)) + 
+  geom_bar(stat="summary") + 
+  geom_errorbar(data=f_auc_sem, aes(ymin=AUC-sem, ymax=AUC+sem), width=0.25) + 
+  theme_pubr(base_size=12) +
+  NoLegend() + 
+  labs(x="", y="Plasma Glucose AUC") + 
+  ylim(0,50000) + 
+  scale_fill_manual(values=wccols) +
+  theme(aspect.ratio = 1.5)
+
+#T.tests with Bonferroni correction for multiple comparisons
+compare_means(AUC ~ Group, data = f_auc, method="t.test", p.adjust.method = "bonferroni")
 ```
 
 # Session Info

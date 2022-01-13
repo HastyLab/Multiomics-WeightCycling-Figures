@@ -1,6 +1,6 @@
 ---
 title: Multiomics reveals persistence of obesity-associated adipose tissue immune
-  cell phenotypes during weight loss and subsequent weight regain
+  cell phenotypes during weight loss and weight regain in mice
 author: "Matthew A. Cottam"
 subtitle: "Figure 6"
 output:
@@ -123,8 +123,7 @@ VlnPlot(Fig6Macs,
   labs(x="") + 
   scale_x_discrete(labels=c("Tissue Resident","LAMs","Cycling","Efferocytes")) + 
   NoLegend() +
-  theme(aspect.ratio = 0.25)
-
+  theme(aspect.ratio = 0.25, strip.text=element_text(face="bold.italic"), text=element_text(size=14))
 ```
 
 ## Figure 6C
@@ -146,7 +145,7 @@ VlnPlot(Fig6Macs,
   labs(x="") + 
   scale_x_discrete(labels=c("Tissue Resident","LAMs","Cycling","Efferocytes")) + 
   NoLegend() +
-  theme(aspect.ratio = 0.25) 
+  theme(aspect.ratio = 0.25, strip.text=element_text(face="bold.italic"), text=element_text(size=14)) 
 ```
 
 ## Figure 6D
@@ -339,6 +338,9 @@ scv$tl$recover_dynamics(adata_Mac)
 scv$tl$velocity(adata_Mac, mode='dynamical')
 scv$tl$velocity_graph(adata_Mac)
 
+#Run PAGA using the dynamic velocity estimates
+scv$tl$paga(adata_Mac, groups='clusters')
+
 #Colors  for plot
 Mac.colors <- c("#DEEBF7","#9ECAE1","#4292C6","#084594","#ff8ade","#e324ad")
 
@@ -354,14 +356,22 @@ Mac.colors <- c("#DEEBF7","#9ECAE1","#4292C6","#084594","#ff8ade","#e324ad")
 scv$pl$velocity_embedding_stream(adata_Mac, 
                                  basis='umap', 
                                  size=100,
-                                 legend_fontsize=14,
+                                 legend_loc='none',
+                                 #legend_fontsize=14,
                                  palette=Mac.colors,
                                  min_mass=0,
                                  smooth=TRUE,
                                  alpha=0.5)
+
+#save as "scvelo2.png" - This is already available in the "figures" folder.
+scv$pl$paga(adata_Mac, basis='umap', size=100, alpha=0.1,
+             min_edge_width=2, node_size_scale=1.5)
 ```
+
 ```{r Fig6fout, warning=FALSE, message=FALSE}
 knitr::include_graphics("figures/scvelo1.png")
+
+knitr::include_graphics("figures/scvelo2.png")
 ```
 
 ## Figure 6G

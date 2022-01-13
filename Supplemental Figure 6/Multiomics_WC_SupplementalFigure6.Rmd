@@ -1,6 +1,6 @@
 ---
 title: Multiomics reveals persistence of obesity-associated adipose tissue immune
-  cell phenotypes during weight loss and subsequent weight regain
+  cell phenotypes during weight loss and weight regain in mice
 author: "Matthew A. Cottam"
 subtitle: "Supplemental Figure 6"
 output:
@@ -20,6 +20,7 @@ library(Seurat)
 library(RColorBrewer)
 library(ggplot2)
 library(ggpubr)
+library(formattable)
 library(dplyr)
 
 #Data file
@@ -39,131 +40,33 @@ wccols = c("#878787", "#518db6","#94cc73","#e96b53")
 cols <- c(maccols,monocols,dccols,tcols,nkcols,bcols,othcols,strcols)
 
 llcols <- c("#4292C6","#ff8ade","#238B45","#EF3B2C","#876149","#9E9AC8","#71a157","#00c5cc","#a18e25","#b282b3","#FD8D3C")
-
-#Calculate cellspm
-cellspm <- table(data.integrated$individual_mice, data.integrated$highlevel2)
-propcellspm <- prop.table(cellspm, margin=1)
-#Convert to a dataframe
-cellspm <- as.data.frame(cellspm)
-propcellspm <- as.data.frame(propcellspm)
-#Change column names
-colnames(cellspm) <- c("Mouse","Cluster","Counts")
-colnames(propcellspm) <- c("Mouse","Cluster","Frequency")
-#Add a column indicating the groups to each table
-cellspm$Group <- gsub("_Hashtag.","", cellspm$Mouse)
-propcellspm$Group <- gsub("_Hashtag.","", propcellspm$Mouse)
-#Normalize "Counts" to "Counts per hundred cells sequenced"
-cphc<-list()
-cellspm <- cellspm %>% arrange(.,Mouse)
-for (i in levels(cellspm$Mouse)){
-  x <- sum(subset(cellspm, Mouse==i)$Counts)/100
-  y <- subset(cellspm, Mouse==i)$Counts/x
-  cphc <- append(cphc, y)
-}
-cellspm$CountsPerHundred <- as.numeric(cphc)
-#Function to calculate standard error for each given variable (cell cluster)
- data_summary <- function(data, varname, groupnames){
-  require(plyr)
-  summary_func <- function(x, col){
-    c(mean = mean(x[[col]], na.rm=TRUE),
-      se = sd(x[[col]], na.rm=TRUE) / sqrt(sum(!is.na(x[[col]]))))
-  }
-  data_sum<-ddply(data, groupnames, .fun=summary_func,
-                  varname)
-names(data_sum)[names(data_sum) == 'mean'] <- varname
-return(data_sum)
-}
-#Summarize the data
-clustercounts <- data_summary(cellspm, varname="CountsPerHundred", groupnames=c("Group","Cluster"))
-clusterprops <- data_summary(propcellspm, varname="Frequency", groupnames=c("Group","Cluster"))
 ```
 
 # Supplemental Figure 6
 
-## Supplemental Figure 6A
-```{r SuppFig6A, echo=TRUE, fig.width=12, fig.height=4, warning=FALSE, message=FALSE}
-figs6cols <- c(rep("#e6e6e6",27),"#00c5cc","#e6e6e6","#b282b3",rep("#e6e6e6",3))
-DimPlot(data.integrated, split.by="orig.ident",group.by="highlevel2") + 
-  NoLegend() + 
-  labs(title="") &
-  scale_color_manual(values=figs6cols) &
- NoAxes()
+```{r SuppFig6setup, warning=FALSE, message=FALSE}
+DefaultAssay(data.integrated) <- "integrated"
+Idents(data.integrated) <- data.integrated$highlevel2
+all.markers <- FindAllMarkers(data.integrated, only.pos = TRUE, min.pct = 0.8, logfc.threshold = 0.5, verbose=FALSE)
 ```
 
-## Supplemental Figure 6B
-```{r SuppFig6Bsetup, warning=FALSE, message=FALSE}
-SuppFig6Mastilc <- subset(data.integrated, highlevel2=="Mast Cells" | highlevel2=="ILC2s"  )
+```{r SuppFig6Markers, warning=FALSE, message=FALSE}
+top5 <- all.markers %>% group_by(cluster) %>% top_n(n = 5, wt = avg_log2FC)
+top5 %>% formattable()
 ```
 
-```{r SuppFig6B, fig.width=6, fig.height=6, warning=FALSE, message=FALSE}
-Idents(SuppFig6Mastilc) <- SuppFig6Mastilc$highlevel2
-DefaultAssay(SuppFig6Mastilc) <- "RNA"
-VlnPlot(SuppFig6Mastilc, 
-        features=c("Cma1","Mcpt4","Fcgr3","Cpa3", "Kit","Ly6a","Il7r","Gata3"), 
-        stack=T, 
-        flip=T,
-        fill.by="ident",
-        cols=c("#00c5cc","#b282b3")) +
-  labs(x="") + 
-  scale_x_discrete(labels=c("Mast Cells","ILC2s")) + 
-  NoLegend() +
-  theme(aspect.ratio = 0.5) 
-```
-
-## Supplemental Figure 6C
-```{r SuppFig6csetup, echo=TRUE, warning=FALSE, message=FALSE}
-Idents(data.integrated) <- data.integrated$orig.ident
-ILCMastspm <- subset(cellspm, 
-                      Cluster=="Mast Cells" | 
-                      Cluster=="ILC2s" )
-ILCMastspm$Group <- factor(ILCMastspm$Group, levels = c("Lean","Obese","WL","WC"))
-ILCMastclustercounts <- subset(clustercounts, 
-                      Cluster=="Mast Cells" | 
-                      Cluster=="ILC2s" )
-ILCMastclustercounts$Group <- factor(ILCMastclustercounts$Group, levels = c("Lean","Obese","WL","WC"))
-```
-
-```{r SuppFig6cstats, echo=TRUE, fig.width=3, fig.height=3, warning=FALSE, message=FALSE}
-compare_means(CountsPerHundred ~ Group, data = subset(ILCMastspm, Cluster=="Mast Cells"), method="t.test", p.adjust.method = "bonferroni")
-
-compare_means(CountsPerHundred ~ Group, data = subset(ILCMastspm, Cluster=="ILC2s"), method="t.test", p.adjust.method = "bonferroni")
-```
-
-```{r SuppFig6c, echo=TRUE, fig.width=3, fig.height=3, warning=FALSE, message=FALSE}
-ggboxplot(d=subset(ILCMastspm, Cluster=="Mast Cells"), 
-          x="Group", 
-          y="CountsPerHundred",  
-          fill="Group", 
-          facet.by="Cluster", 
-          add = "mean_se")  +
-    theme_classic() +
-    scale_fill_manual(values=wccols) +
-    theme(axis.text.x=element_text(face="bold", size=10)) + 
-    labs(x="", y="") +
-    theme(axis.text.x = element_blank(), axis.ticks = element_blank()) +
-    facet_wrap(~Cluster) + 
+```{r SuppFig6, fig.width=10, fig.height=14, warning=FALSE, message=FALSE}
+DoHeatmap(subset(data.integrated, downsample=200), 
+          features=unique(top5$gene),
+          group.by="highlevel2",
+          group.colors=cols,
+          assay="integrated",
+          raster=FALSE, 
+          label=FALSE,
+          disp.min=0,
+          disp.max=2) + 
     NoLegend() + 
-    ylim(0,12)
-ggboxplot(d=subset(ILCMastspm, Cluster=="ILC2s"), 
-          x="Group", 
-          y="CountsPerHundred",  
-          fill="Group", 
-          facet.by="Cluster", 
-          add = "mean_se") +
-    theme_classic() +
-    scale_fill_manual(values=wccols) +
-    theme(axis.text.x=element_text(face="bold", size=10)) + 
-    labs(x="", y="") +
-    theme(axis.text.x = element_blank(), axis.ticks = element_blank()) +
-    facet_wrap(~Cluster) + 
-    NoLegend() + 
-    ylim(0,12)
-```
-
-## Supplemental Figure 6D
-```{r SuppFig6d, fig.width=12, fig.height=3, warning=FALSE, message=FALSE}
-RidgePlot(subset(data.integrated,highlevel2=="Mast Cells"), features=c("Cma1","Il1rl1","Trem2","Fabp5"), group.by="orig.ident", assay="RNA", stack=F, ncol=4) &
-  scale_fill_manual(values=wccols)
+    scale_fill_distiller(type="seq", palette="YlOrRd", direction=1)
 ```
 
 # Session Info
@@ -171,3 +74,4 @@ RidgePlot(subset(data.integrated,highlevel2=="Mast Cells"), features=c("Cma1","I
 ```{r si}
 sessionInfo()
 ```
+

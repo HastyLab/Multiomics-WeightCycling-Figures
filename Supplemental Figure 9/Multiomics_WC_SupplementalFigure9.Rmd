@@ -1,0 +1,292 @@
+---
+title: Multiomics reveals persistence of obesity-associated adipose tissue immune
+  cell phenotypes during weight loss and weight regain in mice
+author: "Matthew A. Cottam"
+subtitle: "Supplemental Figure 9"
+output:
+  html_document:
+    toc: yes
+    df_print: paged
+  html_notebook:
+    theme: journal
+    fig_caption: yes
+    toc: yes
+---
+
+# Setup
+
+```{r prep, echo=TRUE, warning=FALSE, message=FALSE}
+library(Seurat)
+library(RColorBrewer)
+library(ggplot2)
+library(dplyr)
+library(ggpubr)
+library(SingleCellExperiment)
+library(ggrepel)
+library(reticulate)
+library(viridis)
+library(ProjecTILs)
+library(ggnewscale)
+library(scales)
+
+#Data file
+data.integrated <- readRDS("../Inputs/IntegratedData.rds")
+
+#Color panels
+maccols <- brewer.pal(n=8, name="Blues")[c(-1,-3,-5,-7)]
+monocols <- c("#ff8ade","#e324ad")
+dccols <- brewer.pal(n=9, name="Greens")[-1]
+tcols <- brewer.pal(n=8, name="Reds")[-1]
+nkcols <- c("#876149","#6e3f22")
+bcols <- brewer.pal(n=4, name="Purples")[-1]
+othcols <- c("#71a157","#00c5cc","#a18e25","#b282b3")
+strcols <- brewer.pal(n=4, name="Oranges")[-1]
+wccols = c("#878787", "#518db6","#94cc73","#e96b53")
+
+cols <- c(maccols,monocols,dccols,tcols,nkcols,bcols,othcols,strcols)
+
+llcols <- c("#4292C6","#ff8ade","#238B45","#EF3B2C","#876149","#9E9AC8","#71a157","#00c5cc","#a18e25","#b282b3","#FD8D3C")
+```
+
+# Supplemental Figure 9
+
+## Supplemental Figure 9A
+
+```{r SuppFig9Asetup, fig.width=3, fig.height=3, warning=FALSE, message=FALSE}
+#Download ProjectTILs reference from Figshare: https://figshare.com/articles/dataset/ProjecTILs_murine_reference_atlas_of_tumor-infiltrating_T_cells_version_1/12478571/2
+#download.file('https://ndownloader.figshare.com/files/23136746', destfile="../Inputs/SuppFig7/ref_TILAtlas_mouse_v1.rds")
+
+#Subset for T cells
+Tcells <- subset(data.integrated, highlevel2=="Th1 CD4+ T Cells" | highlevel2=="Th2 CD4+ T Cells" | highlevel2=="Tregs" | 
+                   highlevel2=="Effector Memory CD8+ T Cells" | highlevel2=="Central Memory CD8+ T Cells"| highlevel2=="Cycling CD8+ T Cells")
+DefaultAssay(Tcells) <- "RNA"
+
+#Load ProjecTILs Seurat reference using cancer atlas
+ref <- load.reference.map("../Inputs/SuppFig7/ref_TILAtlas_mouse_v1.rds")
+refCols <- c("#edbe2a", "#A58AFF", "#53B400", "#F8766D", "#00B6EB", "#d1cfcc", "#FF0000", "#87f6a5", "#e812dd")
+DimPlot(ref,label = T, cols =refCols) + theme_void() + NoLegend()
+
+#Project diet groups onto ProjecTILs annotated cells
+LeanPTils <- make.projection(subset(Tcells, orig.ident=="Lean"), ref=ref, skip.normalize=T, seurat.k.filter=100, filter.cells=F)
+ObesePTils <- make.projection(subset(Tcells, orig.ident=="Obese"), ref=ref, skip.normalize=T, seurat.k.filter=100, filter.cells=F)
+WLPTils <- make.projection(subset(Tcells, orig.ident=="WL"), ref=ref, skip.normalize=T, seurat.k.filter=100, filter.cells=F)
+WCPTils <- make.projection(subset(Tcells, orig.ident=="WC"), ref=ref, skip.normalize=T, seurat.k.filter=100, filter.cells=F)
+
+#Predict cellstate for mapping
+LeanPTils <- cellstate.predict(ref=ref, query=LeanPTils)
+ObesePTils <- cellstate.predict(ref=ref, query=ObesePTils)
+WLPTils <- cellstate.predict(ref=ref, query=WLPTils)
+WCPTils <- cellstate.predict(ref=ref, query=WCPTils)
+```
+
+```{r SuppFig9A, fig.width=2, fig.height=2, warning=FALSE, message=FALSE}
+#Reference and labels
+DimPlot(ref, reduction="umap", label=F, cols=c("#edbe2a", "#A58AFF", "#53B400", "#F8766D", 
+                "#00B6EB", "#d1cfcc", "#FF0000", "#87f6a5", "#e812dd"))+
+    theme_void() +
+  NoLegend() 
+DimPlot(ref, reduction="umap", label=F, cols=c("#edbe2a", "#A58AFF", "#53B400", "#F8766D", 
+                "#00B6EB", "#d1cfcc", "#FF0000", "#87f6a5", "#e812dd"))+
+    theme_void() 
+
+#Diet groups
+DimPlot(ref, reduction="umap", label=F, cols=c(rep("#e8e8e8",9))) +
+  geom_point(data.frame(LeanPTils@reductions$umap@cell.embeddings), 
+             mapping = aes(x = UMAP_1, y = UMAP_2),
+             alpha = 1,
+             size = 1.5,
+             shape = 16,
+             color = wccols[1]) + 
+  theme_void() +
+  NoLegend() 
+
+DimPlot(ref, reduction="umap", label=F, cols=c(rep("#e8e8e8",9))) +
+  geom_point(data.frame(ObesePTils@reductions$umap@cell.embeddings), 
+             mapping = aes(x = UMAP_1, y = UMAP_2),
+             alpha = 1,
+             size = 1.5,
+             shape = 16,
+             color = wccols[2]) + 
+  theme_void() +
+  NoLegend() 
+
+DimPlot(ref, reduction="umap", label=F, cols=c(rep("#e8e8e8",9))) +
+  geom_point(data.frame(WLPTils@reductions$umap@cell.embeddings), 
+             mapping = aes(x = UMAP_1, y = UMAP_2),
+             alpha = 1,
+             size = 1.5,
+             shape = 16,
+             color = wccols[3]) + 
+  theme_void() +
+  NoLegend() 
+
+DimPlot(ref, reduction="umap", label=F, cols=c(rep("#e8e8e8",9))) +
+  geom_point(data.frame(WCPTils@reductions$umap@cell.embeddings), 
+             mapping = aes(x = UMAP_1, y = UMAP_2),
+             alpha = 1,
+             size = 1.5,
+             shape = 16,
+             color = wccols[4]) + 
+  theme_void() +
+  NoLegend() 
+```
+
+## Supplemental Figure 9B
+
+```{r SuppFig9bsetup, warning=FALSE, message=FALSE}
+Texhaustion_gex <- list(c("Pdcd1","Tigit","Tox","Entpd1","Lag3"))
+
+LeanPTils <- AddModuleScore(LeanPTils,
+                             features=Texhaustion_gex,
+                             assay="RNA",
+                             name='Texhaustion_gex')
+ObesePTils <- AddModuleScore(ObesePTils,
+                             features=Texhaustion_gex,
+                             assay="RNA",
+                             name='Texhaustion_gex')
+WLPTils <- AddModuleScore(WLPTils,
+                             features=Texhaustion_gex,
+                             assay="RNA",
+                             name='Texhaustion_gex')
+WCPTils <- AddModuleScore(WCPTils,
+                             features=Texhaustion_gex,
+                             assay="RNA",
+                             name='Texhaustion_gex')
+```
+
+```{r SuppFig9B, fig.width=2, fig.height=2, warning=FALSE, message=FALSE}
+LeanPTils_ex <- data.frame(LeanPTils@reductions$umap@cell.embeddings)
+LeanPTils_ex$ex <- unname(LeanPTils$Texhaustion_gex1)
+DimPlot(ref, reduction="umap", label=F, cols=c(rep("#e8e8e8",9)), order=T) + 
+  new_scale("color") + 
+        geom_point(LeanPTils_ex, 
+                   mapping = aes(x = UMAP_1, y = UMAP_2, color=ex), 
+                   alpha = 1, 
+                   size = 1.5, 
+                   shape = 16) +
+  scale_color_viridis(option="A",limits=c(0,2),breaks=c(0,1,2), oob=squish) +
+  theme_void() +
+  NoLegend() 
+
+ObesePTils_ex <- data.frame(ObesePTils@reductions$umap@cell.embeddings)
+ObesePTils_ex$ex <- unname(ObesePTils$Texhaustion_gex1)
+DimPlot(ref, reduction="umap", label=F, cols=c(rep("#e8e8e8",9)), order=T) + 
+  new_scale("color") + 
+        geom_point(ObesePTils_ex, 
+                   mapping = aes(x = UMAP_1, y = UMAP_2, color=ex), 
+                   alpha = 1, 
+                   size = 1.5, 
+                   shape = 16) +
+  scale_color_viridis(option="A",limits=c(0,2),breaks=c(0,1,2), oob=squish) +
+  theme_void() +
+  NoLegend() 
+
+WLPTils_ex <- data.frame(WLPTils@reductions$umap@cell.embeddings)
+WLPTils_ex$ex <- unname(WLPTils$Texhaustion_gex1)
+DimPlot(ref, reduction="umap", label=F, cols=c(rep("#e8e8e8",9)), order=T) + 
+  new_scale("color") + 
+        geom_point(WLPTils_ex, 
+                   mapping = aes(x = UMAP_1, y = UMAP_2, color=ex), 
+                   alpha = 1, 
+                   size = 1.5, 
+                   shape = 16) +
+  scale_color_viridis(option="A",limits=c(0,2),breaks=c(0,1,2), oob=squish) +
+  theme_void() +
+  NoLegend() 
+
+WCPTils_ex <- data.frame(WCPTils@reductions$umap@cell.embeddings)
+WCPTils_ex$ex <- unname(WCPTils$Texhaustion_gex1)
+DimPlot(ref, reduction="umap", label=F, cols=c(rep("#e8e8e8",9)), order=T) + 
+  new_scale("color") + 
+        geom_point(WCPTils_ex, 
+                   mapping = aes(x = UMAP_1, y = UMAP_2, color=ex), 
+                   alpha = 1, 
+                   size = 1.5, 
+                   shape = 16) +
+  scale_color_viridis(option="A",limits=c(0,2),breaks=c(0,1,2), oob=squish) +
+  theme_void() +
+  NoLegend() 
+```
+
+## Supplemental Figure 9C
+
+```{r SuppFig9csetup, warning=FALSE, message=FALSE}
+Texhaustion_ADT <- list(c("TIGIT","CD279"))
+
+LeanPTils <- AddModuleScore(LeanPTils,
+                             features=Texhaustion_ADT,
+                             assay="RNA",
+                             name='Texhaustion_ADT')
+ObesePTils <- AddModuleScore(ObesePTils,
+                             features=Texhaustion_ADT,
+                             assay="RNA",
+                             name='Texhaustion_ADT')
+WLPTils <- AddModuleScore(WLPTils,
+                             features=Texhaustion_ADT,
+                             assay="RNA",
+                             name='Texhaustion_ADT')
+WCPTils <- AddModuleScore(WCPTils,
+                             features=Texhaustion_ADT,
+                             assay="RNA",
+                             name='Texhaustion_ADT')
+```
+
+```{r SuppFig9c, fig.width=2, fig.height=2, warning=FALSE, message=FALSE}
+LeanPTils_ex <- data.frame(LeanPTils@reductions$umap@cell.embeddings)
+LeanPTils_ex$ex2 <- unname(LeanPTils$Texhaustion_ADT1)
+DimPlot(ref, reduction="umap", label=F, cols=c(rep("#e8e8e8",9)), order=T) + 
+  new_scale("color") + 
+        geom_point(LeanPTils_ex, 
+                   mapping = aes(x = UMAP_1, y = UMAP_2, color=ex2), 
+                   alpha = 1, 
+                   size = 1.5, 
+                   shape = 16) +
+  scale_color_viridis(option="A",limits=c(0,2),breaks=c(0,1,2), oob=squish) +
+  theme_void() +
+  NoLegend() 
+
+ObesePTils_ex <- data.frame(ObesePTils@reductions$umap@cell.embeddings)
+ObesePTils_ex$ex2 <- unname(ObesePTils$Texhaustion_ADT1)
+DimPlot(ref, reduction="umap", label=F, cols=c(rep("#e8e8e8",9)), order=T) + 
+  new_scale("color") + 
+        geom_point(ObesePTils_ex, 
+                   mapping = aes(x = UMAP_1, y = UMAP_2, color=ex2), 
+                   alpha = 1, 
+                   size = 1.5, 
+                   shape = 16) +
+  scale_color_viridis(option="A",limits=c(0,2),breaks=c(0,1,2), oob=squish) +
+  theme_void() +
+  NoLegend() 
+
+WLPTils_ex <- data.frame(WLPTils@reductions$umap@cell.embeddings)
+WLPTils_ex$ex2 <- unname(WLPTils$Texhaustion_ADT1)
+DimPlot(ref, reduction="umap", label=F, cols=c(rep("#e8e8e8",9)), order=T) + 
+  new_scale("color") + 
+        geom_point(WLPTils_ex, 
+                   mapping = aes(x = UMAP_1, y = UMAP_2, color=ex2), 
+                   alpha = 1, 
+                   size = 1.5, 
+                   shape = 16) +
+  scale_color_viridis(option="A",limits=c(0,2),breaks=c(0,1,2), oob=squish) +
+  theme_void() +
+  NoLegend() 
+
+WCPTils_ex <- data.frame(WCPTils@reductions$umap@cell.embeddings)
+WCPTils_ex$ex2 <- unname(WCPTils$Texhaustion_ADT1)
+DimPlot(ref, reduction="umap", label=F, cols=c(rep("#e8e8e8",9)), order=T) + 
+  new_scale("color") + 
+        geom_point(WCPTils_ex, 
+                   mapping = aes(x = UMAP_1, y = UMAP_2, color=ex2), 
+                   alpha = 1, 
+                   size = 1.5, 
+                   shape = 16) +
+  scale_color_viridis(option="A",limits=c(0,2),breaks=c(0,1,2), oob=squish) +
+  theme_void() +
+  NoLegend() 
+```
+
+# Session Info
+
+```{r si}
+sessionInfo()
+```

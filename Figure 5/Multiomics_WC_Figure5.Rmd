@@ -1,6 +1,6 @@
 ---
 title: Multiomics reveals persistence of obesity-associated adipose tissue immune
-  cell phenotypes during weight loss and subsequent weight regain
+  cell phenotypes during weight loss and weight regain in mice
 author: "Matthew A. Cottam"
 subtitle: "Figure 5"
 output:
@@ -47,7 +47,7 @@ nkcols <- c("#876149","#6e3f22")
 bcols <- brewer.pal(n=4, name="Purples")[-1]
 othcols <- c("#71a157","#00c5cc","#a18e25","#b282b3")
 strcols <- brewer.pal(n=4, name="Oranges")[-1]
-wccols = c("#878787", "#518db6","#94cc73","#e96b53")
+wccols = c("Lean" = "#878787", "Obese"="#518db6","WL"="#94cc73","WC"="#e96b53")
 
 cols <- c(maccols,monocols,dccols,tcols,nkcols,bcols,othcols,strcols)
 
@@ -122,7 +122,7 @@ VlnPlot(Monocytes,
         cols=c("#ff8ade","#e324ad","#00441B","#E5F5E0","#74C476")) +
   labs(x="") + 
   NoLegend() +
-  theme(aspect.ratio = 0.25) + 
+  theme(aspect.ratio = 0.25, strip.text=element_text(face="bold.italic")) + 
   scale_x_discrete(labels=c("Classical","Non-classical"))
 ```
 
@@ -193,249 +193,19 @@ ggboxplot(d=subset(monocellspm, Cluster=="Non-classical Monocytes"),
 
 ## Figure 5D
 
-```{r Fig5Dsetup}
-#Convert Seurat Object into a SingleCellExperiment object
-counts <- data.integrated@assays$RNA@counts #Raw counts
-metadata <- data.integrated@meta.data[,c("orig.ident","HTO_maxID","HTO_classification.global","lowlevel2","highlevel2","individual_mice")] #metadata
-metadata$individual_mice <- gsub("_","",metadata$individual_mice)
-sce <- SingleCellExperiment(assays=list(counts=counts), colData = metadata)
-
-#Identify Groups to aggregate counts from
-groups <- colData(sce)[, c("lowlevel2", "individual_mice")]
-
-#Aggregrate across cluster-sample groups
-pb <- aggregate.Matrix(t(counts(sce)),
-                       groupings = groups, fun = "sum")
-
-#Create a vector to split samples. 
-splitf <- sapply(stringr::str_split(rownames(pb), 
-                                    pattern = "_",  
-                                    n = 2), 
-                 `[`, 1)
-
-#Split matrix into a list containing components for each cluster and transpose
-pb <- split.data.frame(pb, 
-                       factor(splitf)) %>%
-        lapply(function(u) 
-                set_colnames(t(u), 
-                             stringr::str_extract(rownames(u), "(?<=_)[:alnum:]+")))
-
-#Create vectors containing sample information
-clusters <- purrr::set_names(levels(sce$lowlevel2))
-n_clusters <- length(clusters)
-samples <- purrr::set_names(levels(factor(sce$individual_mice)))
-n_samples <- length(samples)
-
-#Collect sample metadata
-n_cells <- as.numeric(table(sce$individual_mice))
-m <- match(samples, sce$individual_mice)
-ei <- data.frame(colData(sce)[m,],
-                 n_cells, row.names=NULL) %>%
-  select(-"lowlevel2")
-
-#Create a table to see how many cells belong to each grouping
-data.frame(table(sce$individual_mice, sce$lowlevel2)) %>% 'colnames<-'(c("Sample","Subcluster","# Cells")) %>% tibble()
-
-#Generate sample-level metadata 
-metadata <- unique(data.frame(metadata$lowlevel2, metadata$individual_mice, metadata$orig.ident)) %>% 'colnames<-'(c("cluster_id","sample_id","group_id"))
-
-#Vector of cluster IDs
-clusters <- levels(metadata$cluster_id)
-
-#Subset for the group of interest
-cluster_metadata <- metadata[which(metadata$cluster_id == "Monocytes"), ]
-rownames(cluster_metadata) <- cluster_metadata$sample_id
-counts <- pb$`Monocytes`
-cluster_counts <- data.frame(counts[, which(colnames(counts) %in% rownames(cluster_metadata))])
-cluster_metadata <- cluster_metadata[match(colnames(cluster_counts),cluster_metadata$sample_id),]
-all(rownames(cluster_metadata) == colnames(cluster_counts))     
-
-#Create the DESeq2 data object
-dds <- DESeqDataSetFromMatrix(countData=round(cluster_counts), 
-                              colData = cluster_metadata, 
-                              design = ~ group_id)
-
-#Set obese as the reference control. We are using LRT insteaed of Wald, so this doesn't really matter.
-dds$group_id <- relevel(dds$group_id, ref="Obese")
-rld <- rlog(dds, blind=TRUE)
-
-#Plot PCA
-DESeq2::plotPCA(rld, intgroup = "group_id")
-
-#Plot heatmap
-rld_mat <- assay(rld)
-rld_cor <- cor(rld_mat)
-pheatmap(rld_cor, annotation = cluster_metadata[, c("group_id"), drop=F])
-
-#Run LRT testing via DESeq2
-dds <- DESeq(dds, test = "LRT", reduced=~1)
-
-#plot dispersion
-plotDispEsts(dds)
-
-#Define contrasts. LRT compares across all groups, so this isn't necessary either.
-contrast <- c("group_id", levels(cluster_metadata$group_id)[1], levels(cluster_metadata$group_id)[2])
-
-#Generate DE results
-res <- results(dds, 
-               contrast = contrast,
-               alpha = 0.05)
-res_tbl <- res %>%
-        data.frame() %>%
-        rownames_to_column(var="gene") %>%
-        as_tibble()
-
-#Filter the results, keeping only significant genes
-padj_cutoff <- 0.05
-sig_res <- dplyr::filter(res_tbl, padj < padj_cutoff) %>%
-        dplyr::arrange(padj)
-
-#Normalize the counts for all genes
-normalized_counts <- counts(dds, 
-                            normalized = TRUE)
-
-#Plot the top 20 genes
-top20_sig_genes <- sig_res %>%
-        dplyr::arrange(padj) %>%
-        dplyr::pull(gene) %>%
-        head(n=20)
-top20_sig_norm <- data.frame(normalized_counts) %>%
-        rownames_to_column(var = "gene") %>%
-        dplyr::filter(gene %in% top20_sig_genes)
-
-gathered_top20_sig <- top20_sig_norm %>%
-        gather(colnames(top20_sig_norm)[2:length(colnames(top20_sig_norm))], key = "samplename", value = "normalized_counts")
-        
-gathered_top20_sig <- inner_join(ei[, c("individual_mice", "orig.ident" )], gathered_top20_sig, by = c("individual_mice" = "samplename"))
-ggplot(gathered_top20_sig) +
-        geom_point(aes(x = gene, 
-                       y = normalized_counts, 
-                       color = orig.ident), 
-                   position=position_jitter(w=0.1,h=0)) +
-        scale_y_log10() +
-        xlab("Genes") +
-        ylab("log10 Normalized Counts") +
-        ggtitle("Top 20 Significant DE Genes") +
-        theme_bw() +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
-        theme(plot.title = element_text(hjust = 0.5)) + 
-        scale_color_manual(values=wccols)
-
-#Use the degreport package to group genes by changes in patterns across groups. Normally this is for timecourse data, but works really effectively in our paradigm to look at genes that recover or fail to recover during WL.
-cluster_rlog <- rld_mat[sig_res$gene, ]
-metadata <- subset(metadata, cluster_id=="Monocytes")
-rownames(metadata) <- metadata$sample_id
-metadata <- metadata[match(colnames(cluster_rlog),cluster_metadata$sample_id),]
-clusters <- degPatterns(cluster_rlog, metadata = metadata, time = "group_id", col=NULL, plot=FALSE)
-```
-
-```{r Fig5dpart1, fig.width=10, fig.height=2.5, message=TRUE, warning=TRUE}
-ggplot(clusters$normalized, aes(x=group_id,y=value, color=group_id)) + 
-  stat_smooth(aes(x=group_id, y=value))+
-  geom_point(alpha=0.5, size=1, position=position_jitterdodge(dodge.width = 0.9)) + 
-  geom_line(aes(group=genes), alpha=0.1) + 
-  geom_boxplot(alpha=0, outlier.size=0, outlier.shape=NA)+
-  facet_wrap(~cluster, ncol=4) +
-  theme_pubr(base_size = 12) + 
-  labs(y="Z-score of gene abundance") +
-  scale_color_manual(values=wccols)+
-  theme(axis.title.x=element_blank()) +
-  NoLegend()
-#Gene clusters:
-  # 1 = Lean-associated genes that recover with WL
-  # 2 = Obese-associated genes that do not recover with WL
-  # 3 = Obese-associated genes that recover with WL
-  # 4 = Obese-associated genes that do not recover with WL
-  # 5 = Lean-associated genes that do not recover with WL
-  # 6 = Lean-associated genes that do not recover with WL
-  # 7 = Obese-associated genes that do not recover with WL
-
-#Regroups clusters by the above simplified patterns into.
-
-Monocyte_DEG_patterns <- clusters$normalized %>% mutate(patterns = ifelse(cluster==1, 1, #Highest in lean, recover with WL
-                                                                   ifelse(cluster==3,2, #Lowest in lean, recover with WL
-                                                                   ifelse(cluster==2 | cluster==4 | cluster==7,4, #lowest in lean, don't recover with WL
-                                                                   ifelse(cluster==5|cluster==6,3,""))))) #highest in lean, don't recover with WL
-
-ggplot(Monocyte_DEG_patterns, aes(x=group_id,y=value, color=group_id)) + 
-  stat_smooth(aes(x=group_id, y=value))+
-  geom_point(alpha=0.5, size=0.5, position=position_jitterdodge(dodge.width = 0.9)) + 
-  geom_line(aes(group=genes), alpha=0.1) + 
-  geom_boxplot(alpha=0, outlier.size=0, outlier.shape=NA)+
-  facet_wrap(~patterns, ncol=4) +
-  theme_pubr(base_size = 12) + 
-  labs(y="Z-score of gene abundance") +
-  scale_color_manual(values=wccols)+
-  theme(strip.background = element_blank(), strip.text.x=element_blank(), axis.title.x=element_blank()) +
-  NoLegend()
-
-#To save genes for putting into Metascape
-#write.csv(data.frame(Monocyte_DEG_patterns$genes, Monocyte_DEG_patterns$patterns) %>% unique() %>%  'colnames<-'(c("genes","patterns")), file="Monocyte_metascape.csv")
-```
-
-```{r Fig5dpart2, fig.width=2.5, fig.height=2.5}
-#Ran these through metascape for gene ontology
-Pattern1 <- read.csv("../Inputs/Fig5/Monocyte_Pattern_A/Enrichment_GO/_FINAL_GO.csv")
-Pattern2 <- read.csv("../Inputs/Fig5/Monocyte_Pattern_B/Enrichment_GO/_FINAL_GO.csv")
-Pattern3 <- read.csv("../Inputs/Fig5/Monocyte_Pattern_C/Enrichment_GO/_FINAL_GO.csv")
-Pattern4 <- read.csv("../Inputs/Fig5/Monocyte_Pattern_D/Enrichment_GO/_FINAL_GO.csv")
-  
-#We will plot the top5 pathways for each pattern
-top_pathways_1 <- subset(Pattern1,FirstInGroupByEnrichment==1)
-top_pathways_1$GO <- factor(top_pathways_1$GO, levels = top_pathways_1$GO[order(top_pathways_1$Log.q.value.)])
-top_pathways_1 <- top_pathways_1 %>% distinct(Description,.keep_all = TRUE)
-ggplot(top_pathways_1[1:5,],aes(x=-Log.q.value., y=rev(GO), color=Log.q.value., label=stringr::str_wrap(Description,30)))+
-  geom_point(size=4) + 
-  labs(x="-log10(adj P value)",y="") + 
-  theme_pubr(base_size=10) + 
-  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) + 
-  xlim(0,30) +
-  scale_color_gradient(high="#d16f6f",low="#960000") +
+```{r Fig5d, fig.width=8, fig.height=6}
+Idents(Monocytes) <- Monocytes$orig.ident
+DefaultAssay(Monocytes) <- "RNA"
+VlnPlot(subset(Monocytes,highlevel2=="Classical Monocytes"), 
+        features=c("Cd36","Trem2","Cd9","Cd81","Cd63","Cd80","Cd86","Cd40"), 
+        stack=T, 
+        flip=T,
+        fill.by="ident",
+        cols=wccols) +
+  labs(x="") + 
   NoLegend() +
-  geom_text_repel(nudge_x = 1,nudge_y = 0.55, size=3, min.segment.length = 0.001) +
-  geom_vline(xintercept=-log10(0.01), color="grey",linetype="dashed")
-
-top_pathways_2 <- subset(Pattern2,FirstInGroupByEnrichment==1)
-top_pathways_2$GO <- factor(top_pathways_2$GO, levels = top_pathways_2$GO[order(top_pathways_2$Log.q.value.)])
-top_pathways_2 <- top_pathways_2 %>% distinct(Description,.keep_all = TRUE)
-ggplot(top_pathways_2[1:5,],aes(x=-Log.q.value., y=rev(GO), color=Log.q.value., label=stringr::str_wrap(Description,20)))+
-  geom_point(size=4) + 
-  labs(x="-log10(adj P value)",y="") + 
-  theme_pubr(base_size=10) + 
-  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) + 
-  xlim(0,10) +
-  scale_color_gradient(high="#d16f6f",low="#960000") +
-  NoLegend() +
-  geom_text_repel(nudge_x = 3,nudge_y = 0.33, size=3, min.segment.length = 0.001) +
-  geom_vline(xintercept=-log10(0.01), color="grey",linetype="dashed")
-
-top_pathways_3 <- subset(Pattern3,FirstInGroupByEnrichment==1)
-top_pathways_3$GO <- factor(top_pathways_3$GO, levels = top_pathways_3$GO[order(top_pathways_3$Log.q.value.)])
-top_pathways_3 <- top_pathways_3 %>% distinct(Description,.keep_all = TRUE)
-ggplot(top_pathways_3[1:5,],aes(x=-Log.q.value., y=rev(GO), color=Log.q.value., label=stringr::str_wrap(Description,25)))+
-  geom_point(size=4) + 
-  labs(x="-log10(adj P value)",y="") + 
-  theme_pubr(base_size=10) + 
-  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) + 
-  xlim(0,10) +
-  scale_color_gradient(high="#d16f6f",low="#960000") +
-  NoLegend() +
-  geom_text_repel(nudge_x = -4,nudge_y = 0.6, size=3, min.segment.length = 0.001) +
-  geom_vline(xintercept=-log10(0.01), color="grey",linetype="dashed")
-
-top_pathways_4 <- subset(Pattern4,FirstInGroupByEnrichment==1)
-top_pathways_4$GO <- factor(top_pathways_4$GO, levels = top_pathways_4$GO[order(top_pathways_4$Log.q.value.)])
-top_pathways_4 <- top_pathways_4 %>% distinct(Description,.keep_all = TRUE)
-ggplot(top_pathways_4[1:5,],aes(x=-Log.q.value., y=rev(GO), color=Log.q.value., label=stringr::str_wrap(Description,20)))+
-  geom_point(size=4) + 
-  labs(x="-log10(adj P value)",y="") + 
-  theme_pubr(base_size=10) + 
-  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) + 
-  xlim(0,30) +
-  scale_color_gradient(high="#d16f6f",low="#960000") +
-  NoLegend() +
-  geom_text_repel(nudge_x = -6,nudge_y = 0.5, size=3, min.segment.length = 0.001) +
-  geom_vline(xintercept=-log10(0.01), color="grey",linetype="dashed")
+ theme(aspect.ratio = 0.25, strip.text=element_text(face="bold.italic"), text=element_text(size=18), axis.text.x = element_text(size=16)) + 
+  scale_x_discrete(labels=c("Lean","Obese","WL","WC")) 
 ```
 
 ## Figure 5E
@@ -455,7 +225,7 @@ VlnPlot(Fig5DCs,
         cols=c("#E5F5E0","#C7E9C0","#A1D99B","#74C476","#41AB5D","#238B45","#006D2C","#00441B")) +
   labs(x="") + 
   NoLegend() +
-  theme(aspect.ratio = 0.25) 
+  theme(aspect.ratio = 0.25, strip.text=element_text(face="bold.italic")) 
 ```
 
 
@@ -693,6 +463,9 @@ scv$tl$recover_dynamics(adata_DC)
 scv$tl$velocity(adata_DC, mode='dynamical')
 scv$tl$velocity_graph(adata_DC)
 
+#Run PAGA using the dynamic velocity estimates
+scv$tl$paga(adata_DC, groups='clusters')
+
 #Colors  for plot
 DC.colors <- c("#E5F5E0","#C7E9C0","#A1D99B","#74C476","#41AB5D","#238B45")
 ```
@@ -710,10 +483,15 @@ scv$pl$velocity_embedding_stream(adata_DC,
                                  min_mass=0,
                                  alpha=0.5)
 
+#save as "scvelo2.png" - This is already available in the "figures" folder.
+scv$pl$paga(adata_DC, basis='umap', size=100, alpha=0.1,
+             min_edge_width=2, node_size_scale=1.5)
 ```
 
 ```{r Fig5houts}
 knitr::include_graphics("figures/scvelo1.png")
+
+knitr::include_graphics("figures/scvelo2.png")
 ```
 
 
@@ -728,7 +506,7 @@ FeaturePlot(DCs, features=c("Cd274","Pdcd1lg2","Cd200"), split.by="orig.ident", 
 FeaturePlot(DCs, features=c("Cd274","Pdcd1lg2","Cd200"), split.by="orig.ident", by.col=T, pt.size=0.5)  & scale_color_viridis(option="D", limits=c(0,2), breaks=c(0,1,2)) & ylim(-10,3) & xlim(-7,7) & theme(legend.position="bottom")
 
 ### Just using this for nice labels
-VlnPlot(DCs, features=c("Cd274","Pdcd1lg2","Cd200"), stack=T, flip=T, split.by="orig.ident")
+VlnPlot(DCs, features=c("Cd274","Pdcd1lg2","Cd200"), stack=T, flip=T, split.by="orig.ident") + theme(strip.text=element_text(face="bold.italic"))
 ```
 
 # Session Info

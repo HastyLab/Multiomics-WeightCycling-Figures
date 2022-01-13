@@ -1,6 +1,6 @@
 ---
 title: Multiomics reveals persistence of obesity-associated adipose tissue immune
-  cell phenotypes during weight loss and subsequent weight regain
+  cell phenotypes during weight loss and weight regain in mice
 author: "Matthew A. Cottam"
 subtitle: "Supplemental Figure 8"
 output:
@@ -19,11 +19,8 @@ output:
 library(Seurat)
 library(RColorBrewer)
 library(ggplot2)
-library(dplyr)
 library(ggpubr)
-library(SingleCellExperiment)
-library(reticulate)
-library(viridis)
+library(dplyr)
 
 #Data file
 data.integrated <- readRDS("../Inputs/IntegratedData.rds")
@@ -84,70 +81,57 @@ clusterprops <- data_summary(propcellspm, varname="Frequency", groupnames=c("Gro
 # Supplemental Figure 8
 
 ## Supplemental Figure 8A
-
-```{r SuppFig8A, fig.width=12, fig.height=4, warning=FALSE, message=FALSE}
-figs6cols <- c(rep("#e6e6e6",23),"#CBC9E2","#9E9AC8","#6A51A3","#71a157",rep("#e6e6e6",6))
+```{r SuppFig8A, echo=TRUE, fig.width=12, fig.height=4, warning=FALSE, message=FALSE}
+figs8cols <- c(rep("#e6e6e6",27),"#00c5cc","#e6e6e6","#b282b3",rep("#e6e6e6",3))
 DimPlot(data.integrated, split.by="orig.ident",group.by="highlevel2") + 
   NoLegend() + 
   labs(title="") &
-  scale_color_manual(values=figs6cols) &
+  scale_color_manual(values=figs8cols) &
  NoAxes()
 ```
 
 ## Supplemental Figure 8B
-
-```{r SuppFig8Bsetup, warning=FALSE, message=FALSE}
-SuppFig8Bcells <- subset(data.integrated, highlevel2=="Naive B Cells" | 
-                           highlevel2=="Memory B Cells"|
-                           highlevel2=="B-1a Cells"|
-                           highlevel2=="Plasma Cells")
+```{r SuppFig6Bsetup, warning=FALSE, message=FALSE}
+SuppFig8Mastilc <- subset(data.integrated, highlevel2=="Mast Cells" | highlevel2=="ILC2s"  )
 ```
 
 ```{r SuppFig8B, fig.width=6, fig.height=6, warning=FALSE, message=FALSE}
-Idents(SuppFig8Bcells) <- SuppFig8Bcells$highlevel2
-DefaultAssay(SuppFig8Bcells) <- "RNA"
-VlnPlot(SuppFig8Bcells, 
-        features=c("Ms4a1","Cd19","Ccr7","Cd79a","Cd79b","Ighd","Zbtb32","Slamf9","Jchain"), 
+Idents(SuppFig8Mastilc) <- SuppFig8Mastilc$highlevel2
+DefaultAssay(SuppFig8Mastilc) <- "RNA"
+VlnPlot(SuppFig8Mastilc, 
+        features=c("Cma1","Mcpt4","Fcgr3","Cpa3", "Kit","Ly6a","Il7r","Gata3"), 
         stack=T, 
         flip=T,
         fill.by="ident",
-        cols=c("#CBC9E2","#9E9AC8","#6A51A3","#71a157")) +
+        cols=c("#00c5cc","#b282b3")) +
   labs(x="") + 
-  scale_x_discrete(labels=c("Naive B Cells","Memory B Cells","B-1a Cells","Plasma Cells")) + 
+  scale_x_discrete(labels=c("Mast Cells","ILC2s")) + 
   NoLegend() +
-  theme(aspect.ratio = 0.25) 
+  theme(aspect.ratio = 0.5, strip.text=element_text(face="bold.italic"), axis.text.x=element_text(size=14)) 
 ```
 
 ## Supplemental Figure 8C
 
-```{r SuppFig8Csetup, warning=FALSE, message=FALSE, fig.width=6, fig.height=6}
+```{r SuppFig8csetup, echo=TRUE, warning=FALSE, message=FALSE}
 Idents(data.integrated) <- data.integrated$orig.ident
-bcellspm <- subset(cellspm, 
-                      Cluster=="Naive B Cells" | 
-                      Cluster=="Memory B Cells" |
-                      Cluster=="B-1a Cells" | 
-                      Cluster=="Plasma Cells")
-bcellspm$Group <- factor(bcellspm$Group, levels = c("Lean","Obese","WL","WC"))
-bclustercounts <- subset(clustercounts, 
-                      Cluster=="Naive B Cells" | 
-                      Cluster=="Memory B Cells" |
-                      Cluster=="B-1a Cells"| 
-                      Cluster=="Plasma Cells")
-bclustercounts$Group <- factor(bclustercounts$Group, levels = c("Lean","Obese","WL","WC"))
+ILCMastspm <- subset(cellspm, 
+                      Cluster=="Mast Cells" | 
+                      Cluster=="ILC2s" )
+ILCMastspm$Group <- factor(ILCMastspm$Group, levels = c("Lean","Obese","WL","WC"))
+ILCMastclustercounts <- subset(clustercounts, 
+                      Cluster=="Mast Cells" | 
+                      Cluster=="ILC2s" )
+ILCMastclustercounts$Group <- factor(ILCMastclustercounts$Group, levels = c("Lean","Obese","WL","WC"))
 ```
 
-```{r SuppFig8cstats, fig.width=3, fig.height=3, warning=FALSE, message=FALSE}
-compare_means(CountsPerHundred ~ Group, data = subset(bcellspm, Cluster=="Naive B Cells"), method="t.test", p.adjust.method = "bonferroni")
+```{r SuppFig8cstats, echo=TRUE, fig.width=3, fig.height=3, warning=FALSE, message=FALSE}
+compare_means(CountsPerHundred ~ Group, data = subset(ILCMastspm, Cluster=="Mast Cells"), method="t.test", p.adjust.method = "bonferroni")
 
-compare_means(CountsPerHundred ~ Group, data = subset(bcellspm, Cluster=="Memory B Cells"), method="t.test", p.adjust.method = "bonferroni") 
-
-compare_means(CountsPerHundred ~ Group, data = subset(bcellspm, Cluster=="B-1a Cells"), method="t.test", p.adjust.method = "bonferroni")
-
-compare_means(CountsPerHundred ~ Group, data = subset(bcellspm, Cluster=="Plasma Cells"), method="t.test", p.adjust.method = "bonferroni")
+compare_means(CountsPerHundred ~ Group, data = subset(ILCMastspm, Cluster=="ILC2s"), method="t.test", p.adjust.method = "bonferroni")
 ```
 
-```{r SuppFig8c, fig.width=3, fig.height=3, warning=FALSE, message=FALSE}
-ggboxplot(d=subset(bcellspm, Cluster=="Naive B Cells"), 
+```{r SuppFig8c, echo=TRUE, fig.width=3, fig.height=3, warning=FALSE, message=FALSE}
+ggboxplot(d=subset(ILCMastspm, Cluster=="Mast Cells"), 
           x="Group", 
           y="CountsPerHundred",  
           fill="Group", 
@@ -160,8 +144,8 @@ ggboxplot(d=subset(bcellspm, Cluster=="Naive B Cells"),
     theme(axis.text.x = element_blank(), axis.ticks = element_blank()) +
     facet_wrap(~Cluster) + 
     NoLegend() + 
-    ylim(0,16)
-ggboxplot(d=subset(bcellspm, Cluster=="Memory B Cells"), 
+    ylim(0,12)
+ggboxplot(d=subset(ILCMastspm, Cluster=="ILC2s"), 
           x="Group", 
           y="CountsPerHundred",  
           fill="Group", 
@@ -174,108 +158,14 @@ ggboxplot(d=subset(bcellspm, Cluster=="Memory B Cells"),
     theme(axis.text.x = element_blank(), axis.ticks = element_blank()) +
     facet_wrap(~Cluster) + 
     NoLegend() + 
-    ylim(0,6)
-ggboxplot(d=subset(bcellspm, Cluster=="B-1a Cells"), 
-          x="Group", 
-          y="CountsPerHundred",  
-          fill="Group", 
-          facet.by="Cluster", 
-          add = "mean_se") +
-    theme_classic() +
-    scale_fill_manual(values=wccols) +
-    theme(axis.text.x=element_text(face="bold", size=10)) + 
-    labs(x="", y="") +
-    theme(axis.text.x = element_blank(), axis.ticks = element_blank()) +
-    facet_wrap(~Cluster) + 
-    NoLegend() + 
-    ylim(0,2)
-ggboxplot(d=subset(bcellspm, Cluster=="Plasma Cells"), 
-          x="Group", 
-          y="CountsPerHundred",  
-          fill="Group", 
-          facet.by="Cluster", 
-          add = "mean_se") +
-    theme_classic() +
-    scale_fill_manual(values=wccols) +
-    theme(axis.text.x=element_text(face="bold", size=10)) + 
-    labs(x="", y="") +
-    theme(axis.text.x = element_blank(), axis.ticks = element_blank()) +
-    facet_wrap(~Cluster) + 
-    NoLegend() + 
-    ylim(0,4)
+    ylim(0,12)
 ```
 
 ## Supplemental Figure 8D
-For plotting rna velocity, I have a conda env containing scvelo (v0.2.3) and scanpy (v1.7.2).
 
-```{r SuppFig8Dsetup, warning=FALSE, message=FALSE}
-#Prep environment for reticulate (i.e. we are running Python through R)
-use_condaenv("r-velocity", required = TRUE)
-conda_list()
-scv <- import("scvelo")
-scanpy <- import("scanpy")
-matplotlib <- import("matplotlib")
-plt <- import("matplotlib.pyplot", as = "plt")
-
-#Subset for Macrophage/Monocytes clusters
-Idents(data.integrated) <- data.integrated$lowlevel2
-Bvelo <- subset(data.integrated, idents=c("B Cells"))
-
-#To remove noise in the velocity embedding, I removed cells that were not on the same cluster trajectory (i.e. 100% disconnected).
-Bvelo_cells <- CellSelector(DimPlot(Bvelo))
-Idents(Bvelo, cells=Bvelo_cells) <- "keep"
-Bvelo <- subset(Bvelo, idents="keep")
-Idents(Bvelo) <- Bvelo$highlevel2
-
-#Create adata object
-spliced = Bvelo@assays$spliced@counts
-unspliced = Bvelo@assays$unspliced@counts
-row.num <- which(rownames(spliced) %in% rownames(Bvelo@assays$RNA@counts))
-spliced <- spliced[c(row.num),]
-unspliced <- unspliced[c(row.num),]
-ad <- import("anndata", convert=FALSE)
-orig.ident <- Bvelo$orig.ident
-HTO_maxID <- Bvelo$HTO_maxID
-lowlevel2 <- Bvelo$lowlevel2
-highlevel2 <- Bvelo$highlevel2
-clusters <- Bvelo$highlevel2
-dfobs <- data.frame(orig.ident, HTO_maxID, lowlevel2, highlevel2, clusters)
-rownames(dfobs) <- names(Bvelo$orig.barcodes)
-genes_attributes <- rownames(Bvelo@assays$RNA@counts)
-dfvar <- data.frame(genes_attributes)
-rownames(dfvar) <- rownames(Bvelo@assays$RNA@counts)
-emb <- Embeddings(Bvelo, "umap")
-adata_B <- ad$AnnData(
-  X=t(Bvelo@assays$RNA@counts),
-  obs=dfobs,
-  var=dfvar,
-  layers=list('spliced'=t(spliced), 'unspliced'=t(unspliced)),
-  obsm=list('X_umap'=emb))
-adata_B
-
-#Run through the scvelo pipeline and generate a dynamic velocity estimate. This takes a long time.
-scv$pp$filter_genes(adata_B)
-scv$pp$moments(adata_B)
-scv$tl$recover_dynamics(adata_B)
-scv$tl$velocity(adata_B)
-scv$tl$velocity_graph(adata_B)
-
-#Colors  for plot
-B.colors <- c("#CBC9E2","#9E9AC8","#6A51A3")
-```
-
-```{r SuppFig8d, fig.width=5, fig.height=5, warning=FALSE, message=FALSE}
-#These will open a separate window because they run through reticulate.
-scv$pl$velocity_embedding_stream(adata_B, 
-                                 basis='umap', 
-                                 size=100,
-                                 legend_fontsize=14,
-                                 palette=B.colors,
-                                 min_mass=0,
-                                 smooth=TRUE,
-                                 alpha=0.5)
-
-knitr::include_graphics("figures/scvelo1.png")
+```{r SuppFig8d, fig.width=12, fig.height=3, warning=FALSE, message=FALSE}
+RidgePlot(subset(data.integrated,highlevel2=="Mast Cells"), features=c("Cma1","Il1rl1","Trem2","Fabp5"), group.by="orig.ident", assay="RNA", stack=F, ncol=4) &
+  scale_fill_manual(values=wccols)
 ```
 
 # Session Info

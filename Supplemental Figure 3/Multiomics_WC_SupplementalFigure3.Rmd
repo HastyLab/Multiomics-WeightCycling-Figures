@@ -114,6 +114,9 @@ ggplot(f_bodymass, aes(x=as.numeric(Week)-1, y=Bodymass, color=Group)) +
   scale_color_manual(values=wccols) +
   geom_vline(xintercept = c(9,18), linetype="dashed") 
 
+#Sample Size 
+subset(f_bodymass, Week=="26") %>% group_by(Group,Week) %>% dplyr::count() # We use week 26 because ipGTTs were performed at this time
+
 #T.tests with Bonferroni correction for multiple comparisons for body mass over time
 compare_means(Bodymass ~ Group, data = f_bodymass %>% tidyr::drop_na(), group.by="Week", method="t.test", p.adjust.method="bonferroni")
 ```
@@ -122,8 +125,9 @@ compare_means(Bodymass ~ Group, data = f_bodymass %>% tidyr::drop_na(), group.by
 
 ```{r Supp3b, fig.height=3, fig.width=3}
 ggplot(subset(f_bodycomp,Source=="Lean_mass"), aes(x=Group, y=Bodycomp, fill=Group)) + 
-  geom_bar(stat="summary", width=0.8) + 
-  geom_errorbar(data=subset(f_bodycomp_sem, Source=="Lean_mass"), aes(ymin=Bodycomp-sem, ymax=Bodycomp+sem), width=0.25) + 
+  geom_bar(stat="summary", width=0.8, color="black", size=0) + 
+  geom_jitter(color="black", alpha=0.5, width=0.3) +
+  geom_errorbar(data=subset(f_bodycomp_sem, Source=="Lean_mass"), aes(ymin=Bodycomp-sem, ymax=Bodycomp+sem), width=0.25, color="black") + 
   theme_pubr(base_size=12) +
   NoLegend() +  
   ylim(0,30) +
@@ -132,14 +136,18 @@ ggplot(subset(f_bodycomp,Source=="Lean_mass"), aes(x=Group, y=Bodycomp, fill=Gro
   theme(aspect.ratio = 1.5)
 
 ggplot(subset(f_bodycomp,Source=="Fat_mass"), aes(x=Group, y=Bodycomp, fill=Group)) + 
-  geom_bar(stat="summary", width=0.8) + 
-  geom_errorbar(data=subset(f_bodycomp_sem, Source=="Fat_mass"), aes(ymin=Bodycomp-sem, ymax=Bodycomp+sem), width=0.25) + 
+  geom_bar(stat="summary", width=0.8, color="black", size=0) + 
+  geom_jitter(color="black", alpha=0.5, width=0.3) +
+  geom_errorbar(data=subset(f_bodycomp_sem, Source=="Fat_mass"), aes(ymin=Bodycomp-sem, ymax=Bodycomp+sem), width=0.25, color="black") + 
   theme_pubr(base_size=12) +
   NoLegend() +  
   ylim(0,25) +
   labs(x="", y="Fat Mass (g)") + 
   scale_fill_manual(values=wccols) +
   theme(aspect.ratio = 1.5)
+
+#Sample Size 
+f_bodycomp %>% group_by(Group,Source) %>% dplyr::count() 
 
 ### T.test with Bonferroni correction for multiple comparisons
 # Lean Mass
@@ -164,6 +172,9 @@ ggplot(f_gtt, aes(x=as.numeric(as.character(Time)), y=PlasmaGlucose, color=Group
   ylim(0,500) + 
   scale_color_manual(values=wccols) 
 
+#Sample Size 
+subset(f_gtt, Time==0) %>% group_by(Group) %>% dplyr::count() 
+
 #ANOVA
 compare_means(PlasmaGlucose ~ Group, data = f_gtt, group.by="Time",method="anova") #By time
 
@@ -172,8 +183,9 @@ compare_means(PlasmaGlucose ~ Group, data = f_gtt, group.by="Time", method="t.te
 
 #AUC
 ggplot(f_auc_sem, aes(x=Group, y=AUC, fill=Group)) + 
-  geom_bar(stat="summary") + 
-  geom_errorbar(data=f_auc_sem, aes(ymin=AUC-sem, ymax=AUC+sem), width=0.25) + 
+  geom_bar(stat="summary", color="black", size=0) + 
+  geom_jitter(data=f_auc, aes(y=AUC, x=Group), width=0.3, alpha=0.5, color="black") +
+  geom_errorbar(data=f_auc_sem, aes(ymin=AUC-sem, ymax=AUC+sem), width=0.25, color="black") + 
   theme_pubr(base_size=12) +
   NoLegend() + 
   labs(x="", y="Plasma Glucose AUC") + 

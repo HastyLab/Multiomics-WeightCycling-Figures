@@ -183,7 +183,8 @@ compare_means(FoodIntake ~ Group, data = foodintake, group.by="Week", method="t.
 #Total mass
 ggplot(subset(tissuemass,Source=="TotalMass"), aes(x=Group, y=Mass, fill=Group)) + 
   geom_bar(stat="summary", color="black", width=0.8) + 
-  geom_errorbar(data=subset(tissuemass_sem, Source=="TotalMass"), aes(ymin=Mass-sem, ymax=Mass+sem), width=0.25) + 
+  geom_jitter(color="black", alpha=0.5, width=0.3) +
+  geom_errorbar(data=subset(tissuemass_sem, Source=="TotalMass"), aes(ymin=Mass-sem, ymax=Mass+sem), width=0.25, color="black") + 
   theme_pubr(base_size=11) +
   NoLegend() + 
   labs(x="", y="Body Mass (g)") + 
@@ -197,7 +198,8 @@ compare_means(Mass ~ Group, data = subset(tissuemass,Source=="TotalMass"), metho
 #eAT Mass
 ggplot(subset(tissuemass,Source=="eATMass"), aes(x=Group, y=Mass, fill=Group)) + 
   geom_bar(stat="summary", color="black", width=0.8) + 
-  geom_errorbar(data=subset(tissuemass_sem, Source=="eATMass"), aes(ymin=Mass-sem, ymax=Mass+sem), width=0.25) + 
+  geom_jitter(color="black", alpha=0.5, width=0.3) +
+  geom_errorbar(data=subset(tissuemass_sem, Source=="eATMass"), aes(ymin=Mass-sem, ymax=Mass+sem), width=0.25, color="black") + 
   theme_pubr(base_size=11) +
   NoLegend() + 
   labs(x="", y="eAT Mass (g)") + 
@@ -208,6 +210,8 @@ ggplot(subset(tissuemass,Source=="eATMass"), aes(x=Group, y=Mass, fill=Group)) +
 #T.tests with Bonferroni correction for multiple comparisons
 compare_means(Mass ~ Group, data = subset(tissuemass,Source=="eATMass"), method="t.test", p.adjust.method = "bonferroni")
   
+#Sample Size
+tissuemass %>% group_by(Group,Source) %>% dplyr::count()
 ```
 
 ## Supplemental Figure 2E

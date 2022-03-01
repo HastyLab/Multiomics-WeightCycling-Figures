@@ -126,9 +126,10 @@ ggplot(subset(bodymass, Time_wk==18), aes(x=as.numeric(Week)-1, y=Bodymass, colo
   geom_vline(xintercept = c(9,18), linetype="dashed")
 
 #Body Mass at sacrifice
-ggplot(subset(bodymass, Time_wk==3 & Week==3), aes(x=Group, y=Bodymass, fill=Group)) + 
-  geom_bar(stat="summary",size=2, position="dodge") + 
-  geom_errorbar(data=subset(bodymass_sem, Time_wk==3 & Week==3), aes(x=Group, ymin=Bodymass-sem, ymax=Bodymass+sem), width=0.25) + 
+ggplot(subset(bodymass, Time_wk==3 & Week==3), aes(x=Group, y=Bodymass, fill=Group, color=Group)) + 
+  geom_bar(stat="summary",size=0, position="dodge", color="black") + 
+  geom_jitter(color="black", alpha=0.5, width=0.3) +
+  geom_errorbar(data=subset(bodymass_sem, Time_wk==3 & Week==3), aes(x=Group, ymin=Bodymass-sem, ymax=Bodymass+sem), width=0.25, color="black") + 
   theme_pubr(base_size=12) +
   NoLegend() + 
   labs(x="", y="Body Mass (g)") +
@@ -137,8 +138,9 @@ ggplot(subset(bodymass, Time_wk==3 & Week==3), aes(x=Group, y=Bodymass, fill=Gro
   theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
 
 ggplot(subset(bodymass, Time_wk==9 & Week==9), aes(x=Group, y=Bodymass, fill=Group)) + 
-  geom_bar(stat="summary",size=2, position="dodge") + 
-  geom_errorbar(data=subset(bodymass_sem, Time_wk==9 & Week==9), aes(x=Group, ymin=Bodymass-sem, ymax=Bodymass+sem), width=0.25) + 
+  geom_bar(stat="summary",size=0, position="dodge", color="black") + 
+  geom_jitter(color="black", alpha=0.5, width=0.3) +
+  geom_errorbar(data=subset(bodymass_sem, Time_wk==9 & Week==9), aes(x=Group, ymin=Bodymass-sem, ymax=Bodymass+sem), width=0.25, color="black") + 
   theme_pubr(base_size=12) +
   NoLegend() + 
   labs(x="", y="Body Mass (g)") +
@@ -147,14 +149,21 @@ ggplot(subset(bodymass, Time_wk==9 & Week==9), aes(x=Group, y=Bodymass, fill=Gro
   theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
 
 ggplot(subset(bodymass, Time_wk==18 & Week==18), aes(x=Group, y=Bodymass, fill=Group)) + 
-  geom_bar(stat="summary",size=2, position="dodge") + 
-  geom_errorbar(data=subset(bodymass_sem, Time_wk==18 & Week==18), aes(x=Group, ymin=Bodymass-sem, ymax=Bodymass+sem), width=0.25) + 
+  geom_bar(stat="summary",size=0, position="dodge", color="black") +  
+  geom_jitter(color="black", alpha=0.5, width=0.3) +
+  geom_errorbar(data=subset(bodymass_sem, Time_wk==18 & Week==18), aes(x=Group, ymin=Bodymass-sem, ymax=Bodymass+sem), width=0.25, color="black") + 
   theme_pubr(base_size=12) +
   NoLegend() + 
   labs(x="", y="Body Mass (g)") +
   ylim(0,60) + 
   scale_fill_manual(values=wccols) +
   theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+
+#Sample Size
+subset(bodymass, Time_wk==3 | Time_wk==9 | Time_wk==18) %>% 
+  subset(., Week==3 | Week==9 | Week==18) %>% 
+  group_by(Group,Week,Time_wk) %>% 
+  dplyr::count()
 
 #T.tests with Bonferroni correction for multiple comparisons for body mass over time
 compare_means(Bodymass ~ Group, data = subset(bodymass, Time_wk==3) %>% tidyr::drop_na(), group.by="Week", method="t.test", p.adjust.method="bonferroni")
@@ -171,8 +180,9 @@ compare_means(Bodymass ~ Group, data = subset(bodymass, Time_wk==18) %>% tidyr::
 
 ```{r Supp1candd, fig.height=3, fig.width=3}
 ggplot(subset(bodycomp,Source=="Lean_mass" & Time_wk==3), aes(x=Group, y=Bodycomp, fill=Group)) + 
-  geom_bar(stat="summary") + 
-  geom_errorbar(data=subset(bodycomp_sem, Source=="Lean_mass" & Time_wk==3), aes(ymin=Bodycomp-sem, ymax=Bodycomp+sem), width=0.25) + 
+  geom_bar(stat="summary", color="black", size=0) + 
+  geom_jitter(color="black", alpha=0.5, width=0.3) +
+  geom_errorbar(data=subset(bodycomp_sem, Source=="Lean_mass" & Time_wk==3), aes(ymin=Bodycomp-sem, ymax=Bodycomp+sem), width=0.25, color="black") + 
   theme_pubr(base_size=12) +
   NoLegend() +  
   ylim(0,30) +
@@ -181,8 +191,9 @@ ggplot(subset(bodycomp,Source=="Lean_mass" & Time_wk==3), aes(x=Group, y=Bodycom
   theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
 
 ggplot(subset(bodycomp,Source=="Lean_mass" & Time_wk==9), aes(x=Group, y=Bodycomp, fill=Group)) + 
-  geom_bar(stat="summary") + 
-  geom_errorbar(data=subset(bodycomp_sem, Source=="Lean_mass" & Time_wk==9), aes(ymin=Bodycomp-sem, ymax=Bodycomp+sem), width=0.25) + 
+  geom_bar(stat="summary", color="black", size=0) + 
+  geom_jitter(color="black", alpha=0.5, width=0.3) +
+  geom_errorbar(data=subset(bodycomp_sem, Source=="Lean_mass" & Time_wk==9), aes(ymin=Bodycomp-sem, ymax=Bodycomp+sem), width=0.25, color="black") + 
   theme_pubr(base_size=12) +
   NoLegend() +  
   ylim(0,30) +
@@ -191,8 +202,9 @@ ggplot(subset(bodycomp,Source=="Lean_mass" & Time_wk==9), aes(x=Group, y=Bodycom
   theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
 
 ggplot(subset(bodycomp,Source=="Lean_mass" & Time_wk==18), aes(x=Group, y=Bodycomp, fill=Group)) + 
-  geom_bar(stat="summary") + 
-  geom_errorbar(data=subset(bodycomp_sem, Source=="Lean_mass" & Time_wk==18), aes(ymin=Bodycomp-sem, ymax=Bodycomp+sem), width=0.25) + 
+  geom_bar(stat="summary",color="black", size=0) + 
+  geom_jitter(color="black", alpha=0.5, width=0.3) +
+  geom_errorbar(data=subset(bodycomp_sem, Source=="Lean_mass" & Time_wk==18), aes(ymin=Bodycomp-sem, ymax=Bodycomp+sem), width=0.25,color="black") + 
   theme_pubr(base_size=12) +
   NoLegend() +  
   ylim(0,30) +
@@ -201,8 +213,9 @@ ggplot(subset(bodycomp,Source=="Lean_mass" & Time_wk==18), aes(x=Group, y=Bodyco
   theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
 
 ggplot(subset(bodycomp,Source=="Fat_mass" & Time_wk==3), aes(x=Group, y=Bodycomp, fill=Group)) + 
-  geom_bar(stat="summary") + 
-  geom_errorbar(data=subset(bodycomp_sem, Source=="Fat_mass" & Time_wk==3), aes(ymin=Bodycomp-sem, ymax=Bodycomp+sem), width=0.25) + 
+  geom_bar(stat="summary",color="black", size=0) + 
+  geom_jitter(color="black", alpha=0.5, width=0.3) +
+  geom_errorbar(data=subset(bodycomp_sem, Source=="Fat_mass" & Time_wk==3), aes(ymin=Bodycomp-sem, ymax=Bodycomp+sem), width=0.25,color="black") + 
   theme_pubr(base_size=12) +
   NoLegend() +  
   ylim(0,25) +
@@ -211,8 +224,9 @@ ggplot(subset(bodycomp,Source=="Fat_mass" & Time_wk==3), aes(x=Group, y=Bodycomp
   theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
 
 ggplot(subset(bodycomp,Source=="Fat_mass" & Time_wk==9), aes(x=Group, y=Bodycomp, fill=Group)) + 
-  geom_bar(stat="summary") + 
-  geom_errorbar(data=subset(bodycomp_sem, Source=="Fat_mass" & Time_wk==9), aes(ymin=Bodycomp-sem, ymax=Bodycomp+sem), width=0.25) + 
+  geom_bar(stat="summary",color="black", size=0) + 
+  geom_jitter(color="black", alpha=0.5, width=0.3) +
+  geom_errorbar(data=subset(bodycomp_sem, Source=="Fat_mass" & Time_wk==9), aes(ymin=Bodycomp-sem, ymax=Bodycomp+sem), width=0.25,color="black") + 
   theme_pubr(base_size=12) +
   NoLegend() +   
   ylim(0,25) +
@@ -221,8 +235,9 @@ ggplot(subset(bodycomp,Source=="Fat_mass" & Time_wk==9), aes(x=Group, y=Bodycomp
   theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
 
 ggplot(subset(bodycomp,Source=="Fat_mass" & Time_wk==18), aes(x=Group, y=Bodycomp, fill=Group)) + 
-  geom_bar(stat="summary") + 
-  geom_errorbar(data=subset(bodycomp_sem, Source=="Fat_mass" & Time_wk==18), aes(ymin=Bodycomp-sem, ymax=Bodycomp+sem), width=0.25) + 
+  geom_bar(stat="summary", color="black", size=0) + 
+  geom_jitter(color="black", alpha=0.5, width=0.3) +
+  geom_errorbar(data=subset(bodycomp_sem, Source=="Fat_mass" & Time_wk==18), aes(ymin=Bodycomp-sem, ymax=Bodycomp+sem), width=0.25, color="black") + 
   theme_pubr(base_size=12) +
   NoLegend() + 
   ylim(0,25) +

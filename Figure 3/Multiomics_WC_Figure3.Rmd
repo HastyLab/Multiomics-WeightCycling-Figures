@@ -284,22 +284,30 @@ CompareDiets <- function(COI, #Cluster of interest
                          Group2, #Second group
                          Col1, #Color for group1
                          Col2, #Color for group2
+                         showp, #True or False to show test and p value above graph
                          method = "t.test" #statistical test to use
 ){
   tmp1 <- subset(cellspm, Cluster==COI & Group==Group1 | Cluster==COI & Group==Group2)
   tmp2 <- subset(clustercounts, Cluster==COI & Group==Group1 | Cluster==COI & Group==Group2)
+  if(showp==T){
   print(ggplot(tmp1, 
                aes(x=Cluster, 
                    y=CountsPerHundred, 
-                   fill=Group)) + 
+                   fill=Group,
+                   color=Group)) + 
         geom_bar(stat="summary",
                  position="dodge", 
                  color="black") + 
+        geom_point(aes(group=Group),
+                   position = position_dodge(width = 0.9), 
+                   color="black",
+                   alpha=0.5) +
         geom_errorbar(data=tmp2,
                       aes(ymin=CountsPerHundred-se, 
                           ymax=CountsPerHundred+se), 
                       width=.2,
-                      position=position_dodge(.9)) + 
+                      position=position_dodge(.9),
+                      color="black") + 
         scale_fill_manual(values=c(Col1,
                                    Col2)) + 
         theme_classic() + 
@@ -308,30 +316,84 @@ CompareDiets <- function(COI, #Cluster of interest
         labs(x="",
              y="Counts per hundred cells sequenced") + 
         stat_compare_means(method=method) + NoLegend())
-}
+  }else{
+      print(ggplot(tmp1, 
+               aes(x=Cluster, 
+                   y=CountsPerHundred, 
+                   fill=Group,
+                   color=Group)) + 
+        geom_bar(stat="summary",
+                 position="dodge", 
+                 color="black") + 
+        geom_point(aes(group=Group),
+                   position = position_dodge(width = 0.9), 
+                   color="black",
+                   alpha=0.5) +
+        geom_errorbar(data=tmp2,
+                      aes(ymin=CountsPerHundred-se, 
+                          ymax=CountsPerHundred+se), 
+                      width=.2,
+                      position=position_dodge(.9),
+                      color="black") + 
+        scale_fill_manual(values=c(Col1,
+                                   Col2)) + 
+        theme_classic() + 
+        theme(axis.text.x=element_markdown(face="bold", 
+                                           size=10)) +
+        labs(x="",
+             y="Counts per hundred cells sequenced") + 
+        NoLegend())
+  }
+  }
 ```
 
 ```{r Fig3D, warning=FALSE, message=FALSE, fig.width=2.5, fig.height=3}
+# P value shown
 leanCOIs <- list("Tissue Resident Macrophages","Th2 CD4+ T Cells","Tregs","ILC2s")
 for (coi in leanCOIs){
 CompareDiets(COI=coi, 
              Group1="Lean",
              Group2="Obese",
              Col1="#878787",
-             Col2="#518db6")
+             Col2="#518db6",
+             showp=T)
+}
+
+# P value hidden (obscures points)
+leanCOIs <- list("Tissue Resident Macrophages","Th2 CD4+ T Cells","Tregs","ILC2s")
+for (coi in leanCOIs){
+CompareDiets(COI=coi, 
+             Group1="Lean",
+             Group2="Obese",
+             Col1="#878787",
+             Col2="#518db6",
+             showp=F)
 }
 ```
 
 ## Figure 3E
 
 ```{r Fig3E, warning=FALSE, message=FALSE, fig.width=2.5, fig.height=3}
+# P value shown
 obCOIs <- list("LAMs","Th1 CD4+ T Cells","Effector Memory CD8+ T Cells","Mast Cells")
 for (coi in obCOIs){
 CompareDiets(COI=coi, 
              Group1="Lean",
              Group2="Obese",
              Col1="#878787",
-             Col2="#518db6")
+             Col2="#518db6",
+             showp=T)
+}
+
+# P value hidden (obscures points)
+obCOIs <- list("LAMs","Th1 CD4+ T Cells","Effector Memory CD8+ T Cells","Mast Cells")
+for (coi in obCOIs){
+CompareDiets(COI=coi, 
+             Group1="Lean",
+             Group2="Obese",
+             Col1="#878787",
+             Col2="#518db6",
+             showp=F)
 }
 ```
 

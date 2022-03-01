@@ -207,6 +207,9 @@ ggplot(bodymass, aes(x=as.numeric(Week)-1, y=Bodymass, color=Group)) +
   scale_color_manual(values=wccols) +
   geom_vline(xintercept = c(9,18), linetype="dashed")
 
+#Sample Size
+subset(bodymass, Week == "Wk26") %>% group_by(Group,Week) %>% dplyr::count() # We use week 26 for this because this is when ipGTTs are performed.
+
 #ANOVA
 compare_means(Bodymass ~ Group, data = bodymass, method="anova") #Across all weeks 
 compare_means(Bodymass ~ Group, data = bodymass, group.by="Week",method="anova") #By week
@@ -230,6 +233,9 @@ ggplot(foodintake, aes(x=as.numeric(Week), y=FoodIntake, color=Group)) +
   ylim(0,25) + 
   scale_color_manual(values=wccols) +
   geom_vline(xintercept = c(9,18), linetype="dashed")
+
+#Sample Size
+subset(foodintake, Week == "wk26") %>% group_by(Group,Week) %>% dplyr::count() # We use week 26 for this because this is when ipGTTs are performed.
 
 #ANOVA
 compare_means(FoodIntake ~ Group, data = foodintake, method="anova") #Across all weeks 
@@ -301,6 +307,9 @@ ggplot(subset(bodycomp,Source=="Fat_g"), aes(x=Group, y=Mass, fill=Group)) +
   scale_fill_manual(values=wccols) +
   theme(aspect.ratio = 1.5, axis.text.x = element_text(angle=45, hjust=1, vjust=0.98)) 
 
+#Sample Size
+bodycomp %>% group_by(Group,Source) %>% dplyr::count() 
+
 ### T.test with Bonferroni correction for multiple comparisons
 compare_means(Mass ~ Group, data = subset(bodycomp,Source=="Lean_g"), method="t.test", p.adjust.method = "bonferroni")# Lean Mass
 
@@ -321,6 +330,9 @@ ggplot(gtt_sem, aes(x=Time, y=PlasmaGlucose, color=Group)) +
   scale_x_continuous(breaks=seq(from=0, to=150, by=30)) + 
   ylim(0,500) + 
   scale_color_manual(values=wccols) 
+
+#Sample Size
+subset(gtt, Time == "0") %>% group_by(Group) %>% dplyr::count() 
 
 #ANOVA
 compare_means(PlasmaGlucose ~ Group, data = gtt, method="anova") #Across all timepoints
@@ -389,7 +401,9 @@ ggplot(subset(tissuemass,Tissue=="Liver"), aes(x=Group, y=Mass, fill=Group)) +
   labs(x="", y="Liver Mass (g)") + 
   scale_fill_manual(values=wccols) +
   theme(aspect.ratio = 1.5, axis.text.x = element_text(angle=45, hjust=1, vjust=0.98)) 
-  
+ 
+#Sample Size
+tissuemass %>% group_by(Group,Tissue) %>% dplyr::count() 
 
 # For stats
 ## eAT/pgAT
@@ -435,7 +449,10 @@ ggplot(subset(perc_mass,Tissue=="Liver"), aes(x=Group, y=Percent, fill=Group)) +
   labs(x="", y="% Liver Mass \n of Total Body Mass") + 
   scale_fill_manual(values=wccols) +
   theme(aspect.ratio = 1.5, axis.text.x = element_text(angle=45, hjust=1, vjust=0.98)) 
-  
+
+#Sample Size
+perc_mass %>% group_by(Group,Tissue) %>% dplyr::count() 
+
 # For stats
 ## eAT/pgAT
 compare_means(Percent ~ Group, data = subset(perc_mass,Tissue=="pgAT"), method="t.test", p.adjust.method = "bonferroni")
@@ -461,6 +478,8 @@ adipocount$Group <- factor(adipocount$Group, levels = c("Lean","Obese","WL","WC"
 ```
 
 ```{r Fig1J, fig.width=5, fig.height=4}
+#Sample size
+adipocount %>% group_by(Sample,Group) %>% count()
 #T.test with Bonferroni correction for multiple comparisons
 ## With size thresholds
 compare_means(Diameter ~ Group, data = subset(adipocount, Diameter<150 & Diameter>20), method="t.test", p.adjust.method = "bonferroni")
